@@ -1,0 +1,198 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --alibi-violet: #7C3AED;
+    --alibi-emerald: #10B981;
+    --alibi-bg: #0F0D1A;
+    --alibi-bg-card: #1E1B2E;
+    --alibi-bg-elevated: #2D2A40;
+    --alibi-text: #E2E8F0;
+    --alibi-text-muted: #94A3B8;
+    --sidebar-width: 240px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background-color: var(--alibi-bg);
+    color: var(--alibi-text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: rgba(124, 58, 237, 0.3);
+    color: #E2E8F0;
+  }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #2D2A40; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #7C3AED; }
+}
+
+@layer components {
+  /* ─── Cards ─────────────────────────────────────────────── */
+  .ca-card {
+    @apply bg-alibi-bg-card border border-alibi-border rounded-2xl;
+  }
+
+  .ca-card-glass {
+    background: rgba(30, 27, 46, 0.7);
+    backdrop-filter: blur(12px);
+    @apply border border-alibi-border-light rounded-2xl;
+  }
+
+  /* ─── Buttons ────────────────────────────────────────────── */
+  .ca-btn {
+    @apply inline-flex items-center gap-2 font-medium rounded-xl transition-all duration-150 
+           disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none 
+           focus:ring-2 focus:ring-offset-2 focus:ring-offset-alibi-bg;
+  }
+
+  .ca-btn-primary {
+    @apply ca-btn bg-alibi-violet hover:bg-alibi-violet-dark text-white px-4 py-2 text-sm
+           focus:ring-alibi-violet shadow-glow-violet hover:shadow-none;
+  }
+
+  .ca-btn-secondary {
+    @apply ca-btn bg-alibi-bg-elevated hover:bg-alibi-bg-hover text-alibi-text px-4 py-2 text-sm
+           border border-alibi-border focus:ring-alibi-text-subtle;
+  }
+
+  .ca-btn-ghost {
+    @apply ca-btn text-alibi-text-muted hover:text-alibi-text hover:bg-alibi-bg-elevated px-3 py-2 text-sm;
+  }
+
+  .ca-btn-emerald {
+    @apply ca-btn bg-alibi-emerald hover:bg-emerald-600 text-white px-4 py-2 text-sm
+           shadow-glow-emerald hover:shadow-none focus:ring-alibi-emerald;
+  }
+
+  /* ─── Inputs ─────────────────────────────────────────────── */
+  .ca-input {
+    @apply w-full bg-alibi-bg-elevated border border-alibi-border rounded-xl px-4 py-2.5
+           text-alibi-text text-sm placeholder-alibi-text-subtle 
+           focus:outline-none focus:ring-1 focus:ring-alibi-violet focus:border-alibi-violet
+           transition-all duration-150;
+  }
+
+  /* ─── Badges ─────────────────────────────────────────────── */
+  .ca-badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium;
+  }
+
+  .ca-badge-issued   { @apply ca-badge bg-alibi-emerald-ghost text-alibi-emerald border border-alibi-emerald/20; }
+  .ca-badge-violet   { @apply ca-badge bg-alibi-violet-ghost text-alibi-violet-light border border-alibi-violet/20; }
+  .ca-badge-warning  { @apply ca-badge bg-yellow-500/10 text-yellow-400 border border-yellow-500/20; }
+  .ca-badge-error    { @apply ca-badge bg-red-500/10 text-red-400 border border-red-500/20; }
+  .ca-badge-ai       { @apply ca-badge bg-alibi-ai-ghost text-alibi-ai-light border border-alibi-ai/20; }
+  .ca-badge-ibm      { @apply ca-badge bg-blue-500/10 text-blue-400 border border-blue-500/20; }
+
+  /* ─── Page Layout ────────────────────────────────────────── */
+  .ca-page {
+    @apply p-6 lg:p-8 space-y-6 animate-fade-in;
+  }
+
+  .ca-page-header {
+    @apply flex items-start justify-between gap-4 mb-6;
+  }
+
+  .ca-page-title {
+    @apply text-2xl font-bold text-alibi-text;
+  }
+
+  /* ─── Stats Card ─────────────────────────────────────────── */
+  .ca-stat-card {
+    @apply ca-card p-5 flex flex-col gap-3 hover:border-alibi-border-light transition-colors duration-200;
+  }
+
+  /* ─── Table ──────────────────────────────────────────────── */
+  .ca-table {
+    @apply w-full;
+  }
+  .ca-table th {
+    @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider 
+           text-alibi-text-subtle border-b border-alibi-border;
+  }
+  .ca-table td {
+    @apply px-4 py-3.5 text-sm border-b border-alibi-border/50;
+  }
+  .ca-table tr:hover td {
+    @apply bg-alibi-bg-elevated/50;
+  }
+  .ca-table tr:last-child td {
+    @apply border-b-0;
+  }
+
+  /* ─── Sidebar Nav Item ───────────────────────────────────── */
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium 
+           transition-all duration-150 text-alibi-text-muted 
+           hover:text-alibi-text hover:bg-alibi-bg-elevated cursor-pointer;
+  }
+
+  .nav-item-active {
+    @apply text-alibi-violet-light bg-alibi-violet-ghost border border-alibi-violet/20;
+  }
+
+  /* ─── Chart containers ───────────────────────────────────── */
+  .chart-container {
+    @apply w-full;
+  }
+}
+
+@layer utilities {
+  .text-gradient-violet {
+    background: linear-gradient(135deg, #A78BFA 0%, #7C3AED 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-emerald {
+    background: linear-gradient(135deg, #34D399 0%, #10B981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-mixed {
+    background: linear-gradient(135deg, #7C3AED 0%, #10B981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-gradient-card {
+    background: linear-gradient(135deg, rgba(124,58,237,0.1) 0%, rgba(16,185,129,0.05) 100%);
+  }
+
+  .border-gradient {
+    border: 1px solid transparent;
+    background: 
+      linear-gradient(var(--alibi-bg-card), var(--alibi-bg-card)) padding-box,
+      linear-gradient(135deg, #7C3AED, #10B981) border-box;
+  }
+
+  .glass-panel {
+    background: rgba(30, 27, 46, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}

@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --alibi-violet: #7C3AED;
+    --alibi-emerald: #10B981;
+    --alibi-bg: #0F0D1A;
+    --alibi-bg-card: #1E1B2E;
+    --alibi-text: #E2E8F0;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: var(--alibi-bg);
+    color: var(--alibi-text);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  #root {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #3D3A50;
+    border-radius: 2px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #7C3AED;
+  }
+}
+
+@layer components {
+  .ca-card {
+    @apply bg-alibi-bg-card border border-alibi-border rounded-xl p-3;
+  }
+
+  .ca-button-primary {
+    @apply bg-alibi-violet hover:bg-alibi-violet-dark text-white font-medium 
+           rounded-lg px-4 py-2 text-sm transition-all duration-150 
+           disabled:opacity-50 disabled:cursor-not-allowed
+           focus:outline-none focus:ring-2 focus:ring-alibi-violet focus:ring-offset-1 focus:ring-offset-alibi-bg;
+  }
+
+  .ca-button-secondary {
+    @apply bg-alibi-bg-elevated hover:bg-alibi-bg-hover text-alibi-text font-medium 
+           rounded-lg px-4 py-2 text-sm transition-all duration-150 border border-alibi-border
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .ca-button-ghost {
+    @apply text-alibi-text-muted hover:text-alibi-text hover:bg-alibi-bg-elevated 
+           rounded-lg px-3 py-1.5 text-sm transition-all duration-150;
+  }
+
+  .ca-input {
+    @apply bg-alibi-bg-elevated border border-alibi-border rounded-lg px-3 py-2 
+           text-alibi-text text-sm placeholder-alibi-text-subtle 
+           focus:outline-none focus:ring-1 focus:ring-alibi-violet focus:border-alibi-violet
+           w-full transition-all duration-150;
+  }
+
+  .ca-badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .ca-badge-emerald {
+    @apply ca-badge bg-alibi-emerald-ghost text-alibi-emerald border border-alibi-emerald/20;
+  }
+
+  .ca-badge-violet {
+    @apply ca-badge bg-alibi-violet-ghost text-alibi-violet-light border border-alibi-violet/20;
+  }
+
+  .ca-badge-warning {
+    @apply ca-badge bg-yellow-500/10 text-yellow-400 border border-yellow-500/20;
+  }
+
+  .ca-badge-error {
+    @apply ca-badge bg-red-500/10 text-red-400 border border-red-500/20;
+  }
+
+  .ca-divider {
+    @apply border-t border-alibi-border my-3;
+  }
+
+  .ca-label {
+    @apply text-alibi-text-subtle text-xs font-medium uppercase tracking-wider;
+  }
+
+  /* Score circle */
+  .score-circle {
+    @apply relative flex items-center justify-center rounded-full;
+  }
+
+  /* Typing indicator dots */
+  .typing-dot {
+    @apply w-1.5 h-1.5 rounded-full bg-alibi-ai-light;
+    animation: bounceDot 1.4s ease-in-out infinite;
+  }
+  .typing-dot:nth-child(2) { animation-delay: 0.16s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.32s; }
+
+  /* Shimmer loading */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(45, 42, 64, 0) 0%,
+      rgba(45, 42, 64, 0.8) 50%,
+      rgba(45, 42, 64, 0) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite linear;
+  }
+}
+
+@layer utilities {
+  .text-gradient-violet {
+    background: linear-gradient(135deg, #A78BFA, #7C3AED);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-emerald {
+    background: linear-gradient(135deg, #34D399, #10B981);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .border-gradient {
+    border: 1px solid transparent;
+    background: linear-gradient(var(--alibi-bg-card), var(--alibi-bg-card)) padding-box,
+                linear-gradient(135deg, #7C3AED, #10B981) border-box;
+  }
+}

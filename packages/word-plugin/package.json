@@ -1,0 +1,31 @@
+{
+  "name": "@creative-alibi/word-plugin",
+  "version": "2.0.0",
+  "description": "Creative Alibi Microsoft Word Add-in — AI Assistant integrated with IBM Granite",
+  "scripts": {
+    "dev": "vite --port 3000 --https",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext .ts,.tsx"
+  },
+  "dependencies": {
+    "@fluentui/react-components": "^9.46.0",
+    "axios": "^1.6.5",
+    "clsx": "^2.1.0",
+    "date-fns": "^3.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "zustand": "^4.5.0"
+  },
+  "devDependencies": {
+    "@types/office-js": "^1.0.356",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.12"
+  }
+}

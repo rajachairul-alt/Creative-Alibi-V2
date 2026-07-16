@@ -1,0 +1,35 @@
+﻿# Dependencies
+node_modules/
+packages/*/node_modules/
+
+# Build output
+dist/
+build/
+packages/*/dist/
+packages/*/build/
+
+# Environment — NEVER commit secrets
+.env
+.env.local
+.env.production
+packages/backend/.env
+packages/web-dashboard/.env
+packages/word-plugin/.env
+
+# TypeScript
+*.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Testing
+coverage/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/settings.json
+.idea/
