@@ -1,0 +1,599 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Creative Alibi — Setup Guide</title>
+<style>
+  :root {
+    --bg:       #111;
+    --surface:  #1a1a1a;
+    --border:   #2a2a2a;
+    --border2:  #333;
+    --text:     #e8e8e8;
+    --muted:    #777;
+    --subtle:   #444;
+    --accent:   #fff;
+    --code-bg:  #0d0d0d;
+    --num-bg:   #2a2a2a;
+    --warn-bg:  #1c1800;
+    --warn-bd:  #3d3200;
+    --warn-tx:  #c8a600;
+    --tip-bg:   #001c10;
+    --tip-bd:   #003d20;
+    --tip-tx:   #00c060;
+    --info-bg:  #001018;
+    --info-bd:  #002030;
+    --info-tx:  #4ca8d8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;font-size:14px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  a{color:var(--text);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--subtle)}
+  a:hover{text-decoration-color:var(--text)}
+
+  /* ── layout ── */
+  .layout{display:flex;min-height:100vh;max-width:1100px;margin:0 auto}
+
+  /* ── sidebar ── */
+  .sidebar{
+    width:200px;flex-shrink:0;
+    position:sticky;top:0;height:100vh;overflow-y:auto;
+    border-right:1px solid var(--border);
+    padding:24px 0 40px;
+    scrollbar-width:thin;scrollbar-color:var(--border2) transparent;
+  }
+  .sidebar::-webkit-scrollbar{width:4px}
+  .sidebar::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+  .brand{padding:0 18px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
+  .brand-name{font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.01em}
+  .brand-sub{font-size:11px;color:var(--muted);margin-top:2px}
+
+  .nav-group{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);padding:14px 18px 5px}
+  .nav-link{
+    display:block;padding:5px 18px;font-size:12px;color:var(--muted);
+    text-decoration:none;border-left:2px solid transparent;
+    transition:color .1s,border-color .1s,background .1s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .nav-link:hover{color:var(--text);background:#ffffff08;text-decoration:none}
+  .nav-link.active{color:var(--accent);border-left-color:var(--accent);background:#ffffff06}
+
+  /* ── main ── */
+  .main{flex:1;min-width:0;padding:40px 48px 80px}
+
+  .page-title{font-size:22px;font-weight:700;color:var(--accent);margin-bottom:6px}
+  .page-sub{color:var(--muted);font-size:14px;padding-bottom:24px;border-bottom:1px solid var(--border);margin-bottom:8px}
+
+  /* ── section ── */
+  .section{margin-top:0;padding-top:56px}
+  h2{
+    font-size:15px;font-weight:700;color:var(--accent);
+    display:flex;align-items:center;gap:10px;
+    margin-bottom:16px;padding-bottom:10px;
+    border-bottom:1px solid var(--border);
+  }
+  .sec-num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:22px;height:22px;border-radius:4px;
+    background:var(--num-bg);color:var(--muted);
+    font-size:11px;font-weight:700;flex-shrink:0
+  }
+  h3{font-size:13px;font-weight:600;color:var(--text);margin:22px 0 10px}
+  p{color:var(--muted);margin-bottom:12px;font-size:13px;line-height:1.7}
+  strong{color:var(--text);font-weight:600}
+
+  /* ── steps ── */
+  .steps{display:flex;flex-direction:column;gap:2px;margin:12px 0}
+  .step{
+    display:flex;gap:0;
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:0;
+    transition:border-color .15s;
+  }
+  .steps .step:first-child{border-radius:8px 8px 0 0}
+  .steps .step:last-child{border-radius:0 0 8px 8px}
+  .steps .step:first-child:last-child{border-radius:8px}
+  .step-num{
+    flex-shrink:0;width:36px;display:flex;align-items:flex-start;justify-content:center;
+    padding:14px 0 14px;font-size:11px;font-weight:700;color:var(--subtle);
+    border-right:1px solid var(--border);
+  }
+  .step-content{padding:12px 16px;flex:1;min-width:0}
+  .step-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px}
+  .step-body{font-size:12px;color:var(--muted);line-height:1.65}
+  .step-body a{color:var(--muted)}
+  .step-body a:hover{color:var(--text)}
+
+  /* ── code ── */
+  pre{
+    background:var(--code-bg);border:1px solid var(--border);border-radius:8px;
+    padding:14px 42px 14px 16px;overflow-x:auto;margin:10px 0;
+    font-family:'Consolas','JetBrains Mono','Courier New',monospace;
+    font-size:12px;line-height:1.75;color:var(--text);position:relative;
+  }
+  code{font-family:'Consolas','JetBrains Mono','Courier New',monospace;font-size:12px;background:var(--num-bg);padding:1px 6px;border-radius:4px;color:var(--text)}
+  pre code{background:none;padding:0;border-radius:0}
+  .cmt{color:#555}
+  .cmd{color:#aaa}
+  .ekey{color:#8db4cc}
+  .eval{color:#8cba8c}
+
+  /* copy button */
+  .copy-btn{
+    position:absolute;top:8px;right:8px;
+    background:transparent;border:1px solid var(--border2);color:var(--subtle);
+    padding:2px 9px;border-radius:5px;font-size:11px;cursor:pointer;
+    font-family:inherit;transition:all .15s;
+  }
+  .copy-btn:hover{border-color:var(--text);color:var(--text);background:var(--num-bg)}
+  .copy-btn.copied{color:var(--tip-tx);border-color:var(--tip-tx)}
+
+  /* ── callouts ── */
+  .callout{border-radius:7px;padding:11px 14px;margin:12px 0;display:flex;gap:10px;font-size:12px;line-height:1.65}
+  .callout-icon{flex-shrink:0;font-size:14px;margin-top:1px}
+  .warn{background:var(--warn-bg);border:1px solid var(--warn-bd);color:var(--warn-tx)}
+  .tip{background:var(--tip-bg);border:1px solid var(--tip-bd);color:var(--tip-tx)}
+  .info{background:var(--info-bg);border:1px solid var(--info-bd);color:var(--info-tx)}
+
+  /* ── table ── */
+  .tbl{width:100%;border-collapse:collapse;margin:12px 0;font-size:12px}
+  .tbl th{background:var(--surface);color:var(--muted);font-weight:600;text-align:left;padding:7px 12px;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+  .tbl td{padding:8px 12px;border-bottom:1px solid var(--border);color:#bbb;vertical-align:top}
+  .tbl tr:last-child td{border-bottom:none}
+  .tbl td code,.tbl td a{font-size:11px}
+  .tbl tr:hover td{background:#ffffff04}
+
+  /* ── badge ── */
+  .badge{display:inline-flex;align-items:center;padding:1px 7px;border-radius:20px;font-size:10px;font-weight:600;border:1px solid}
+  .free{background:#00200e;color:#00b050;border-color:#003a1a}
+
+  /* ── terminal grid ── */
+  .term-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+  .term-card{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+  .term-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--subtle);padding:8px 12px 6px;border-bottom:1px solid var(--border);background:var(--surface)}
+  .term-body{padding:10px 12px;font-family:'Consolas','JetBrains Mono',monospace;font-size:11px;line-height:1.7}
+  .term-url{font-size:10px;color:var(--tip-tx);padding:6px 12px 8px;border-top:1px solid var(--border)}
+
+  /* ── progress bar ── */
+  .progress-wrap{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:32px}
+  .progress-label{font-size:11px;color:var(--muted);margin-bottom:8px;display:flex;justify-content:space-between}
+  .progress-track{background:var(--border);border-radius:4px;height:4px;overflow:hidden}
+  .progress-fill{height:100%;background:var(--accent);border-radius:4px;transition:width .4s ease;width:0%}
+  .progress-steps{display:flex;justify-content:space-between;margin-top:8px}
+  .progress-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);border:2px solid var(--border2);cursor:pointer;transition:background .2s}
+  .progress-dot.done{background:var(--accent);border-color:var(--accent)}
+  .progress-dot.current{background:var(--surface);border-color:var(--accent)}
+
+  /* ── accordion for troubleshoot ── */
+  .accordion{border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:12px 0}
+  .acc-item{border-bottom:1px solid var(--border)}
+  .acc-item:last-child{border-bottom:none}
+  .acc-trigger{
+    width:100%;text-align:left;background:var(--surface);border:none;
+    padding:11px 16px;font-size:13px;color:var(--text);cursor:pointer;
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:inherit;transition:background .1s;
+  }
+  .acc-trigger:hover{background:#222}
+  .acc-trigger code{font-size:12px;background:var(--num-bg);padding:1px 6px;border-radius:4px}
+  .acc-arrow{font-size:12px;color:var(--muted);transition:transform .2s;flex-shrink:0;margin-left:12px}
+  .acc-body{display:none;padding:12px 16px;background:var(--bg);font-size:12px;color:var(--muted);line-height:1.7;border-top:1px solid var(--border)}
+  .acc-body code{font-size:11px}
+  .acc-item.open .acc-arrow{transform:rotate(180deg)}
+  .acc-item.open .acc-body{display:block}
+
+  hr{border:none;border-top:1px solid var(--border);margin:36px 0}
+  .footer{text-align:center;color:var(--subtle);font-size:11px;padding:20px 0}
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-name">Creative Alibi</div>
+    <div class="brand-sub">Setup &amp; Deploy Guide</div>
+  </div>
+  <nav id="nav">
+    <div class="nav-group">Prerequisites</div>
+    <a class="nav-link" href="#s1">1 · Prerequisites</a>
+    <div class="nav-group">API Keys</div>
+    <a class="nav-link" href="#s2">2 · IBM watsonx.ai</a>
+    <a class="nav-link" href="#s3">3 · Hugging Face</a>
+    <div class="nav-group">Local Setup</div>
+    <a class="nav-link" href="#s4">4 · Install</a>
+    <a class="nav-link" href="#s5">5 · Configure .env</a>
+    <a class="nav-link" href="#s6">6 · Run Locally</a>
+    <a class="nav-link" href="#s7">7 · Word Add-in</a>
+    <a class="nav-link" href="#s8">8 · Operate</a>
+    <div class="nav-group">Free Deploy</div>
+    <a class="nav-link" href="#s9">9 · GitHub</a>
+    <a class="nav-link" href="#s10">10 · Railway (API)</a>
+    <a class="nav-link" href="#s11">11 · Vercel (Dashboard)</a>
+    <a class="nav-link" href="#s12">12 · GitHub Pages (Plugin)</a>
+    <a class="nav-link" href="#s13">13 · Post-Deploy</a>
+    <div class="nav-group">Help</div>
+    <a class="nav-link" href="#s14">14 · Troubleshoot</a>
+  </nav>
+</aside>
+
+
+<main class="main">
+
+  <div class="page-title">Setup &amp; Deployment Guide</div>
+  <div class="page-sub">From zero to publicly deployed — all steps, all commands, all API key instructions.</div>
+
+  
+  <div class="progress-wrap">
+    <div class="progress-label"><span id="prog-label">Progress: 0 of 14 sections</span><span id="prog-pct" style="color:var(--muted)">0%</span></div>
+    <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+    <div class="progress-steps" id="prog-dots"></div>
+  </div>
+
+  
+  <div class="section" id="s1">
+    <h2><span class="sec-num">1</span> Prerequisites</h2>
+    <table class="tbl">
+      <tr><th>Tool</th><th>Min version</th><th>Check</th><th>Download</th></tr>
+      <tr><td><strong>Node.js</strong></td><td>18 LTS</td><td><code>node -v</code></td><td><a href="https://nodejs.org" target="_blank">nodejs.org</a></td></tr>
+      <tr><td><strong>npm</strong></td><td>9.x</td><td><code>npm -v</code></td><td>Bundled with Node</td></tr>
+      <tr><td><strong>Git</strong></td><td>2.x</td><td><code>git --version</code></td><td><a href="https://git-scm.com" target="_blank">git-scm.com</a></td></tr>
+      <tr><td><strong>Microsoft Word</strong></td><td>2016 / M365</td><td>—</td><td><a href="https://microsoft.com/microsoft-365" target="_blank">microsoft.com</a></td></tr>
+    </table>
+    <div class="callout warn"><span class="callout-icon">⚠</span><div><strong>Windows:</strong> use PowerShell as Administrator for installs.<br /><strong>Mac:</strong> install Node via the <code>.pkg</code> installer — not Homebrew — so Office.js HTTPS works.</div></div>
+  </div>
+
+  <hr />
+
+  
+  <div class="section" id="s2">
+    <h2><span class="sec-num">2</span> IBM watsonx.ai — API Key &amp; Project ID</h2>
+    <p>Powers IBM Granite (AI Creative Partner). Free Lite tier — <strong>no credit card needed.</strong></p>
+
+    <h3>A — Create IBM Cloud account</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">A1</div><div class="step-content"><div class="step-title">Open registration</div><div class="step-body">Go to <a href="https://cloud.ibm.com/registration" target="_blank">cloud.ibm.com/registration</a> → fill in email + password → click <strong>"Create a free account"</strong></div></div></div>
+      <div class="step"><div class="step-num">A2</div><div class="step-content"><div class="step-title">Verify email</div><div class="step-body">Check inbox → click the IBM verification link → log in at <a href="https://cloud.ibm.com" target="_blank">cloud.ibm.com</a></div></div></div>
+    </div>
+
+    <h3>B — Create an API Key</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">B1</div><div class="step-content"><div class="step-title">Go to API Keys page</div><div class="step-body">Profile icon (top-right) → <strong>"IBM Cloud API Keys"</strong> — or direct link: <a href="https://cloud.ibm.com/iam/apikeys" target="_blank">cloud.ibm.com/iam/apikeys</a></div></div></div>
+      <div class="step"><div class="step-num">B2</div><div class="step-content"><div class="step-title">Create</div><div class="step-body">Click <strong>"Create an IBM Cloud API key"</strong> → Name: <code>creative-alibi-key</code> → click <strong>"Create"</strong></div></div></div>
+      <div class="step"><div class="step-num">B3</div><div class="step-content"><div class="step-title">⚡ Copy immediately — you will never see it again</div><div class="step-body">Click <strong>"Copy"</strong> or <strong>"Download"</strong> now. Save it in a password manager.<br />Looks like: <code>abc123XYZ_abcDEF-ghiJKL_mnoPQR-stUVW</code><br />→ goes into <code>WATSONX_API_KEY</code> in <code>.env</code></div></div></div>
+    </div>
+
+    <h3>C — Create a watsonx.ai Project</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">C1</div><div class="step-content"><div class="step-title">Open watsonx.ai</div><div class="step-body"><a href="https://dataplatform.cloud.ibm.com/wx/home" target="_blank">dataplatform.cloud.ibm.com/wx/home</a> → log in with IBM Cloud account</div></div></div>
+      <div class="step"><div class="step-num">C2</div><div class="step-content"><div class="step-title">New project</div><div class="step-body">Click <strong>"New project"</strong> → <strong>"Create an empty project"</strong> → Name: <code>creative-alibi</code> → <strong>"Create"</strong></div></div></div>
+      <div class="step"><div class="step-num">C3</div><div class="step-content"><div class="step-title">Copy Project ID</div><div class="step-body">Click <strong>Manage</strong> tab → <strong>General</strong> → copy <strong>Project ID</strong><br />Looks like: <code>a1b2c3d4-e5f6-7890-abcd-ef1234567890</code><br />→ goes into <code>WATSONX_PROJECT_ID</code></div></div></div>
+    </div>
+
+    <h3>D — Enable Watson Machine Learning (free)</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">D1</div><div class="step-content"><div class="step-title">Catalog search</div><div class="step-body">IBM Cloud → <strong>Catalog</strong> → search <strong>"Watson Machine Learning"</strong> → select it</div></div></div>
+      <div class="step"><div class="step-num">D2</div><div class="step-content"><div class="step-title">Select plan and region</div><div class="step-body">Plan: <strong>Lite (free)</strong> — Region: <strong>us-south (Dallas)</strong> — click <strong>"Create"</strong></div></div></div>
+      <div class="step"><div class="step-num">D3</div><div class="step-content"><div class="step-title">Associate with project</div><div class="step-body">Back in watsonx.ai project → <strong>Manage</strong> → <strong>"Services &amp; integrations"</strong> → <strong>"Associate service"</strong> → select WML instance → <strong>"Associate"</strong></div></div></div>
+    </div>
+    <div class="callout tip"><span class="callout-icon">✓</span><div>You now have: <code>WATSONX_API_KEY</code>, <code>WATSONX_PROJECT_ID</code>, and <code>WATSONX_URL=https://us-south.ml.cloud.ibm.com</code></div></div>
+  </div>
+
+  
+  <div class="section" id="s3">
+    <h2><span class="sec-num">3</span> Hugging Face Token</h2>
+    <p>Powers the one-shot AI-likelihood detector (<code>desklib/ai-text-detector-v1.01</code>).</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-title">Create account</div><div class="step-body"><a href="https://huggingface.co/join" target="_blank">huggingface.co/join</a> → fill in username, email, password → verify email</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Open token settings</div><div class="step-body">Profile picture → <strong>Settings</strong> → <strong>Access Tokens</strong> — or: <a href="https://huggingface.co/settings/tokens" target="_blank">huggingface.co/settings/tokens</a></div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-title">Create a Read token</div><div class="step-body">Click <strong>"New token"</strong> → Name: <code>creative-alibi</code> → Role: <strong>Read</strong> → <strong>"Generate"</strong></div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-title">Copy it</div><div class="step-body">Looks like: <code>hf_AbCdEfGhIjKlMnOpQrStUvWxYz123456</code><br />→ goes into <code>HUGGINGFACE_API_KEY</code></div></div></div>
+    </div>
+  </div>
+
+  <hr />
+
+  
+  <div class="section" id="s4">
+    <h2><span class="sec-num">4</span> Install Locally</h2>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content">
+        <div class="step-title">Navigate to project folder</div>
+        <pre><button class="copy-btn">copy</button><code><span class="cmt"># If cloning from GitHub:</span>
+<span class="cmd">git clone</span> https://github.com/YOUR_USERNAME/creative-alibi.git
+<span class="cmd">cd</span> creative-alibi
+
+<span class="cmt"># OR your existing folder:</span>
+<span class="cmd">cd</span> "C:\Users\YOGA 7\IBM Bob\Hackathon-pre\Creative-Alibi-V2"</code></pre>
+      </div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content">
+        <div class="step-title">Install all workspace dependencies</div>
+        <pre><button class="copy-btn">copy</button><code><span class="cmd">npm install</span>
+<span class="cmt"># Installs backend + web-dashboard + word-plugin + shared (~1 min)</span></code></pre>
+        <div class="callout warn" style="margin-top:8px"><span class="callout-icon">⚠</span><div>If you get <code>ERESOLVE</code> errors: <code>npm install --legacy-peer-deps</code></div></div>
+      </div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content">
+        <div class="step-title">Build the shared package first</div>
+        <pre><button class="copy-btn">copy</button><code><span class="cmd">npm run build</span> --workspace=packages/shared
+<span class="cmt"># Creates packages/shared/dist/ — required by all other packages</span></code></pre>
+      </div></div>
+    </div>
+  </div>
+
+  
+  <div class="section" id="s5">
+    <h2><span class="sec-num">5</span> Configure Environment Variables</h2>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content">
+        <div class="step-title">Copy .env.example</div>
+        <pre><button class="copy-btn">copy</button><code><span class="cmt"># Mac/Linux:</span>
+<span class="cmd">cp</span> packages/backend/.env.example packages/backend/.env
+
+<span class="cmt"># Windows PowerShell:</span>
+<span class="cmd">Copy-Item</span> packages\backend\.env.example packages\backend\.env</code></pre>
+      </div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content">
+        <div class="step-title">Fill in packages/backend/.env</div>
+        <pre><button class="copy-btn">copy</button><code><span class="cmt"># IBM watsonx.ai (from Section 2)</span>
+<span class="ekey">WATSONX_API_KEY</span>=<span class="eval">your-ibm-cloud-api-key</span>
+<span class="ekey">WATSONX_PROJECT_ID</span>=<span class="eval">your-project-id</span>
+<span class="ekey">WATSONX_URL</span>=<span class="eval">https://us-south.ml.cloud.ibm.com</span>
+<span class="ekey">WATSONX_IAM_URL</span>=<span class="eval">https://iam.cloud.ibm.com/identity/token</span>
+
+<span class="cmt"># IBM Granite model</span>
+<span class="ekey">GRANITE_MODEL_ID</span>=<span class="eval">ibm/granite-3-3b-instruct</span>
+<span class="ekey">GRANITE_FALLBACK_MODEL_ID</span>=<span class="eval">ibm/granite-3-8b-instruct</span>
+
+<span class="cmt"># Hugging Face (from Section 3)</span>
+<span class="ekey">HUGGINGFACE_API_KEY</span>=<span class="eval">hf_your_token_here</span>
+
+<span class="cmt"># Server</span>
+<span class="ekey">PORT</span>=<span class="eval">3001</span>
+<span class="ekey">NODE_ENV</span>=<span class="eval">development</span>
+<span class="ekey">HOST</span>=<span class="eval">0.0.0.0</span>
+
+<span class="cmt"># Security keys — generate with the command in step 3</span>
+<span class="ekey">SESSION_ENCRYPTION_KEY</span>=<span class="eval">paste_64_char_hex_here</span>
+<span class="ekey">JWT_SECRET</span>=<span class="eval">paste_64_char_hex_here</span>
+
+<span class="cmt"># CORS — update after deploying frontend</span>
+<span class="ekey">ALLOWED_ORIGINS</span>=<span class="eval">http://localhost:3000,http://localhost:5173</span>
+
+<span class="cmt"># Limits</span>
+<span class="ekey">RATE_LIMIT_WINDOW_MS</span>=<span class="eval">900000</span>
+<span class="ekey">RATE_LIMIT_MAX_REQUESTS</span>=<span class="eval">100</span>
+<span class="ekey">GRANITE_MAX_TOKENS</span>=<span class="eval">300</span>
+<span class="ekey">GRANITE_TIMEOUT_MS</span>=<span class="eval">30000</span>
+<span class="ekey">DETECTOR_MAX_CALLS_PER_SESSION</span>=<span class="eval">1</span></code></pre>
+      </div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content">
+        <div class="step-title">Generate two secret keys — run this twice, use different outputs</div>
+        <pre><button class="copy-btn">copy</button><code><span class="cmd">node -e</span> "console.log(require('crypto').randomBytes(32).toString('hex'))"
+<span class="cmt"># Paste output → SESSION_ENCRYPTION_KEY, then run again for JWT_SECRET</span></code></pre>
+      </div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content">
+        <div class="step-title">Create frontend .env files</div>
+        <pre><button class="copy-btn">copy</button><code><span class="cmd">echo</span> "VITE_BACKEND_URL=http://localhost:3001" &gt; packages/web-dashboard/.env
+<span class="cmd">echo</span> "VITE_BACKEND_URL=http://localhost:3001" &gt; packages/word-plugin/.env</code></pre>
+      </div></div>
+    </div>
+  </div>
+
+  
+  <div class="section" id="s6">
+    <h2><span class="sec-num">6</span> Run All Services Locally</h2>
+    <p>Open <strong>3 separate terminal tabs</strong>. One command per terminal.</p>
+    <div class="term-grid">
+      <div class="term-card">
+        <div class="term-label">Terminal 1 — Backend</div>
+        <div class="term-body"><span class="cmd">cd</span> packages/backend<br /><span class="cmd">npm run dev</span></div>
+        <div class="term-url">→ localhost:3001</div>
+      </div>
+      <div class="term-card">
+        <div class="term-label">Terminal 2 — Dashboard</div>
+        <div class="term-body"><span class="cmd">cd</span> packages/web-dashboard<br /><span class="cmd">npm run dev</span></div>
+        <div class="term-url">→ localhost:5173</div>
+      </div>
+      <div class="term-card">
+        <div class="term-label">Terminal 3 — Word Plugin</div>
+        <div class="term-body"><span class="cmd">cd</span> packages/word-plugin<br /><span class="cmd">npm run dev</span></div>
+        <div class="term-url">→ localhost:3000 (HTTPS)</div>
+      </div>
+    </div>
+    <div class="callout tip"><span class="callout-icon">✓</span><div>Verify backend: open <a href="http://localhost:3001/api/health" target="_blank">localhost:3001/api/health</a> — should return <code>{"status":"ok"}</code></div></div>
+  </div>
+
+  
+  <div class="section" id="s7">
+    <h2><span class="sec-num">7</span> Install the Word Add-in</h2>
+    <div class="callout info"><span class="callout-icon">i</span><div>First: open <a href="https://localhost:3000" target="_blank">https://localhost:3000</a> in your browser → click <strong>Advanced → Proceed to localhost</strong> to trust the dev certificate. Do this before opening Word.</div></div>
+    <h3>Desktop Word (Windows &amp; Mac)</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-title">Insert → Add-ins → My Add-ins</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Click "Upload My Add-in" at bottom-left of the dialog</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-title">Browse to <code>packages/word-plugin/manifest.xml</code> → click Upload</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-title">Home ribbon → "Open Alibi" → task pane opens on the right</div></div></div>
+    </div>
+    <h3>Word Online</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-title">office.com → open a document → Insert → Add-ins → More Add-ins</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Upload My Add-in → upload <code>manifest.xml</code></div></div></div>
+    </div>
+  </div>
+
+  
+  <div class="section" id="s8">
+    <h2><span class="sec-num">8</span> How to Operate the App</h2>
+    <h3>Start tracking</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-title">Click "Open Alibi" in ribbon → Tracker tab → "Start Tracking"</div><div class="step-body">Green dot = TRACKING. Cadence score and Creative Timeline update live as you write.</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Write your document normally</div><div class="step-body">All data stays local — nothing sent until you explicitly generate a report.</div></div></div>
+    </div>
+    <h3>Use IBM Granite AI Partner</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-title">AI Partner tab → select Style / Ideas / Grammar</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Type your question → press Enter → Granite responds</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-title">Click ✓ Accept or ✗ Decline for each suggestion</div><div class="step-body">All interactions are logged in the Process Ledger and disclosed in the report — whether accepted or declined.</div></div></div>
+    </div>
+    <h3>Generate Authenticity Report</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-title">Report tab → confirm eligibility checklist all show ✓</div><div class="step-body">Cadence ≥ 75 · Paste ratio ≤ 20% · Revisions ≥ 3 · Duration ≥ 2 min</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Click "Generate Authenticity Report" — wait ~15 sec</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-title">Download PDF → attach to your submission</div></div></div>
+    </div>
+  </div>
+
+  <hr />
+
+  
+  <div class="section" id="s9">
+    <h2><span class="sec-num">9</span> Push to GitHub</h2>
+    <pre><button class="copy-btn">copy</button><code><span class="cmd">git init</span>
+<span class="cmd">git add</span> .
+<span class="cmd">git commit -m</span> "feat: initial creative alibi build"
+
+<span class="cmt"># Create new repo at github.com/new (name: creative-alibi, Public, no README)</span>
+<span class="cmd">git remote add</span> origin https://github.com/YOUR_USERNAME/creative-alibi.git
+<span class="cmd">git branch -M</span> main
+<span class="cmd">git push -u</span> origin main</code></pre>
+  </div>
+
+  
+  <div class="section" id="s10">
+    <h2><span class="sec-num">10</span> Backend → Railway <span class="badge free" style="margin-left:6px">Free $5/mo credit</span></h2>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-title">Sign up at <a href="https://railway.app" target="_blank">railway.app</a> with GitHub</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-title">New Project → Deploy from GitHub repo → select <code>creative-alibi</code></div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content">
+        <div class="step-title">Configure the service (Settings tab)</div>
+        <div class="step-body">
+          Root Directory: <code>packages/backend</code><br />
+          Build Command: <code>npm run build</code><br />
+          Start Command: <code>node dist/index.js</code>
+        </div>
+      </div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content">
+        <div class="step-title">Add all environment variables (Variables tab)</div>
+        <div class="step-body">Copy everything from your <code>.env</code> file. Change <code>NODE_ENV=production</code> and update <code>ALLOWED_ORIGINS</code> to your Vercel + GitHub Pages URLs after deploying them.</div>
+      </div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-title">Settings → Networking → "Generate Domain"</div><div class="step-body">Your backend URL: <code>https://creative-alibi-xxx.up.railway.app</code></div></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-content"><div class="step-title">Verify — open <code>/api/health</code></div><div class="step-body">Should return <code>{"status":"ok","service":"creative-alibi-api"}</code></div></div></div>
+    </div>
+  </div>
+
+  
+  <div class="section" id="s11">
+    <h2><span class="sec-num">11</span> Web Dashboard → Vercel <span class="badge free" style="margin-left:6px">Free unlimited</span></h2>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-title">Sign up at <a href="https://vercel.com" target="_blank">vercel.com</a> → Continue with GitHub</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Add New → Project → Import <code>creative-alibi</code></div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-title">Configure</div><div class="step-body">Root Directory: <code>packages/web-dashboard</code><br />Framework: <strong>Vite</strong> (auto-detected)</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-title">Add environment variable</div><div class="step-body"><code>VITE_BACKEND_URL</code> = your Railway URL</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-title">Deploy → live at <code>https://creative-alibi.vercel.app</code></div></div></div>
+    </div>
+  </div>
+
+  
+  <div class="section" id="s12">
+    <h2><span class="sec-num">12</span> Word Plugin → GitHub Pages <span class="badge free" style="margin-left:6px">Free HTTPS static</span></h2>
+    <p>Create <code>.github/workflows/deploy-plugin.yml</code> in your repo:</p>
+    <pre><button class="copy-btn">copy</button><code>name: Deploy Word Plugin
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: 'npm' }
+      - run: npm install
+      - run: npm run build --workspace=packages/shared
+      - run: npm run build --workspace=packages/word-plugin
+        env:
+          VITE_BACKEND_URL: https://your-app.up.railway.app
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: packages/word-plugin/dist }
+      - id: deploy
+        uses: actions/deploy-pages@v4</code></pre>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-title">Repo → Settings → Pages → Source: <strong>GitHub Actions</strong></div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Push the workflow file → auto-deploys in ~3 min</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-title">Plugin URL: <code>https://YOUR_USERNAME.github.io/creative-alibi/</code></div></div></div>
+    </div>
+  </div>
+
+  
+  <div class="section" id="s13">
+    <h2><span class="sec-num">13</span> Post-Deploy Updates</h2>
+    <h3>1 — Update CORS in Railway</h3>
+    <pre><button class="copy-btn">copy</button><code><span class="ekey">ALLOWED_ORIGINS</span>=<span class="eval">https://creative-alibi.vercel.app,https://YOUR_USERNAME.github.io</span></code></pre>
+    <h3>2 — Update manifest.xml for production</h3>
+    <p>Replace all <code>https://localhost:3000</code> in <code>packages/word-plugin/manifest.xml</code> with your GitHub Pages URL, then push to trigger an auto-redeploy.</p>
+    <div class="callout tip"><span class="callout-icon">✓</span><div>Distribute the manifest to users via:<br /><code>https://raw.githubusercontent.com/YOUR_USERNAME/creative-alibi/main/packages/word-plugin/manifest.xml</code></div></div>
+  </div>
+
+  <hr />
+
+  
+  <div class="section" id="s14">
+    <h2><span class="sec-num">14</span> Troubleshooting</h2>
+    <div class="accordion" id="faq">
+      <div class="acc-item">
+        <button class="acc-trigger"><span><code>ERESOLVE</code> on npm install</span><span class="acc-arrow">▾</span></button>
+        <div class="acc-body">Run <code>npm install --legacy-peer-deps</code> instead.</div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger"><span>Granite returns 401 Unauthorized</span><span class="acc-arrow">▾</span></button>
+        <div class="acc-body">Your <code>WATSONX_API_KEY</code> is wrong, or the Watson Machine Learning service is not associated with your project. Re-do Section 2 Step D. Make sure the WML instance is in <strong>us-south</strong> (Dallas).</div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger"><span>"WATSONX_API_KEY is required" on startup</span><span class="acc-arrow">▾</span></button>
+        <div class="acc-body">The <code>.env</code> file must be at <code>packages/backend/.env</code> — not the root folder. Check for extra spaces around the <code>=</code> sign in the file.</div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger"><span>Word plugin task pane is blank white</span><span class="acc-arrow">▾</span></button>
+        <div class="acc-body">The dev server is not running, or the HTTPS cert is not trusted.<br />1. Confirm Terminal 3 is running (<code>npm run dev</code> in <code>packages/word-plugin</code>).<br />2. Open <code>https://localhost:3000</code> in your browser and click "Proceed".<br />3. Re-sideload the manifest in Word.</div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger"><span>Ribbon button "Open Alibi" doesn't appear</span><span class="acc-arrow">▾</span></button>
+        <div class="acc-body">Insert → Add-ins → My Add-ins → right-click "Creative Alibi" → Remove. Restart Word. Re-upload the manifest.</div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger"><span>CORS error in browser console</span><span class="acc-arrow">▾</span></button>
+        <div class="acc-body">Your Vercel or GitHub Pages URL is not in <code>ALLOWED_ORIGINS</code> on Railway. Add it and redeploy the backend.</div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger"><span>Vercel shows blank page after deploy</span><span class="acc-arrow">▾</span></button>
+        <div class="acc-body">In Vercel project Settings → General, confirm Root Directory is <code>packages/web-dashboard</code>. Check that <code>VITE_BACKEND_URL</code> is set in Environment Variables.</div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger"><span>HuggingFace detector returns 503</span><span class="acc-arrow">▾</span></button>
+        <div class="acc-body">The model is cold-starting. Free tier puts models to sleep. Wait 30 seconds and retry — the code handles this gracefully and the report still generates with an "UNCERTAIN" signal.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+  <div class="footer">Creative Alibi v2.0 · Powered by IBM Granite via watsonx.ai</div>
+
+</main>
+</div>
+
+
+</body>
+</html>
