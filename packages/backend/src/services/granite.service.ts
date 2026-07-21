@@ -20,6 +20,10 @@ import {
   AI_ASSIST_DISCLOSURE_TEXT,
 } from '../../../shared/src/constants';
 
+// Confirmed available models in this account (verified live 2026-07)
+// Primary: ibm/granite-3-8b-instruct
+// Fallback: ibm/granite-4-h-small
+
 // ─── System Prompts ────────────────────────────────────────────────────────────
 
 const SYSTEM_PROMPTS: Record<AIAssistType, string> = {
