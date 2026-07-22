@@ -15,8 +15,8 @@
   <Description DefaultValue="Authenticity Companion for Content Creators — Powered by IBM Granite" />
 
   <!-- Icons -->
-  <IconUrl DefaultValue="https://localhost:3000/assets/icon-32.png" />
-  <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/icon-64.png" />
+  <IconUrl DefaultValue="http://localhost:3000/assets/icon-32.png" />
+  <HighResolutionIconUrl DefaultValue="http://localhost:3000/assets/icon-64.png" />
   <SupportUrl DefaultValue="https://creative-alibi.app/support" />
 
   <!-- Permissions -->
@@ -29,7 +29,7 @@
 
   <!-- Default settings -->
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://localhost:3000/index.html" />
+    <SourceLocation DefaultValue="http://localhost:3000/index.html" />
   </DefaultSettings>
 
   <!-- Version overrides for ribbon and enhanced features -->
@@ -95,13 +95,13 @@
     <!-- String resources -->
     <Resources>
       <bt:Images>
-        <bt:Image id="alibi.Icon.16x16" DefaultValue="https://localhost:3000/assets/icon-16.png" />
-        <bt:Image id="alibi.Icon.32x32" DefaultValue="https://localhost:3000/assets/icon-32.png" />
-        <bt:Image id="alibi.Icon.80x80" DefaultValue="https://localhost:3000/assets/icon-80.png" />
+        <bt:Image id="alibi.Icon.16x16" DefaultValue="http://localhost:3000/assets/icon-16.png" />
+        <bt:Image id="alibi.Icon.32x32" DefaultValue="http://localhost:3000/assets/icon-32.png" />
+        <bt:Image id="alibi.Icon.80x80" DefaultValue="http://localhost:3000/assets/icon-80.png" />
       </bt:Images>
 
       <bt:Urls>
-        <bt:Url id="alibi.TaskpaneUrl" DefaultValue="https://localhost:3000/index.html" />
+        <bt:Url id="alibi.TaskpaneUrl" DefaultValue="http://localhost:3000/index.html" />
       </bt:Urls>
 
       <bt:ShortStrings>
