@@ -5,11 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
   <title>Creative Alibi — Authenticity Companion</title>
-  <!-- Office.js CDN — required for Office Add-ins -->
-  <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+
+  <!--
+    Office.js is only available inside a real Word task pane.
+    In the browser (dev preview) this script 404s silently — that's fine,
+    main.tsx handles the case where Office is not defined.
+  -->
+  <script type="text/javascript" async
+    src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"
+    onerror="console.info('[Creative Alibi] Office.js not available — running in browser preview mode')"
+  ></script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
 </head>
 <body class="m-0 p-0 overflow-hidden">
   <div id="root"></div>
