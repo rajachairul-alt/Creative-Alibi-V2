@@ -6,114 +6,95 @@
   xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
   xsi:type="TaskPaneApp">
 
-  <!-- Required metadata -->
-  <Id>CA2024-ALIBI-WORD-PLUGIN-7C3AED10</Id>
+  <Id>ca2024ab-1b2c-3d4e-5f6a-7b8c9d0e1f2a</Id>
   <Version>2.0.0.0</Version>
   <ProviderName>Creative Alibi</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
+
   <DisplayName DefaultValue="Creative Alibi" />
-  <Description DefaultValue="Authenticity Companion for Content Creators — Powered by IBM Granite" />
+  <Description DefaultValue="Authenticity Companion — Powered by IBM Granite" />
 
-  <!-- Icons -->
-  <IconUrl DefaultValue="http://localhost:3000/assets/icon-32.png" />
-  <HighResolutionIconUrl DefaultValue="http://localhost:3000/assets/icon-64.png" />
-  <SupportUrl DefaultValue="https://creative-alibi.app/support" />
+  <IconUrl DefaultValue="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/EMPTY_ICON.svg/64px-EMPTY_ICON.svg.png" />
+  <HighResolutionIconUrl DefaultValue="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/EMPTY_ICON.svg/64px-EMPTY_ICON.svg.png" />
+  <SupportUrl DefaultValue="http://localhost:3000" />
 
-  <!-- Permissions -->
-  <Permissions>ReadWriteDocument</Permissions>
+  <AppDomains>
+    <AppDomain>http://localhost:3000</AppDomain>
+  </AppDomains>
 
-  <!-- Supported products -->
   <Hosts>
     <Host Name="Document" />
   </Hosts>
 
-  <!-- Default settings -->
   <DefaultSettings>
-    <SourceLocation DefaultValue="http://localhost:3000/index.html" />
+    <SourceLocation DefaultValue="http://localhost:3000" />
   </DefaultSettings>
 
-  <!-- Version overrides for ribbon and enhanced features -->
+  <Permissions>ReadWriteDocument</Permissions>
+
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
     <Hosts>
       <Host xsi:type="Document">
         <DesktopFormFactor>
-          <!-- Ribbon buttons -->
+          <GetStarted>
+            <Title resid="GetStarted.Title"/>
+            <Description resid="GetStarted.Description"/>
+            <LearnMoreUrl resid="GetStarted.LearnMoreUrl"/>
+          </GetStarted>
+          <FunctionFile resid="Commands.Url" />
           <ExtensionPoint xsi:type="PrimaryCommandSurface">
             <OfficeTab id="TabHome">
-              <Group id="creative.alibi.group">
-                <Label resid="alibi.GroupLabel" />
-
-                <!-- Main Task Pane button -->
-                <Control xsi:type="Button" id="creative.alibi.showTaskpane">
-                  <Label resid="alibi.Button.Label" />
+              <Group id="CommandsGroup">
+                <Label resid="CommandsGroup.Label" />
+                <Icon>
+                  <bt:Image size="16" resid="Icon.16x16" />
+                  <bt:Image size="32" resid="Icon.32x32" />
+                  <bt:Image size="80" resid="Icon.80x80" />
+                </Icon>
+                <Control xsi:type="Button" id="TaskpaneButton">
+                  <Label resid="TaskpaneButton.Label" />
                   <Supertip>
-                    <Title resid="alibi.Button.Label" />
-                    <Description resid="alibi.Button.Tooltip" />
+                    <Title resid="TaskpaneButton.Label" />
+                    <Description resid="TaskpaneButton.Tooltip" />
                   </Supertip>
                   <Icon>
-                    <bt:Image size="16" resid="alibi.Icon.16x16" />
-                    <bt:Image size="32" resid="alibi.Icon.32x32" />
-                    <bt:Image size="80" resid="alibi.Icon.80x80" />
+                    <bt:Image size="16" resid="Icon.16x16" />
+                    <bt:Image size="32" resid="Icon.32x32" />
+                    <bt:Image size="80" resid="Icon.80x80" />
                   </Icon>
                   <Action xsi:type="ShowTaskpane">
-                    <TaskpaneId>Office.AutoShowTaskpaneWithDocument</TaskpaneId>
-                    <SourceLocation resid="alibi.TaskpaneUrl" />
-                  </Action>
-                </Control>
-
-                <!-- Quick AI Partner button -->
-                <Control xsi:type="Button" id="creative.alibi.quickAI">
-                  <Label resid="alibi.QuickAI.Label" />
-                  <Supertip>
-                    <Title resid="alibi.QuickAI.Label" />
-                    <Description resid="alibi.QuickAI.Tooltip" />
-                  </Supertip>
-                  <Icon>
-                    <bt:Image size="16" resid="alibi.Icon.16x16" />
-                    <bt:Image size="32" resid="alibi.Icon.32x32" />
-                    <bt:Image size="80" resid="alibi.Icon.80x80" />
-                  </Icon>
-                  <Action xsi:type="ShowTaskpane">
-                    <TaskpaneId>Office.AutoShowTaskpaneWithDocument</TaskpaneId>
-                    <SourceLocation resid="alibi.TaskpaneUrl" />
+                    <TaskpaneId>ButtonId1</TaskpaneId>
+                    <SourceLocation resid="Taskpane.Url" />
                   </Action>
                 </Control>
               </Group>
             </OfficeTab>
           </ExtensionPoint>
-
-          <!-- Task Pane definition (350px width) -->
-          <ExtensionPoint xsi:type="CustomPane">
-            <OfficeTab id="TabDefault"/>
-            <Location resid="alibi.TaskpaneUrl"/>
-            <SupportedSize MinRowCount="1" MinColumnCount="2"/>
-          </ExtensionPoint>
         </DesktopFormFactor>
       </Host>
     </Hosts>
 
-    <!-- String resources -->
     <Resources>
       <bt:Images>
-        <bt:Image id="alibi.Icon.16x16" DefaultValue="http://localhost:3000/assets/icon-16.png" />
-        <bt:Image id="alibi.Icon.32x32" DefaultValue="http://localhost:3000/assets/icon-32.png" />
-        <bt:Image id="alibi.Icon.80x80" DefaultValue="http://localhost:3000/assets/icon-80.png" />
+        <bt:Image id="Icon.16x16" DefaultValue="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/EMPTY_ICON.svg/16px-EMPTY_ICON.svg.png"/>
+        <bt:Image id="Icon.32x32" DefaultValue="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/EMPTY_ICON.svg/32px-EMPTY_ICON.svg.png"/>
+        <bt:Image id="Icon.80x80" DefaultValue="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/EMPTY_ICON.svg/80px-EMPTY_ICON.svg.png"/>
       </bt:Images>
-
       <bt:Urls>
-        <bt:Url id="alibi.TaskpaneUrl" DefaultValue="http://localhost:3000/index.html" />
+        <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="http://localhost:3000"/>
+        <bt:Url id="Commands.Url"            DefaultValue="http://localhost:3000/commands.html"/>
+        <bt:Url id="Taskpane.Url"            DefaultValue="http://localhost:3000"/>
       </bt:Urls>
-
       <bt:ShortStrings>
-        <bt:String id="alibi.GroupLabel" DefaultValue="Creative Alibi" />
-        <bt:String id="alibi.Button.Label" DefaultValue="Open Alibi" />
-        <bt:String id="alibi.QuickAI.Label" DefaultValue="AI Partner" />
+        <bt:String id="GetStarted.Title"       DefaultValue="Creative Alibi is ready!"/>
+        <bt:String id="CommandsGroup.Label"    DefaultValue="Creative Alibi"/>
+        <bt:String id="TaskpaneButton.Label"   DefaultValue="Open Alibi"/>
       </bt:ShortStrings>
-
       <bt:LongStrings>
-        <bt:String id="alibi.Button.Tooltip" DefaultValue="Open Creative Alibi: Authenticity Companion — Track your writing process and generate an Authenticity Report powered by IBM Granite." />
-        <bt:String id="alibi.QuickAI.Tooltip" DefaultValue="Open IBM Granite AI Creative Partner — get style suggestions, brainstorming help, and grammar assistance. All interactions are logged for transparency." />
+        <bt:String id="GetStarted.Description" DefaultValue="Track your writing process and generate an Authenticity Report powered by IBM Granite."/>
+        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Open Creative Alibi Authenticity Companion powered by IBM Granite."/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
+
 </OfficeApp>
