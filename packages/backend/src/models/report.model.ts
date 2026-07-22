@@ -2,7 +2,7 @@
  * @fileoverview In-memory report store.
  */
 
-import type { AuthenticityReport } from '../../../shared/src/types';
+import type { AuthenticityReport } from '../types';
 
 class ReportStoreImpl {
   private reports = new Map<string, AuthenticityReport>();

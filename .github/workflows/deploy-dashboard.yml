@@ -1,0 +1,50 @@
+name: Deploy Web Dashboard → Vercel
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'packages/web-dashboard/**'
+      - 'packages/shared/**'
+      - '.github/workflows/deploy-dashboard.yml'
+
+jobs:
+  build:
+    name: Build Dashboard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build shared package
+        run: npm run build --workspace=packages/shared
+
+      - name: Build web dashboard
+        env:
+          VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
+        run: npm run build --workspace=packages/web-dashboard
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: packages/web-dashboard
+          vercel-args: '--prod'
+
+  # Vercel CLI alternative — uncomment and fill secrets if using CLI deploy
+  # - name: Deploy via Vercel CLI
+  #   run: |
+  #     npm install -g vercel
+  #     vercel --token=${{ secrets.VERCEL_TOKEN }} --prod \
+  #       --yes \
+  #       --cwd packages/web-dashboard

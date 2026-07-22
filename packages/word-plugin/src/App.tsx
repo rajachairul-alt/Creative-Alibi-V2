@@ -3,7 +3,7 @@
  * Manages session initialization and tab-based navigation.
  */
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Header } from './components/layout/Header';
 import { TabNav } from './components/layout/TabNav';
 import { TrackerStatus } from './components/tracker/TrackerStatus';
@@ -11,7 +11,6 @@ import { AIPartnerChat } from './components/ai-partner/AIPartnerChat';
 import { ReportPanel } from './components/report/ReportPanel';
 import { useSessionStore } from './store/session.store';
 import { startBackendSession } from './services/granite.service';
-import { v4 as uuidv4 } from 'uuid';
 
 /* global Office */
 

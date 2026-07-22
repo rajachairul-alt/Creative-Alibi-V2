@@ -7,7 +7,7 @@ import { useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useSessionStore } from '../store/session.store';
 import { requestAISuggestion } from '../services/granite.service';
-import type { AIAssistType, ChatMessage } from '@creative-alibi/shared';
+import type { AIAssistType, ChatMessage } from '../types';
 
 export function useAIPartner() {
   const {
@@ -106,11 +106,13 @@ export function useAIPartner() {
   const acceptSuggestion = useCallback((messageId: string) => {
     // Update the ledger to mark the corresponding event as accepted
     if (!session) return;
-    const updatedLog = session.ledger.aiAssistLog.map(event => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const updatedLog = session.ledger.aiAssistLog.map((event: any) => {
       const msg = chatMessages.find(m => m.id === messageId);
       return msg ? { ...event, accepted: true } : event;
     });
-    updateLedger({ aiAssistLog: updatedLog });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    updateLedger({ aiAssistLog: updatedLog as any });
   }, [session, chatMessages, updateLedger]);
 
   const declineSuggestion = useCallback((_messageId: string) => {

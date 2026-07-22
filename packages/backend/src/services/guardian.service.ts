@@ -9,11 +9,11 @@
  * 5. Stay within the scope of the requested assistance type
  */
 
-import type { AIAssistType } from '../../../shared/src/types';
+import type { AIAssistType } from '../types';
 import {
   GUARDIAN_REQUIRED_HEDGE_PHRASES,
   GUARDIAN_MAX_SUGGESTION_WORDS,
-} from '../../../shared/src/constants';
+} from '../constants';
 
 // ─── Guardian Result ───────────────────────────────────────────────────────────
 

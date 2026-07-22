@@ -5,9 +5,9 @@
 
 import { createWatsonxClient } from '../config/watson';
 import { getEnv } from '../config/env';
-import type { ProcessLedger, AILikelihoodSignal } from '../../../shared/src/types';
+import type { ProcessLedger, AILikelihoodSignal } from '../types';
 import type { LedgerValidationResult } from './ledger.service';
-import { REPORT_LEGAL_DISCLAIMER } from '../../../shared/src/constants';
+import { REPORT_LEGAL_DISCLAIMER } from '../constants';
 
 /**
  * Generates a human-readable narrative summary for the Authenticity Report
@@ -53,7 +53,7 @@ function buildNarrativePrompt(
   const durationMin = Math.round(ledger.timeSpentSeconds / 60);
   const pastePercent = (ledger.copyPasteRatio * 100).toFixed(1);
   const aiAssistSummary = ledger.aiAssistLog.length > 0
-    ? `The writer used the AI Creative Partner ${ledger.aiAssistLog.length} time(s) (${ledger.aiAssistLog.filter(e => e.accepted).length} accepted).`
+    ? `The writer used the AI Creative Partner ${ledger.aiAssistLog.length} time(s) (${ledger.aiAssistLog.filter((e: { accepted: boolean }) => e.accepted).length} accepted).`
     : 'No AI Creative Partner assistance was used.';
 
   return `<|system|>

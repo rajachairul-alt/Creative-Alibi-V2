@@ -3,8 +3,9 @@
  * Shows typing speed, pauses, AI assist events, and paste events over time.
  */
 
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useSessionStore } from '../../store/session.store';
+import type { PauseEvent, PasteEvent, AIAssistLogEntry } from '../../types';
 
 const WIDTH = 280;
 const HEIGHT = 60;
@@ -18,38 +19,37 @@ export function CreativeTimeline() {
   const ledger = session?.ledger;
 
   const { linePath, pauseRects, aiDots, pasteDots } = useMemo(() => {
-    if (!ledger || ledger.wordCountHistory?.length === 0) {
+    const wordHistory: number[] = session?.wordCountHistory ?? [];
+    if (!ledger || wordHistory.length < 2) {
       return { linePath: '', pauseRects: [], aiDots: [], pasteDots: [] };
     }
 
-    const history = session?.wordCountHistory ?? [];
-    if (history.length < 2) return { linePath: '', pauseRects: [], aiDots: [], pasteDots: [] };
-
-    const totalMs = history[history.length - 1].timestampMs - history[0].timestampMs;
-    if (totalMs === 0) return { linePath: '', pauseRects: [], aiDots: [], pasteDots: [] };
-
-    const maxWords = Math.max(...history.map(h => h.wordCount), 1);
-    const startMs = history[0].timestampMs;
-
-    const scaleX = (ts: number) => ((ts - startMs) / totalMs) * CHART_W;
+    const maxWords = Math.max(...wordHistory, 1);
+    const scaleX = (i: number) => (i / (wordHistory.length - 1)) * CHART_W;
     const scaleY = (words: number) => CHART_H - (words / maxWords) * CHART_H;
 
     // Word count line path
-    const points = history.map(h => `${scaleX(h.timestampMs).toFixed(1)},${scaleY(h.wordCount).toFixed(1)}`);
+    const points = wordHistory.map((w: number, i: number) =>
+      `${scaleX(i).toFixed(1)},${scaleY(w).toFixed(1)}`
+    );
     const linePath = `M ${points.join(' L ')}`;
 
+    // Use session time for x-axis scaling of pause/ai events
+    const totalMs = ledger.timeSpentSeconds * 1000 || 1;
+    const sessionStartMs = new Date(ledger.sessionStartedAt).getTime();
+
     // Pause rectangles
-    const pauseRects = ledger.pauseEvents
-      .filter(p => p.durationMs > 2000)
-      .map(p => ({
-        x: (p.startMs / (totalMs)) * CHART_W,
+    const pauseRects = (ledger.pauseEvents as PauseEvent[])
+      .filter((p: PauseEvent) => p.durationMs > 2000)
+      .map((p: PauseEvent) => ({
+        x: Math.min(CHART_W, (p.startMs / totalMs) * CHART_W),
         width: Math.max(2, (p.durationMs / totalMs) * CHART_W),
         isBreak: p.durationMs > 30_000,
       }));
 
     // AI assist dots
-    const aiDots = ledger.aiAssistLog.map(event => {
-      const eventMs = new Date(event.timestamp).getTime() - startMs;
+    const aiDots = (ledger.aiAssistLog as AIAssistLogEntry[]).map((event: AIAssistLogEntry) => {
+      const eventMs = new Date(event.timestamp).getTime() - sessionStartMs;
       return {
         x: Math.min(CHART_W, (eventMs / totalMs) * CHART_W),
         accepted: event.accepted,
@@ -57,7 +57,7 @@ export function CreativeTimeline() {
     });
 
     // Paste event dots
-    const pasteDots = ledger.pasteEvents.map(event => ({
+    const pasteDots = (ledger.pasteEvents as PasteEvent[]).map((event: PasteEvent) => ({
       x: Math.min(CHART_W, (event.timestampMs / totalMs) * CHART_W),
     }));
 
@@ -96,7 +96,7 @@ export function CreativeTimeline() {
           ))}
 
           {/* Pause rectangles */}
-          {pauseRects.map((p, i) => (
+          {pauseRects.map((p: { x: number; width: number; isBreak: boolean }, i: number) => (
             <rect
               key={i}
               x={p.x}
@@ -129,7 +129,7 @@ export function CreativeTimeline() {
           )}
 
           {/* AI assist dots */}
-          {aiDots.map((dot, i) => (
+          {aiDots.map((dot: { x: number; accepted: boolean }, i: number) => (
             <circle
               key={`ai-${i}`}
               cx={dot.x}
@@ -142,7 +142,7 @@ export function CreativeTimeline() {
           ))}
 
           {/* Paste event dots */}
-          {pasteDots.map((dot, i) => (
+          {pasteDots.map((dot: { x: number }, i: number) => (
             <circle
               key={`paste-${i}`}
               cx={dot.x}

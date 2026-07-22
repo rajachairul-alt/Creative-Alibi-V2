@@ -4,8 +4,8 @@
  */
 
 import crypto from 'crypto';
-import type { ProcessLedger, VerificationBadge } from '../../../shared/src/types';
-import { BADGE_BASE_URL } from '../../../shared/src/constants';
+import type { ProcessLedger, VerificationBadge } from '../types';
+import { BADGE_BASE_URL } from '../constants';
 
 /**
  * Generates a SHA-256 hash of the Process Ledger data.

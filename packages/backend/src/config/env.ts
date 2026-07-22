@@ -18,13 +18,13 @@ const envSchema = z.object({
   WATSONX_IAM_URL: z.string().url().default('https://iam.cloud.ibm.com/identity/token'),
 
   // Granite Model
-  GRANITE_MODEL_ID: z.string().default('ibm/granite-3-3b-instruct'),
-  GRANITE_FALLBACK_MODEL_ID: z.string().default('ibm/granite-3-8b-instruct'),
+  GRANITE_MODEL_ID: z.string().default('ibm/granite-3-8b-instruct'),
+  GRANITE_FALLBACK_MODEL_ID: z.string().default('ibm/granite-4-h-small'),
   GRANITE_MAX_TOKENS: z.coerce.number().default(300),
   GRANITE_TIMEOUT_MS: z.coerce.number().default(30_000),
 
-  // Hugging Face
-  HUGGINGFACE_API_KEY: z.string().min(1, 'HUGGINGFACE_API_KEY is required'),
+  // Hugging Face — optional; detector returns UNCERTAIN without it
+  HUGGINGFACE_API_KEY: z.string().optional().default(''),
 
   // Security
   SESSION_ENCRYPTION_KEY: z.string().min(32, 'SESSION_ENCRYPTION_KEY must be at least 32 characters'),

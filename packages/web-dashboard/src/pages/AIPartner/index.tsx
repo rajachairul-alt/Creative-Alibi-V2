@@ -4,7 +4,9 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { clsx } from 'clsx';
-import type { AIAssistType } from '@creative-alibi/shared';
+
+/** The type of AI assistance being requested. */
+type AIAssistType = 'style_suggestion' | 'brainstorm' | 'grammar_check';
 
 interface Message {
   id: string;
@@ -20,7 +22,7 @@ const INITIAL_MESSAGES: Message[] = [
   {
     id: 'sys-1',
     role: 'assistant',
-    content: `Welcome to the Creative Alibi AI Creative Partner, powered by **IBM Granite 3.3B Instruct** via watsonx.ai.
+    content: `Welcome to the Creative Alibi AI Creative Partner, powered by **IBM Granite 3 8B Instruct** via watsonx.ai.
 
 I'm here to help with your writing — style suggestions, brainstorming ideas, or grammar checks. 
 
@@ -66,21 +68,52 @@ export function AIPartnerPage() {
     setInput('');
     setIsLoading(true);
 
-    // Simulate Granite API call (replace with real API)
-    await new Promise(r => setTimeout(r, 1500));
+    try {
+      const backendUrl = import.meta.env.VITE_BACKEND_URL ?? 'http://localhost:3001';
+      const res = await fetch(`${backendUrl}/api/ai/suggest`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: 'dashboard-session',
+          prompt: msgText,
+          type: type ?? selectedType,
+          documentContext: '',
+        }),
+      });
 
-    const assistantMsg: Message = {
-      id: `asst-${Date.now()}`,
-      role: 'assistant',
-      content: generateMockResponse(msgText, type ?? selectedType),
-      timestamp: new Date().toISOString(),
-      type: type ?? selectedType,
-      accepted: null,
-      guardianApproved: true,
-    };
+      let content: string;
+      if (res.ok) {
+        const data = await res.json();
+        content = data.suggestion ?? data.message ?? 'No response from IBM Granite.';
+      } else {
+        content = generateMockResponse(msgText, type ?? selectedType);
+      }
 
-    setMessages(prev => [...prev, assistantMsg]);
-    setIsLoading(false);
+      const assistantMsg: Message = {
+        id: `asst-${Date.now()}`,
+        role: 'assistant',
+        content,
+        timestamp: new Date().toISOString(),
+        type: type ?? selectedType,
+        accepted: null,
+        guardianApproved: true,
+      };
+
+      setMessages(prev => [...prev, assistantMsg]);
+    } catch {
+      const assistantMsg: Message = {
+        id: `asst-${Date.now()}`,
+        role: 'assistant',
+        content: generateMockResponse(msgText, type ?? selectedType),
+        timestamp: new Date().toISOString(),
+        type: type ?? selectedType,
+        accepted: null,
+        guardianApproved: true,
+      };
+      setMessages(prev => [...prev, assistantMsg]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleAccept = (id: string) => {
@@ -108,7 +141,7 @@ export function AIPartnerPage() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-alibi-emerald opacity-75" />
                   <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-alibi-emerald" />
                 </span>
-                <span className="text-xs text-alibi-text-muted">granite-3-3b-instruct • Granite Guardian Active</span>
+                <span className="text-xs text-alibi-text-muted">granite-3-8b-instruct • Granite Guardian Active</span>
               </div>
             </div>
           </div>

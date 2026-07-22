@@ -4,7 +4,6 @@
  */
 
 import { useEffect, useRef, useCallback } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { useSessionStore } from '../store/session.store';
 import {
   calculateCadenceScore,
@@ -13,11 +12,11 @@ import {
   calculateAverageWPM,
   type KeystrokeEvent,
 } from '../services/tracker.service';
-import type { PasteEvent, PauseEvent } from '@creative-alibi/shared';
+import type { PasteEvent, PauseEvent } from '../types';
 import {
   PAUSE_MIN_THRESHOLD_MS,
   TRACKER_SNAPSHOT_INTERVAL_MS,
-} from '@creative-alibi/shared';
+} from '../types';
 
 /* global Office, Word */
 

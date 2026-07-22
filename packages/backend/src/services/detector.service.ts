@@ -17,14 +17,14 @@
 
 import axios from 'axios';
 import { getEnv } from '../config/env';
-import type { AILikelihoodSignal, AILikelihoodLabel } from '../../../shared/src/types';
+import type { AILikelihoodSignal, AILikelihoodLabel } from '../types';
 import {
   DESKLIB_MODEL_ID,
   HF_INFERENCE_URL,
   DETECTOR_MAX_CALLS_PER_SESSION,
   DETECTOR_DISCREPANCY_THRESHOLD,
   DETECTOR_DISCLAIMER_TEXT,
-} from '../../../shared/src/constants';
+} from '../constants';
 
 // ─── Per-session call count tracker (security enforcement) ────────────────────
 const _sessionCallCounts = new Map<string, number>();

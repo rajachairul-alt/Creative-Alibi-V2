@@ -2,7 +2,6 @@
  * @fileoverview Tracker status panel — shows live behavioral metrics and Creative Timeline.
  */
 
-import React from 'react';
 import { useSessionStore } from '../../store/session.store';
 import { useTracker } from '../../hooks/useTracker';
 import { CreativeTimeline } from './CreativeTimeline';
@@ -184,7 +183,7 @@ export function TrackerStatus() {
               </div>
               <div className="text-xs text-alibi-text-muted">
                 {ledger.aiAssistLog.length} interaction{ledger.aiAssistLog.length !== 1 ? 's' : ''} with IBM Granite
-                {' '}&mdash; {ledger.aiAssistLog.filter(e => e.accepted).length} accepted
+                {' '}&mdash; {ledger.aiAssistLog.filter((e: { accepted: boolean }) => e.accepted).length} accepted
               </div>
               <div className="text-[10px] text-alibi-text-subtle mt-1">
                 All interactions will be disclosed in your Authenticity Report

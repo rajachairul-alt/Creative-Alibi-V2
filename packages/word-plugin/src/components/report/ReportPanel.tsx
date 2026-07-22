@@ -2,7 +2,7 @@
  * @fileoverview Report Panel — generate and preview the Authenticity Report.
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSessionStore } from '../../store/session.store';
 import { generateReport } from '../../services/granite.service';
 import { clsx } from 'clsx';
@@ -11,7 +11,7 @@ import { clsx } from 'clsx';
 
 export function ReportPanel() {
   const { session, report, setReport, isGeneratingReport, setGeneratingReport, setError } = useSessionStore();
-  const [step, setStep] = useState<'idle' | 'confirming' | 'generating' | 'done' | 'error'>('idle');
+  const [_step, setStep] = useState<'idle' | 'generating' | 'done' | 'error'>('idle');
 
   const handleGenerateReport = async () => {
     if (!session) return;
@@ -54,6 +54,26 @@ export function ReportPanel() {
 
   const ledger = session.ledger;
   const isEligible = ledger.typingCadenceScore >= 75 && ledger.copyPasteRatio <= 0.20 && ledger.revisionCount >= 3;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  type AnyReport = any;
+
+  /** Helper: extract the composite score from either old or new report shape */
+  const getScore = (r: AnyReport): number => {
+    if (r?.scoreBreakdown?.overallScore != null) return Math.round(r.scoreBreakdown.overallScore);
+    if (r?.processMetrics?.compositeScore != null) return r.processMetrics.compositeScore;
+    return 0;
+  };
+
+  /** Helper: extract narrative */
+  const getNarrative = (r: AnyReport): string => {
+    return r?.reportNarrative ?? r?.graniteNarrative ?? '';
+  };
+
+  /** Helper: is the report "issued" */
+  const isIssued = (r: AnyReport): boolean => {
+    return r?.status === 'ready' || r?.status === 'ISSUED';
+  };
 
   return (
     <div className="flex flex-col gap-3 p-3 animate-fade-in">
@@ -129,19 +149,19 @@ export function ReportPanel() {
           {/* Status Banner */}
           <div className={clsx(
             'rounded-xl p-3 flex items-center gap-3',
-            report.status === 'ISSUED'
+            isIssued(report)
               ? 'bg-alibi-emerald-ghost border border-alibi-emerald/30'
               : 'bg-alibi-error/5 border border-alibi-error/20'
           )}>
             <div className={clsx(
               'w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0',
-              report.status === 'ISSUED' ? 'bg-alibi-emerald/20' : 'bg-alibi-error/10'
+              isIssued(report) ? 'bg-alibi-emerald/20' : 'bg-alibi-error/10'
             )}>
-              <span className="text-lg">{report.status === 'ISSUED' ? '✓' : '✗'}</span>
+              <span className="text-lg">{isIssued(report) ? '✓' : '✗'}</span>
             </div>
             <div>
-              <div className={clsx('text-sm font-bold', report.status === 'ISSUED' ? 'text-alibi-emerald' : 'text-alibi-error')}>
-                Report {report.status === 'ISSUED' ? 'ISSUED' : 'NOT ELIGIBLE'}
+              <div className={clsx('text-sm font-bold', isIssued(report) ? 'text-alibi-emerald' : 'text-alibi-error')}>
+                Report {isIssued(report) ? 'ISSUED' : 'NOT ELIGIBLE'}
               </div>
               <div className="text-[10px] text-alibi-text-muted">
                 Report ID: {report.reportId.slice(0, 12)}...
@@ -153,21 +173,23 @@ export function ReportPanel() {
           <div className="ca-card text-center">
             <div className="ca-label mb-1">Composite Authenticity Score</div>
             <div className="text-3xl font-black font-mono text-gradient-violet">
-              {report.processMetrics.compositeScore}
+              {getScore(report)}
             </div>
             <div className="text-[10px] text-alibi-text-subtle">out of 100</div>
           </div>
 
           {/* Narrative */}
-          <div className="ca-card">
-            <div className="ca-label mb-2 flex items-center gap-1">
-              <span className="text-alibi-ai-light text-xs">🤖</span>
-              Report Narrative
+          {getNarrative(report) && (
+            <div className="ca-card">
+              <div className="ca-label mb-2 flex items-center gap-1">
+                <span className="text-alibi-ai-light text-xs">🤖</span>
+                Report Narrative
+              </div>
+              <p className="text-[10px] text-alibi-text-muted leading-relaxed line-clamp-4">
+                {getNarrative(report)}
+              </p>
             </div>
-            <p className="text-[10px] text-alibi-text-muted leading-relaxed line-clamp-4">
-              {report.reportNarrative}
-            </p>
-          </div>
+          )}
 
           {/* Badge */}
           <div className="border-gradient rounded-xl p-3 text-center">
@@ -179,7 +201,7 @@ export function ReportPanel() {
               #{report.reportId.slice(0, 8).toUpperCase()}
             </div>
             <div className="text-[9px] text-alibi-text-subtle">
-              {report.processMetrics.wordCount} words | Score: {report.processMetrics.compositeScore}/100
+              Score: {getScore(report)}/100
             </div>
             <div className="text-[8px] text-alibi-ai-light mt-0.5">Powered by IBM Granite</div>
           </div>

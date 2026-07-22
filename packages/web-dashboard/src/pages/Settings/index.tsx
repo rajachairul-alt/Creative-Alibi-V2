@@ -73,9 +73,9 @@ export function SettingsPage() {
           <div className="space-y-3">
             <div>
               <label className="text-xs font-medium text-alibi-text-muted uppercase tracking-wider block mb-1.5">Model</label>
-              <select className="ca-input text-sm">
-                <option value="ibm/granite-3-3b-instruct">ibm/granite-3-3b-instruct (Recommended — fast)</option>
-                <option value="ibm/granite-3-8b-instruct">ibm/granite-3-8b-instruct (More capable)</option>
+              <select className="ca-input text-sm" defaultValue="ibm/granite-3-8b-instruct">
+                <option value="ibm/granite-3-8b-instruct">ibm/granite-3-8b-instruct (Default — balanced)</option>
+                <option value="ibm/granite-4-h-small">ibm/granite-4-h-small (Faster, lighter)</option>
               </select>
             </div>
             <div>

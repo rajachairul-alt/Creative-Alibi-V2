@@ -3,13 +3,13 @@
  * Analyzes raw keystroke/pause/paste events to compute Process Ledger metrics.
  */
 
-import type { PauseEvent, PasteEvent, PauseDistribution } from '@creative-alibi/shared';
+import type { PauseEvent, PasteEvent, PauseDistribution } from '../types';
 import {
   PAUSE_MIN_THRESHOLD_MS,
   PAUSE_SHORT_MAX_MS,
   PAUSE_THINKING_MIN_MS,
   PAUSE_BREAK_MIN_MS,
-} from '@creative-alibi/shared';
+} from '../types';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

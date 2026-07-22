@@ -4,7 +4,7 @@
  * This is the eligibility gate — no Authenticity Report is issued without passing this.
  */
 
-import type { ProcessLedger } from '../../../shared/src/types';
+import type { ProcessLedger } from '../types';
 import {
   MIN_TYPING_CADENCE_SCORE,
   MAX_COPY_PASTE_RATIO,
@@ -13,7 +13,9 @@ import {
   MIN_WORD_COUNT_FOR_REPORT,
   MIN_AVERAGE_WPM,
   COMPOSITE_SCORE_WEIGHTS,
-} from '../../../shared/src/constants';
+} from '../constants';
+// MAX_COPY_PASTE_RATIO is also available from @creative-alibi/shared
+// but we keep it local to avoid branded-type mismatches.
 
 // ─── Validation Result Types ───────────────────────────────────────────────────
 

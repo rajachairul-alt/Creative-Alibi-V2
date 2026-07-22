@@ -4,7 +4,7 @@
  */
 
 import axios from 'axios';
-import type { AIPartnerRequest, AIPartnerResponse } from '@creative-alibi/shared';
+import type { AIPartnerRequest, AIPartnerResponse } from '../types';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL ?? 'http://localhost:3001';
 

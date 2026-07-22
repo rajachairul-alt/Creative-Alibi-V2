@@ -11,14 +11,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { createWatsonxClient } from '../config/watson';
 import { getEnv } from '../config/env';
 import { validateGuardian } from './guardian.service';
-import type { AIPartnerRequest, AIPartnerResponse, AIAssistType } from '../../../shared/src/types';
+import type { AIPartnerRequest, AIPartnerResponse, AIAssistType } from '../types';
 import {
   GRANITE_TEMPERATURE_STYLE,
   GRANITE_TEMPERATURE_BRAINSTORM,
   GRANITE_TEMPERATURE_GRAMMAR,
   GRANITE_CONTEXT_MAX_CHARS,
   AI_ASSIST_DISCLOSURE_TEXT,
-} from '../../../shared/src/constants';
+} from '../constants';
 
 // Confirmed available models in this account (verified live 2026-07)
 // Primary: ibm/granite-3-8b-instruct

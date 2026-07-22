@@ -4,7 +4,7 @@
 
 import React, { useState, useRef } from 'react';
 import { clsx } from 'clsx';
-import type { AIAssistType } from '@creative-alibi/shared';
+import type { AIAssistType } from '../../types';
 
 const TYPES: Array<{ id: AIAssistType; label: string; placeholder: string }> = [
   {

@@ -9,14 +9,18 @@ import { validateProcessLedger } from './ledger.service';
 import { detectAILikelihood } from './detector.service';
 import { generateReportNarrative } from './reportNarrative.service';
 import { hashLedger, generateBadgeData } from './crypto.service';
-import type { ProcessLedger, AuthenticityReport, AIAssistSummary } from '../../../shared/src/types';
+import type {
+  ProcessLedger,
+  AuthenticityReport,
+  AIAssistSummary,
+} from '../types';
 import {
   REPORT_VERSION,
   REPORT_EXPIRY_DAYS,
   BADGE_BASE_URL,
   REPORT_LEGAL_DISCLAIMER,
   AI_ASSIST_DISCLOSURE_TEXT,
-} from '../../../shared/src/constants';
+} from '../constants';
 
 // ─── Main Report Generator ────────────────────────────────────────────────────
 
@@ -153,10 +157,10 @@ export async function generateAuthenticityReport(
 
 function buildAIAssistSummary(ledger: ProcessLedger): AIAssistSummary {
   const log = ledger.aiAssistLog;
-  const accepted = log.filter(e => e.accepted).length;
-  const rejected = log.filter(e => !e.accepted).length;
+  const accepted = log.filter((e: { accepted: boolean }) => e.accepted).length;
+  const rejected = log.filter((e: { accepted: boolean }) => !e.accepted).length;
 
-  const assistTypes = log.reduce((acc, event) => {
+  const assistTypes = log.reduce((acc: Record<string, number>, event: { type: string }) => {
     acc[event.type] = (acc[event.type] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
@@ -166,7 +170,7 @@ function buildAIAssistSummary(ledger: ProcessLedger): AIAssistSummary {
     disclosureStatement = 'The writer did not use the AI Creative Partner in this session.';
   } else {
     const typeSummary = Object.entries(assistTypes)
-      .map(([type, count]) => `${count} ${type.replace('_', ' ')} request${count > 1 ? 's' : ''}`)
+      .map(([type, count]: [string, number]) => `${count} ${type.replace('_', ' ')} request${count > 1 ? 's' : ''}`)
       .join(', ');
 
     disclosureStatement =

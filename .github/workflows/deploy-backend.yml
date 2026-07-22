@@ -1,0 +1,49 @@
+name: Deploy Backend → Railway
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'packages/backend/**'
+      - 'packages/shared/**'
+      - '.github/workflows/deploy-backend.yml'
+
+jobs:
+  test:
+    name: Test Backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build shared package
+        run: npm run build --workspace=packages/shared
+
+      - name: Run backend tests
+        env:
+          NODE_ENV: test
+          WATSONX_API_KEY: ${{ secrets.WATSONX_API_KEY }}
+          WATSONX_PROJECT_ID: ${{ secrets.WATSONX_PROJECT_ID }}
+          HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
+          SESSION_ENCRYPTION_KEY: test-session-key-32-chars-minimum
+          JWT_SECRET: test-jwt-secret-16-chars
+        run: npm run test --workspace=packages/backend
+
+  # Railway deployment is triggered automatically via Railway's GitHub integration.
+  # See: https://docs.railway.app/deploy/github-integration
+  # Set RAILWAY_TOKEN secret in repository settings to enable CLI-based deploys.
+  deploy:
+    name: Notify Railway
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - run: echo "Backend tests passed. Railway auto-deploys on push to main."

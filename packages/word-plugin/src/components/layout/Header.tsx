@@ -2,7 +2,6 @@
  * @fileoverview Plugin header with branding and session status indicator.
  */
 
-import React from 'react';
 import { useSessionStore } from '../../store/session.store';
 
 export function Header() {

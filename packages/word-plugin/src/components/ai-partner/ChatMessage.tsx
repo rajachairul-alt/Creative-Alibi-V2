@@ -2,9 +2,7 @@
  * @fileoverview Individual chat message bubble.
  */
 
-import React from 'react';
-import { clsx } from 'clsx';
-import type { ChatMessage as ChatMessageType } from '@creative-alibi/shared';
+import type { ChatMessage as ChatMessageType } from '../../types';
 
 interface Props {
   message: ChatMessageType;

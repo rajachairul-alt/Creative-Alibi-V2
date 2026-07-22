@@ -3,12 +3,12 @@
  * Full chat experience with IBM Granite suggestions, disclosure notices, and accept/decline.
  */
 
-import React, { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { useAIPartner } from '../../hooks/useAIPartner';
 import { ChatMessage } from './ChatMessage';
 import { PromptInput } from './PromptInput';
 import { useSessionStore } from '../../store/session.store';
-import type { AIAssistType } from '@creative-alibi/shared';
+import type { AIAssistType } from '../../types';
 
 export function AIPartnerChat() {
   const { chatMessages, isAILoading, sendMessage, acceptSuggestion, declineSuggestion } = useAIPartner();

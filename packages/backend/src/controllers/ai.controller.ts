@@ -5,7 +5,7 @@
 import type { Request, Response } from 'express';
 import { generateCreativeSuggestion } from '../services/granite.service';
 import { validateGuardian } from '../services/guardian.service';
-import type { AIPartnerRequest } from '../../../shared/src/types';
+import type { AIPartnerRequest } from '../types';
 
 export async function suggestHandler(req: Request, res: Response): Promise<void> {
   try {

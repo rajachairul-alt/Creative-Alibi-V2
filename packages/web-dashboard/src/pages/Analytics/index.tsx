@@ -2,7 +2,7 @@
  * @fileoverview Analytics page — deep-dive writing behavior visualizations.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AreaChart, Area,
   XAxis, YAxis, CartesianGrid, Tooltip,

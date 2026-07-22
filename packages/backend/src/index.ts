@@ -6,8 +6,8 @@
  * @version 2.0.0
  */
 
+import 'dotenv/config'; // ← load .env into process.env FIRST
 import express from 'express';
-import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import morgan from 'morgan';
@@ -18,10 +18,11 @@ import { sessionRoutes } from './routes/session.routes';
 import { reportRoutes } from './routes/report.routes';
 import { healthRoutes } from './routes/health.routes';
 import { corsMiddleware } from './middleware/cors.middleware';
-import { rateLimitMiddleware } from './middleware/rateLimit.middleware';
+import { rateLimitMiddleware, applyEnvToRateLimit } from './middleware/rateLimit.middleware';
 
 // ─── Validate environment variables on startup ────────────────────────────────
 const env = validateEnv();
+applyEnvToRateLimit(); // apply rate-limit values now that env is validated
 
 // ─── Express Application ──────────────────────────────────────────────────────
 const app = express();

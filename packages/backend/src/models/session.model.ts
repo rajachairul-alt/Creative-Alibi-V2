@@ -2,7 +2,7 @@
  * @fileoverview In-memory session store with simple persistence.
  */
 
-import type { WritingSession } from '../../../shared/src/types';
+import type { WritingSession } from '../types';
 
 class SessionStoreImpl {
   private sessions = new Map<string, WritingSession>();

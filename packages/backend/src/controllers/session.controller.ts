@@ -5,7 +5,7 @@
 import type { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { SessionStore } from '../models/session.model';
-import type { WritingSession, ProcessLedger } from '../../../shared/src/types';
+import type { WritingSession, ProcessLedger } from '../types';
 
 export async function startSessionHandler(req: Request, res: Response): Promise<void> {
   const { documentTitle, platform, deviceFingerprint } = req.body;

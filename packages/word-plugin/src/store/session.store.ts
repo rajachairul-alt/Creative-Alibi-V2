@@ -4,12 +4,8 @@
  */
 
 import { create } from 'zustand';
-import type {
-  WritingSession,
-  ChatMessage,
-  ProcessLedger,
-  AuthenticityReport,
-} from '@creative-alibi/shared';
+import type { AuthenticityReport } from '@creative-alibi/shared';
+import type { WritingSession, ChatMessage, ProcessLedger } from '../types';
 
 export type ActiveTab = 'tracker' | 'ai-partner' | 'report';
 
