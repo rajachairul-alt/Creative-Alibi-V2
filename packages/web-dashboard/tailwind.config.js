@@ -4,54 +4,75 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Map to CSS custom properties for easy overriding
+        'color': {
+          'bg':             'var(--color-bg)',
+          'surface':        'var(--color-surface)',
+          'surface-2':      'var(--color-surface-2)',
+          'surface-3':      'var(--color-surface-3)',
+          'text':           'var(--color-text)',
+          'text-soft':      'var(--color-text-soft)',
+          'text-muted':     'var(--color-text-muted)',
+          'border':         'var(--color-border)',
+          'accent':         'var(--color-accent)',
+          'success':        'var(--color-success)',
+          'error':          'var(--color-error)',
+          'warning':        'var(--color-warning)',
+          'info':           'var(--color-info)',
+          'ibm':            'var(--color-ibm)',
+        },
+        // Keep alibi-* aliases so pages that still use them don't break
         'alibi': {
-          'violet':         '#7C3AED',
-          'violet-light':   '#A78BFA',
-          'violet-dark':    '#5B21B6',
-          'violet-ghost':   'rgba(124,58,237,0.12)',
-          'emerald':        '#10B981',
-          'emerald-light':  '#34D399',
-          'emerald-ghost':  'rgba(16,185,129,0.12)',
-          'cyan':           '#06B6D4',
-          'pink':           '#EC4899',
-          'orange':         '#F59E0B',
-          'ai':             '#8B5CF6',
-          'ai-light':       '#C4B5FD',
-          'ai-ghost':       'rgba(139,92,246,0.12)',
-          'bg':             '#080713',
-          'bg-card':        '#110F20',
-          'bg-elevated':    '#1A1730',
-          'bg-hover':       '#221F3A',
-          'text':           '#F1F5F9',
-          'text-muted':     '#94A3B8',
-          'text-subtle':    '#475569',
-          'border':         'rgba(124,58,237,0.15)',
-          'border-light':   'rgba(167,139,250,0.25)',
-          'warning':        '#F59E0B',
-          'error':          '#EF4444',
-          'info':           '#3B82F6',
+          'violet':         '#8B74FF',
+          'violet-light':   '#A090FF',
+          'violet-dark':    '#6B54DF',
+          'violet-ghost':   'rgba(139,116,255,0.14)',
+          'emerald':        '#3DD68C',
+          'emerald-light':  '#5EEBB0',
+          'emerald-ghost':  'rgba(61,214,140,0.12)',
+          'ai':             '#8B74FF',
+          'ai-light':       '#A090FF',
+          'ai-ghost':       'rgba(139,116,255,0.12)',
+          'warning':        '#FFC947',
+          'error':          '#FF6B6B',
+          'info':           '#60AAFF',
+          'bg':             '#0D0D1A',
+          'bg-card':        '#16162A',
+          'bg-elevated':    '#1E1E35',
+          'bg-hover':       '#252540',
+          'text':           '#F0F0FF',
+          'text-muted':     '#B8B8D0',
+          'text-subtle':    '#8888A8',
+          'border':         '#2E2E50',
+          'border-light':   'rgba(139,116,255,0.35)',
         },
       },
       fontFamily: {
-        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
-        mono: ['JetBrains Mono', 'ui-monospace'],
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+      },
+      fontSize: {
+        // Ensure no size below 13px is used
+        'xs':   ['0.8125rem', { lineHeight: '1.4' }],  // 13px
+        'sm':   ['0.9375rem', { lineHeight: '1.5' }],  // 15px
+        'base': ['1rem',      { lineHeight: '1.6' }],  // 16px
+        'lg':   ['1.125rem',  { lineHeight: '1.5' }],  // 18px
+        'xl':   ['1.25rem',   { lineHeight: '1.4' }],  // 20px
+        '2xl':  ['1.5rem',    { lineHeight: '1.3' }],  // 24px
+        '3xl':  ['1.875rem',  { lineHeight: '1.2' }],  // 30px
+        '4xl':  ['2.25rem',   { lineHeight: '1.1' }],  // 36px
       },
       animation: {
         'fade-in':    'fadeIn 0.2s ease-out',
-        'slide-in':   'slideIn 0.25s ease-out',
-        'slide-up':   'fadeSlideUp 0.3s ease-out',
-        'float':      'float 3s ease-in-out infinite',
-        'shimmer':    'shimmer 3s linear infinite',
+        'slide-up':   'fadeSlideUp 0.25s ease-out',
         'pulse-slow': 'pulse 3s cubic-bezier(0.4,0,0.6,1) infinite',
       },
       boxShadow: {
-        'glow-violet':  '0 0 25px rgba(124,58,237,0.45)',
-        'glow-emerald': '0 0 25px rgba(16,185,129,0.45)',
-        'glow-ai':      '0 0 25px rgba(139,92,246,0.45)',
-        'glow-cyan':    '0 0 25px rgba(6,182,212,0.4)',
-        'card':         '0 4px 24px rgba(0,0,0,0.5)',
-        'elevated':     '0 8px 32px rgba(0,0,0,0.7)',
-        'deep':         '0 20px 60px rgba(0,0,0,0.8)',
+        'card':     '0 2px 12px rgba(0,0,0,0.35)',
+        'elevated': '0 4px 24px rgba(0,0,0,0.5)',
+      },
+      spacing: {
+        '4.5': '1.125rem',
       },
     },
   },
