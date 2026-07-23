@@ -3,10 +3,6 @@ name: Deploy Web Dashboard → GitHub Pages
 on:
   push:
     branches: [main]
-    paths:
-      - 'packages/web-dashboard/**'
-      - 'packages/shared/**'
-      - '.github/workflows/deploy-dashboard.yml'
   workflow_dispatch:
 
 permissions:
@@ -16,7 +12,7 @@ permissions:
 
 concurrency:
   group: 'pages'
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -31,13 +27,13 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install all dependencies
         run: npm ci
 
       - name: Build shared package
         run: npm run build --workspace=packages/shared
 
-      - name: Build web dashboard (GitHub Pages)
+      - name: Build web dashboard (GitHub Pages base)
         env:
           GITHUB_PAGES: '1'
           VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
