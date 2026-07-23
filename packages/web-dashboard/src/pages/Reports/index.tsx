@@ -1,11 +1,27 @@
 /**
  * @fileoverview Reports page — view, share, download PDF, and generate QR codes.
- * Full PDF export via jsPDF + html2canvas. QR code via qrcode.react.
+ * Moon Phases design system: #212A31 / #2E3944 / #124E66 / #748D92 / #D3D9D4
  */
 
 import React, { useState, useRef } from 'react';
 import QRCode from 'qrcode.react';
 import { exportReportToPDF } from '../../utils';
+
+// ─── Moon Phases tokens ────────────────────────────────────────────────────────
+const MP = {
+  surface:  '#212A31',
+  elevated: '#2E3944',
+  teal:     '#2A9FBF',
+  tealDark: '#124E66',
+  text:     '#D3D9D4',
+  textSoft: '#A8B2B7',
+  muted:    '#748D92',
+  border:   '#374654',
+  success:  '#4CC38A',
+  error:    '#E07070',
+  warning:  '#E8C547',
+  ibm:      '#7EB8D4',
+} as const;
 
 // ─── Types & Data ─────────────────────────────────────────────────────────────
 
@@ -124,24 +140,28 @@ function ReportDetailModal({
   ];
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-      <div className="bg-alibi-bg-card border border-[#7C3AED30] rounded-3xl w-full max-w-2xl max-h-[92vh] overflow-y-auto shadow-2xl">
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4"
+      role="dialog" aria-modal="true" aria-label={`Report: ${report.documentTitle}`}>
+      <div className="rounded-2xl w-full max-w-2xl max-h-[92vh] overflow-y-auto shadow-2xl border"
+        style={{ background: MP.surface, borderColor: `${MP.teal}35` }}>
 
         {/* ── Header ───────────────────────────────────────────────────────── */}
-        <div className="sticky top-0 px-7 py-5 border-b border-alibi-border bg-alibi-bg-card/95 backdrop-blur-sm flex items-start justify-between z-10">
+        <div className="sticky top-0 px-7 py-5 border-b flex items-start justify-between z-10"
+          style={{ borderColor: MP.border, background: `${MP.surface}f8` }}>
           <div>
             <div className="flex items-center gap-2 mb-1.5">
               {isIssued
                 ? <span className="ca-badge-issued">✓ ISSUED</span>
                 : <span className="ca-badge-error">✗ NOT ELIGIBLE</span>}
-              <span className="text-xs text-alibi-text-subtle font-mono">#{report.reportId.toUpperCase()}</span>
+              <span className="text-xs font-mono" style={{ color: MP.muted }}>#{report.reportId.toUpperCase()}</span>
             </div>
-            <h2 className="text-xl font-bold text-alibi-text leading-snug">{report.documentTitle}</h2>
-            <p className="text-sm text-alibi-text-muted mt-0.5">
+            <h2 className="text-xl font-bold leading-snug" style={{ color: MP.text }}>{report.documentTitle}</h2>
+            <p className="text-sm mt-0.5" style={{ color: MP.muted }}>
               {new Date(report.issuedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
             </p>
           </div>
-          <button onClick={onClose} className="ca-btn-ghost p-2 rounded-xl ml-4 flex-shrink-0">
+          <button onClick={onClose} className="ca-btn-ghost p-2 rounded-xl ml-4 flex-shrink-0"
+            aria-label="Close report">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
               <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
             </svg>
@@ -155,33 +175,36 @@ function ReportDetailModal({
           <div className="flex items-start gap-6">
             <div className="text-center flex-shrink-0">
               <div className="relative w-28 h-28">
-                <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
-                  <circle cx="50" cy="50" r="42" fill="none" stroke="#2D2A40" strokeWidth="7" />
+                <svg viewBox="0 0 100 100" className="w-full h-full">
+                  <circle cx="50" cy="50" r="42" fill="none" stroke={MP.elevated} strokeWidth="7" />
                   <circle cx="50" cy="50" r="42" fill="none"
-                    stroke={report.compositeScore >= 80 ? '#10B981' : report.compositeScore >= 70 ? '#F59E0B' : '#EF4444'}
+                    stroke={report.compositeScore >= 80 ? MP.success : report.compositeScore >= 70 ? MP.warning : MP.error}
                     strokeWidth="7"
                     strokeDasharray={`${(report.compositeScore / 100) * 2 * Math.PI * 42} 999`}
-                    strokeLinecap="round"
+                    strokeLinecap="round" transform="rotate(-90 50 50)"
                   />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-3xl font-black font-mono text-gradient-mixed">{report.compositeScore}</span>
-                  <span className="text-xs text-alibi-text-muted">/100</span>
+                  <span className="text-3xl font-black font-mono"
+                    style={{ color: report.compositeScore >= 80 ? MP.success : report.compositeScore >= 70 ? MP.warning : MP.error }}>
+                    {report.compositeScore}
+                  </span>
+                  <span className="text-xs" style={{ color: MP.muted }}>/100</span>
                 </div>
               </div>
-              <div className="text-xs text-alibi-text-subtle mt-1">Composite Score</div>
+              <div className="text-xs mt-1" style={{ color: MP.muted }}>Composite Score</div>
             </div>
             <div className="flex-1 space-y-2">
               {checks.map(check => (
                 <div key={check.label}
                   className="flex items-center justify-between text-sm px-3 py-2 rounded-xl"
-                  style={{ background: check.ok ? '#10B98110' : '#EF444410', border: `1px solid ${check.ok ? '#10B98130' : '#EF444430'}` }}>
-                  <span className="text-alibi-text-muted">{check.label}</span>
+                  style={{ background: check.ok ? `${MP.success}10` : `${MP.error}10`, border: `1px solid ${check.ok ? `${MP.success}30` : `${MP.error}30`}` }}>
+                  <span style={{ color: MP.muted }}>{check.label}</span>
                   <div className="flex items-center gap-2">
-                    <span className={check.ok ? 'text-[#10B981]' : 'text-[#EF4444]'} style={{ fontSize: 16 }}>
+                    <span style={{ color: check.ok ? MP.success : MP.error, fontSize: 16 }}>
                       {check.ok ? '✓' : '✗'}
                     </span>
-                    <span className="font-mono font-bold text-alibi-text">{check.value}</span>
+                    <span className="font-mono font-bold" style={{ color: MP.text }}>{check.value}</span>
                   </div>
                 </div>
               ))}
@@ -190,26 +213,23 @@ function ReportDetailModal({
 
           {/* AI Likelihood */}
           <div className="rounded-2xl p-4 border"
-            style={{ background: '#8B5CF610', borderColor: '#8B5CF630' }}>
+            style={{ background: `${MP.ibm}10`, borderColor: `${MP.ibm}30` }}>
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-[#A78BFA]">🔍</span>
-              <span className="font-semibold text-alibi-text text-sm">AI-Likelihood Signal</span>
+              <span>🔍</span>
+              <span className="font-semibold text-sm" style={{ color: MP.ibm }}>AI-Likelihood Signal</span>
               <span className="text-xs px-2 py-0.5 rounded-full font-medium"
-                style={{ background: '#8B5CF620', color: '#A78BFA' }}>Informational Only</span>
+                style={{ background: `${MP.ibm}20`, color: MP.ibm }}>Informational Only</span>
             </div>
             <div className="flex items-center gap-4">
-              <span className={`text-2xl font-bold font-mono ${
-                report.aiLikelihoodLabel === 'HUMAN' ? 'text-[#10B981]'
-                : report.aiLikelihoodLabel === 'AI' ? 'text-[#EF4444]'
-                : 'text-[#F59E0B]'
-              }`}>
+              <span className="text-2xl font-bold font-mono"
+                style={{ color: report.aiLikelihoodLabel === 'HUMAN' ? MP.success : report.aiLikelihoodLabel === 'AI' ? MP.error : MP.warning }}>
                 {report.aiLikelihoodLabel}
               </span>
-              <span className="text-alibi-text-muted text-sm">
+              <span className="text-sm" style={{ color: MP.muted }}>
                 {(report.aiLikelihoodScore * 100).toFixed(0)}% AI probability
               </span>
             </div>
-            <p className="text-xs text-alibi-text-subtle mt-2 leading-relaxed">
+            <p className="text-xs mt-2 leading-relaxed" style={{ color: MP.muted }}>
               Statistical estimate from desklib/ai-text-detector — not a verdict.
               Eligibility is determined exclusively by the Process Ledger above.
             </p>
@@ -218,12 +238,12 @@ function ReportDetailModal({
           {/* AI Assist summary */}
           {report.aiAssistCount > 0 && (
             <div className="rounded-2xl p-4 border"
-              style={{ background: '#8B5CF608', borderColor: '#8B5CF625' }}>
+              style={{ background: `${MP.ibm}08`, borderColor: `${MP.ibm}25` }}>
               <div className="flex items-center gap-2 mb-1.5">
                 <span>🤖</span>
-                <span className="font-semibold text-sm text-[#A78BFA]">IBM Granite AI Partner Usage</span>
+                <span className="font-semibold text-sm" style={{ color: MP.ibm }}>IBM Granite AI Partner Usage</span>
               </div>
-              <p className="text-sm text-alibi-text-muted">
+              <p className="text-sm" style={{ color: MP.muted }}>
                 Writer used IBM Granite {report.aiAssistCount} time(s) in this session.
                 All interactions are fully disclosed and logged in this report.
               </p>
@@ -233,28 +253,28 @@ function ReportDetailModal({
           {/* Verified Badge */}
           {isIssued && (
             <div className="rounded-2xl p-6 text-center border"
-              style={{ background: 'linear-gradient(135deg, #10B98115, #7C3AED10)', borderColor: '#10B98130' }}>
-              <div className="text-[#10B981] font-bold text-xl mb-1">✓ VERIFIED CREATIVE PROCESS</div>
-              <div className="text-alibi-text-muted text-sm font-medium">Creative Alibi™ — IBM AI Builders 2025</div>
-              <div className="font-mono text-alibi-text-subtle text-xs mt-2">
+              style={{ background: `linear-gradient(135deg, ${MP.tealDark}20, ${MP.success}08)`, borderColor: `${MP.success}35` }}>
+              <div className="font-bold text-xl mb-1" style={{ color: MP.success }}>✓ VERIFIED CREATIVE PROCESS</div>
+              <div className="text-sm font-medium" style={{ color: MP.textSoft }}>Creative Alibi™ — IBM AI Builders 2025</div>
+              <div className="font-mono text-xs mt-2" style={{ color: MP.muted }}>
                 {report.reportId.toUpperCase()}
               </div>
-              <div className="text-alibi-text-muted text-sm mt-1">
+              <div className="text-sm mt-1" style={{ color: MP.muted }}>
                 {report.wordCount.toLocaleString()} words · Score: {report.compositeScore}/100
               </div>
-              <div className="text-[#A78BFA] text-xs mt-1">Powered by IBM Granite</div>
+              <div className="text-xs mt-1" style={{ color: MP.ibm }}>Powered by IBM Granite via watsonx.ai</div>
             </div>
           )}
 
           {/* QR Code */}
           {showQR && isIssued && (
             <div className="flex flex-col items-center gap-3 p-6 rounded-2xl border"
-              style={{ background: '#ffffff05', borderColor: '#7C3AED30' }}>
-              <div className="text-sm font-semibold text-alibi-text mb-1">Verification QR Code</div>
+              style={{ background: `${MP.teal}05`, borderColor: `${MP.teal}30` }}>
+              <div className="text-sm font-semibold mb-1" style={{ color: MP.text }}>Verification QR Code</div>
               <div className="p-3 bg-white rounded-2xl">
                 <QRCode value={verifyUrl} size={160} level="H" />
               </div>
-              <div className="text-xs text-alibi-text-muted font-mono break-all text-center max-w-xs">
+              <div className="text-xs font-mono break-all text-center max-w-xs" style={{ color: MP.muted }}>
                 {verifyUrl}
               </div>
             </div>
@@ -263,10 +283,11 @@ function ReportDetailModal({
           {/* Embed code */}
           {isIssued && (
             <div>
-              <div className="text-xs font-semibold text-alibi-text-muted uppercase tracking-wider mb-2">
+              <div className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: MP.muted }}>
                 Embed Code
               </div>
-              <pre className="bg-alibi-bg-elevated rounded-xl p-3 text-xs font-mono text-[#A78BFA] overflow-x-auto leading-relaxed">
+              <pre className="rounded-xl p-3 text-xs font-mono overflow-x-auto leading-relaxed"
+                style={{ background: MP.elevated, color: MP.teal }}>
 {`<a href="${verifyUrl}">
   <img src="${VERIFY_BASE}badge/${report.reportId}.svg"
        alt="Verified Creative Process — Creative Alibi" />
@@ -324,9 +345,9 @@ export function ReportsPage() {
       {/* ── Header ───────────────────────────────────────────────────────── */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h2 className="ca-page-title">Authenticity Reports</h2>
-          <p className="text-sm text-alibi-text-muted mt-1">
-            <span className="text-[#10B981] font-semibold">{issuedCount}</span>
+          <h1 className="text-2xl font-black" style={{ color: MP.text }}>Authenticity Reports</h1>
+          <p className="text-sm mt-1" style={{ color: MP.muted }}>
+            <span className="font-semibold" style={{ color: MP.success }}>{issuedCount}</span>
             <span> of {MOCK_REPORTS.length} sessions issued verified reports</span>
           </p>
         </div>
@@ -334,22 +355,20 @@ export function ReportsPage() {
           {/* Search */}
           <div className="relative">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-              className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-alibi-text-muted">
+              className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
+              style={{ color: MP.muted }}>
               <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
             <input value={search} onChange={e => setSearch(e.target.value)}
-              placeholder="Search reports..."
+              placeholder="Search reports…"
               className="ca-input pl-9 w-52 text-sm" />
           </div>
           {/* Filter tabs */}
-          <div className="flex rounded-xl overflow-hidden border border-alibi-border">
+          <div className="flex rounded-xl overflow-hidden border" style={{ borderColor: MP.border }}>
             {(['all', 'ISSUED', 'NOT_ELIGIBLE'] as const).map(f => (
               <button key={f} onClick={() => setFilter(f)}
-                className={`px-3 py-1.5 text-xs font-medium transition-all ${
-                  filter === f
-                    ? 'bg-[#7C3AED30] text-[#A78BFA]'
-                    : 'text-alibi-text-subtle hover:text-alibi-text hover:bg-alibi-bg-elevated'
-                }`}>
+                className="px-3 py-1.5 text-xs font-medium transition-all"
+                style={filter === f ? { background: `${MP.teal}28`, color: MP.teal } : { color: MP.muted }}>
                 {f === 'all' ? 'All' : f === 'ISSUED' ? '✓ Issued' : '✗ Not Eligible'}
               </button>
             ))}
@@ -360,17 +379,20 @@ export function ReportsPage() {
       {/* ── Reports Grid ─────────────────────────────────────────────────── */}
       <div className="space-y-3">
         {filtered.length === 0 ? (
-          <div className="ca-card p-12 text-center text-alibi-text-muted">
+          <div className="ca-card p-12 text-center" style={{ color: MP.muted }}>
             No reports match your filters
           </div>
         ) : filtered.map(report => (
           <div
             key={report.reportId}
             className="ca-card p-5 cursor-pointer group transition-all duration-200"
-            style={{ borderColor: report.status === 'ISSUED' ? '#10B98120' : '#EF444420' }}
-            onMouseEnter={e => (e.currentTarget.style.borderColor = report.status === 'ISSUED' ? '#10B98140' : '#EF444440')}
-            onMouseLeave={e => (e.currentTarget.style.borderColor = report.status === 'ISSUED' ? '#10B98120' : '#EF444420')}
+            style={{ borderColor: report.status === 'ISSUED' ? `${MP.success}22` : `${MP.error}22` }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = report.status === 'ISSUED' ? `${MP.success}45` : `${MP.error}45`; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = report.status === 'ISSUED' ? `${MP.success}22` : `${MP.error}22`; }}
             onClick={() => setSelectedReport(report)}
+            onKeyDown={e => e.key === 'Enter' && setSelectedReport(report)}
+            tabIndex={0}
+            role="button"
           >
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1 min-w-0">
@@ -378,22 +400,22 @@ export function ReportsPage() {
                   {report.status === 'ISSUED'
                     ? <span className="ca-badge-issued">✓ ISSUED</span>
                     : <span className="ca-badge-error">✗ NOT ELIGIBLE</span>}
-                  <span className="text-xs text-alibi-text-subtle font-mono">#{report.reportId.toUpperCase()}</span>
+                  <span className="text-xs font-mono" style={{ color: MP.muted }}>#{report.reportId.toUpperCase()}</span>
                 </div>
-                <h3 className="font-semibold text-alibi-text group-hover:text-[#A78BFA] transition-colors">
+                <h3 className="font-semibold transition-colors" style={{ color: MP.text }}>
                   {report.documentTitle}
                 </h3>
-                <div className="flex items-center gap-3 mt-2 flex-wrap text-xs text-alibi-text-muted">
+                <div className="flex items-center gap-3 mt-2 flex-wrap text-xs" style={{ color: MP.muted }}>
                   <span>{new Date(report.issuedAt).toLocaleDateString()}</span>
-                  <span className="text-alibi-text-subtle">•</span>
+                  <span>•</span>
                   <span>{report.wordCount.toLocaleString()} words</span>
-                  <span className="text-alibi-text-subtle">•</span>
+                  <span>•</span>
                   <span>{report.sessionDurationMinutes}m session</span>
                   {report.aiAssistCount > 0 && (
                     <>
-                      <span className="text-alibi-text-subtle">•</span>
+                      <span>•</span>
                       <span className="px-2 py-0.5 rounded-full font-medium"
-                        style={{ background: '#8B5CF615', color: '#A78BFA' }}>
+                        style={{ background: `${MP.ibm}15`, color: MP.ibm }}>
                         🤖 {report.aiAssistCount} AI assists
                       </span>
                     </>
@@ -404,24 +426,22 @@ export function ReportsPage() {
               <div className="flex items-center gap-5 flex-shrink-0">
                 {/* Score */}
                 <div className="text-center">
-                  <div className={`text-2xl font-black font-mono ${
-                    report.compositeScore >= 80 ? 'text-[#10B981]'
-                    : report.compositeScore >= 70 ? 'text-[#F59E0B]'
-                    : 'text-[#EF4444]'
-                  }`}>
+                  <div className="text-2xl font-black font-mono"
+                    style={{ color: report.compositeScore >= 80 ? MP.success : report.compositeScore >= 70 ? MP.warning : MP.error }}>
                     {report.compositeScore}
                   </div>
-                  <div className="text-[10px] text-alibi-text-subtle">Score</div>
+                  <div className="text-[10px]" style={{ color: MP.muted }}>Score</div>
                 </div>
-                {/* Quick PDF download */}
+                {/* Open button */}
                 <button
-                  onClick={async (e) => {
-                    e.stopPropagation();
-                    setSelectedReport(report);
-                  }}
-                  className="p-2 rounded-xl border border-alibi-border hover:border-[#7C3AED50] hover:bg-[#7C3AED10] transition-all"
-                  title="Open report">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4 text-alibi-text-subtle group-hover:text-[#A78BFA]">
+                  onClick={e => { e.stopPropagation(); setSelectedReport(report); }}
+                  className="p-2 rounded-xl border transition-all"
+                  style={{ borderColor: MP.border }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = `${MP.teal}50`; (e.currentTarget as HTMLElement).style.background = `${MP.teal}10`; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = MP.border; (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+                  title="Open report" aria-label="Open report">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4"
+                    style={{ color: MP.muted }}>
                     <polyline points="9 18 15 12 9 6" />
                   </svg>
                 </button>
@@ -434,13 +454,13 @@ export function ReportsPage() {
       {/* ── Stats footer ──────────────────────────────────────────────────── */}
       <div className="grid grid-cols-3 gap-4">
         {[
-          { label: 'Reports Issued', value: issuedCount, color: '#10B981' },
-          { label: 'Success Rate', value: `${((issuedCount / MOCK_REPORTS.length) * 100).toFixed(0)}%`, color: '#7C3AED' },
-          { label: 'Total Words Documented', value: MOCK_REPORTS.reduce((a, r) => a + r.wordCount, 0).toLocaleString(), color: '#8B5CF6' },
+          { label: 'Reports Issued',         value: issuedCount,                                                                  color: MP.success },
+          { label: 'Success Rate',           value: `${((issuedCount / MOCK_REPORTS.length) * 100).toFixed(0)}%`,                color: MP.teal    },
+          { label: 'Total Words Documented', value: MOCK_REPORTS.reduce((a, r) => a + r.wordCount, 0).toLocaleString(),          color: MP.ibm     },
         ].map(stat => (
           <div key={stat.label} className="ca-card p-4 text-center">
             <div className="text-2xl font-black font-mono" style={{ color: stat.color }}>{stat.value}</div>
-            <div className="text-xs text-alibi-text-muted mt-1">{stat.label}</div>
+            <div className="text-xs mt-1" style={{ color: MP.muted }}>{stat.label}</div>
           </div>
         ))}
       </div>
