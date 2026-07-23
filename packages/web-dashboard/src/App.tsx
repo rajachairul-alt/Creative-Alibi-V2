@@ -1,9 +1,11 @@
 /**
  * @fileoverview Root App with React Router setup for the Creative Alibi Web Dashboard.
+ * Uses HashRouter so GitHub Pages static hosting works without server-side routing.
+ * Routes become /#/dashboard, /#/analytics, etc.
  */
 
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AppShell } from './layout/AppShell';
 import { DashboardPage } from './pages/Dashboard';
 import { SessionsPage } from './pages/Sessions';
@@ -14,7 +16,7 @@ import { SettingsPage } from './pages/Settings';
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<AppShell />}>
           <Route index element={<Navigate to="/dashboard" replace />} />
@@ -26,6 +28,6 @@ export default function App() {
           <Route path="settings" element={<SettingsPage />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
