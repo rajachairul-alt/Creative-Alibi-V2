@@ -4,47 +4,55 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Map to CSS custom properties for easy overriding
-        'color': {
-          'bg':             'var(--color-bg)',
-          'surface':        'var(--color-surface)',
-          'surface-2':      'var(--color-surface-2)',
-          'surface-3':      'var(--color-surface-3)',
-          'text':           'var(--color-text)',
-          'text-soft':      'var(--color-text-soft)',
-          'text-muted':     'var(--color-text-muted)',
-          'border':         'var(--color-border)',
-          'accent':         'var(--color-accent)',
-          'success':        'var(--color-success)',
-          'error':          'var(--color-error)',
-          'warning':        'var(--color-warning)',
-          'info':           'var(--color-info)',
-          'ibm':            'var(--color-ibm)',
+        /* ── Moon Phases tokens ─── */
+        mp: {
+          void:    '#212A31',
+          depth:   '#2E3944',
+          teal:    '#124E66',
+          slate:   '#748D92',
+          mist:    '#D3D9D4',
         },
-        // Keep alibi-* aliases so pages that still use them don't break
-        'alibi': {
-          'violet':         '#8B74FF',
-          'violet-light':   '#A090FF',
-          'violet-dark':    '#6B54DF',
-          'violet-ghost':   'rgba(139,116,255,0.14)',
-          'emerald':        '#3DD68C',
-          'emerald-light':  '#5EEBB0',
-          'emerald-ghost':  'rgba(61,214,140,0.12)',
-          'ai':             '#8B74FF',
-          'ai-light':       '#A090FF',
-          'ai-ghost':       'rgba(139,116,255,0.12)',
-          'warning':        '#FFC947',
-          'error':          '#FF6B6B',
-          'info':           '#60AAFF',
-          'bg':             '#0D0D1A',
-          'bg-card':        '#16162A',
-          'bg-elevated':    '#1E1E35',
-          'bg-hover':       '#252540',
-          'text':           '#F0F0FF',
-          'text-muted':     '#B8B8D0',
-          'text-subtle':    '#8888A8',
-          'border':         '#2E2E50',
-          'border-light':   'rgba(139,116,255,0.35)',
+        /* ── Semantic tokens (CSS var bridges) ─── */
+        ca: {
+          bg:        '#1A2229',
+          surface:   '#212A31',
+          surface2:  '#2E3944',
+          surface3:  '#374654',
+          text:      '#D3D9D4',
+          soft:      '#A8B2B7',
+          muted:     '#748D92',
+          border:    '#374654',
+          accent:    '#2A9FBF',
+          teal:      '#124E66',
+          success:   '#4CC38A',
+          error:     '#E07070',
+          warning:   '#E8C547',
+          ibm:       '#7EB8D4',
+        },
+        /* ── Keep alibi-* so existing pages compile without changes ─── */
+        alibi: {
+          violet:        '#2A9FBF',
+          'violet-light':'#3AB4D4',
+          'violet-dark': '#124E66',
+          'violet-ghost':'rgba(18,78,102,0.35)',
+          emerald:       '#4CC38A',
+          'emerald-light':'#6DD4A8',
+          'emerald-ghost':'rgba(76,195,138,0.12)',
+          ai:            '#2A9FBF',
+          'ai-light':    '#3AB4D4',
+          'ai-ghost':    'rgba(42,159,191,0.12)',
+          warning:       '#E8C547',
+          error:         '#E07070',
+          info:          '#7EB8D4',
+          bg:            '#1A2229',
+          'bg-card':     '#212A31',
+          'bg-elevated': '#2E3944',
+          'bg-hover':    '#374654',
+          text:          '#D3D9D4',
+          'text-muted':  '#A8B2B7',
+          'text-subtle': '#748D92',
+          border:        '#374654',
+          'border-light':'rgba(42,159,191,0.4)',
         },
       },
       fontFamily: {
@@ -52,27 +60,31 @@ export default {
         mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
       },
       fontSize: {
-        // Ensure no size below 13px is used
-        'xs':   ['0.8125rem', { lineHeight: '1.4' }],  // 13px
-        'sm':   ['0.9375rem', { lineHeight: '1.5' }],  // 15px
-        'base': ['1rem',      { lineHeight: '1.6' }],  // 16px
-        'lg':   ['1.125rem',  { lineHeight: '1.5' }],  // 18px
-        'xl':   ['1.25rem',   { lineHeight: '1.4' }],  // 20px
-        '2xl':  ['1.5rem',    { lineHeight: '1.3' }],  // 24px
-        '3xl':  ['1.875rem',  { lineHeight: '1.2' }],  // 30px
-        '4xl':  ['2.25rem',   { lineHeight: '1.1' }],  // 36px
+        xs:   ['0.8125rem', { lineHeight: '1.4' }],
+        sm:   ['0.9375rem', { lineHeight: '1.5' }],
+        base: ['1rem',      { lineHeight: '1.6' }],
+        lg:   ['1.125rem',  { lineHeight: '1.5' }],
+        xl:   ['1.25rem',   { lineHeight: '1.4' }],
+        '2xl':['1.5rem',    { lineHeight: '1.3' }],
+        '3xl':['1.875rem',  { lineHeight: '1.2' }],
+        '4xl':['2.25rem',   { lineHeight: '1.1' }],
       },
       animation: {
-        'fade-in':    'fadeIn 0.2s ease-out',
-        'slide-up':   'fadeSlideUp 0.25s ease-out',
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4,0,0.6,1) infinite',
+        'fade-in':  'fadeIn 0.2s ease-out',
+        'slide-up': 'fadeSlideUp 0.25s ease-out',
       },
       boxShadow: {
-        'card':     '0 2px 12px rgba(0,0,0,0.35)',
-        'elevated': '0 4px 24px rgba(0,0,0,0.5)',
+        card:     '0 2px 12px rgba(0,0,0,0.4)',
+        elevated: '0 4px 24px rgba(0,0,0,0.55)',
+        teal:     '0 4px 20px rgba(18,78,102,0.4)',
       },
-      spacing: {
-        '4.5': '1.125rem',
+      spacing: { '4.5': '1.125rem' },
+      borderRadius: {
+        sm: '6px',
+        md: '10px',
+        lg: '14px',
+        xl: '18px',
+        '2xl': '22px',
       },
     },
   },

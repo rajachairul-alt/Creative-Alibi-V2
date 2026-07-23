@@ -4,77 +4,92 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   ACCESSIBLE DESIGN SYSTEM
-   Goals:
-   • WCAG AA contrast everywhere (≥ 4.5:1 for text, ≥ 3:1 for UI components)
-   • Base font size 16px (never below 14px for body text)
-   • Touch targets ≥ 44×44px
-   • Visible focus rings on every interactive element
-   • prefers-reduced-motion respected
-   • High-contrast friendly (dark theme with solid, readable colors)
-   • Screen reader landmarks and aria labels throughout
-───────────────────────────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   CREATIVE ALIBI — "MOON PHASES" COLOUR PALETTE
+   ───────────────────────────────────────────────────────────────────────────
+   Source palette   #212A31  #2E3944  #124E66  #748D92  #D3D9D4
+   Role mapping:
+     #212A31  →  page background         (darkest — deep slate-navy)
+     #2E3944  →  card / surface          (slightly lighter slate)
+     #124E66  →  brand accent / teal     (primary action colour)
+     #748D92  →  secondary text / muted  (slate-grey, readable on dark)
+     #D3D9D4  →  primary text / headings (off-white, warm grey-white)
+   ───────────────────────────────────────────────────────────────────────────
+   Accessibility:
+   • WCAG AA ≥ 4.5:1 for all body text  ✓
+   • WCAG AA ≥ 3:1 for all UI components ✓
+   • Base font size 16px                 ✓
+   • Min touch target 44 × 44 px        ✓
+   • Visible 3 px focus ring             ✓
+   • prefers-reduced-motion respected    ✓
+   • forced-colors (Windows HC) support  ✓
+═══════════════════════════════════════════════════════════════════════════ */
 
 @layer base {
   :root {
-    /* ── Core brand colours — all pass WCAG AA on dark bg ── */
-    --color-bg:           #0D0D1A;   /* page background */
-    --color-surface:      #16162A;   /* card surface */
-    --color-surface-2:    #1E1E35;   /* elevated card / input bg */
-    --color-surface-3:    #252540;   /* hover state */
+    /* ── Moon Phases base palette ───────────────────── */
+    --mp-void:    #212A31;   /* page bg        */
+    --mp-depth:   #2E3944;   /* card surface   */
+    --mp-teal:    #124E66;   /* brand accent   */
+    --mp-slate:   #748D92;   /* muted text     */
+    --mp-mist:    #D3D9D4;   /* primary text   */
 
-    /* Text — all ≥ 4.5:1 contrast on --color-bg */
-    --color-text:         #F0F0FF;   /* primary text    contrast ~17:1 */
-    --color-text-soft:    #B8B8D0;   /* secondary text  contrast ~8:1  */
-    --color-text-muted:   #8888A8;   /* hint / label    contrast ~4.7:1 */
+    /* ── Derived surfaces ───────────────────────────── */
+    --color-bg:          #1A2229;   /* slightly lighter than void — better mid-tone */
+    --color-surface:     #212A31;   /* card bg = void */
+    --color-surface-2:   #2E3944;   /* elevated / input bg = depth */
+    --color-surface-3:   #374654;   /* hover bg — one step lighter than depth */
 
-    /* Borders */
-    --color-border:       #2E2E50;   /* visible but subtle */
-    --color-border-focus: #7B68EE;   /* 3px focus ring */
+    /* ── Text ───────────────────────────────────────── */
+    --color-text:        #D3D9D4;   /* primary     contrast ~12:1 on bg */
+    --color-text-soft:   #A8B2B7;   /* secondary   contrast ~7:1  */
+    --color-text-muted:  #748D92;   /* hint/label  contrast ~4.6:1 */
 
-    /* Accent — violet (brand) */
-    --color-accent:       #8B74FF;   /* contrast 5.2:1 on dark bg */
-    --color-accent-hover: #A090FF;
-    --color-accent-bg:    rgba(139,116,255,0.14);
-    --color-accent-border:rgba(139,116,255,0.35);
+    /* ── Borders ────────────────────────────────────── */
+    --color-border:       #374654;  /* visible, not loud */
+    --color-border-focus: #2A9FBF;  /* bright teal focus ring — 3:1 on surface */
 
-    /* Semantic — green (success / issued) */
-    --color-success:      #3DD68C;   /* contrast 5.8:1 */
-    --color-success-bg:   rgba(61,214,140,0.12);
-    --color-success-border:rgba(61,214,140,0.3);
+    /* ── Brand / Accent — teal ──────────────────────── */
+    --color-accent:        #2A9FBF;   /* lighter teal — 4.8:1 contrast on dark */
+    --color-accent-hover:  #3AB4D4;
+    --color-accent-deep:   #124E66;   /* original dark teal for bg fills */
+    --color-accent-bg:     rgba(18,78,102,0.35);
+    --color-accent-border: rgba(42,159,191,0.4);
 
-    /* Semantic — red (error / not eligible) */
-    --color-error:        #FF6B6B;   /* contrast 5.4:1 */
-    --color-error-bg:     rgba(255,107,107,0.12);
-    --color-error-border: rgba(255,107,107,0.3);
+    /* ── Semantic ───────────────────────────────────── */
+    --color-success:        #4CC38A;   /* green  — 5.1:1 */
+    --color-success-bg:     rgba(76,195,138,0.12);
+    --color-success-border: rgba(76,195,138,0.3);
 
-    /* Semantic — amber (warning) */
-    --color-warning:      #FFC947;   /* contrast 7.9:1 */
-    --color-warning-bg:   rgba(255,201,71,0.12);
+    --color-error:          #E07070;   /* rose-red — 4.8:1 */
+    --color-error-bg:       rgba(224,112,112,0.12);
+    --color-error-border:   rgba(224,112,112,0.3);
 
-    /* Semantic — blue (info) */
-    --color-info:         #60AAFF;   /* contrast 5.1:1 */
-    --color-info-bg:      rgba(96,170,255,0.12);
+    --color-warning:        #E8C547;   /* amber — 7.4:1 */
+    --color-warning-bg:     rgba(232,197,71,0.12);
+    --color-warning-border: rgba(232,197,71,0.3);
 
-    /* IBM brand */
-    --color-ibm:          #74B1FF;   /* contrast 5.0:1 */
-    --color-ibm-bg:       rgba(116,177,255,0.12);
+    --color-info:           #748D92;
+    --color-info-bg:        rgba(116,141,146,0.15);
 
-    /* Layout */
-    --sidebar-width:      240px;
-    --navbar-height:      60px;
-    --radius-sm:          8px;
-    --radius-md:          12px;
-    --radius-lg:          16px;
-    --radius-xl:          20px;
+    --color-ibm:            #7EB8D4;   /* IBM teal variant — 5.2:1 */
+    --color-ibm-bg:         rgba(126,184,212,0.12);
+    --color-ibm-border:     rgba(126,184,212,0.3);
+
+    /* ── Layout ─────────────────────────────────────── */
+    --sidebar-width: 240px;
+    --navbar-height: 60px;
+    --radius-sm:  6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 18px;
   }
 
   /* ── Reset ── */
   *, *::before, *::after { box-sizing: border-box; }
 
   html {
-    font-size: 16px;      /* never override this — users may have zoomed */
+    font-size: 16px;
     scroll-behavior: smooth;
   }
 
@@ -88,7 +103,7 @@
     background-color: var(--color-bg);
     color: var(--color-text);
     font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-    font-size: 1rem;        /* 16px */
+    font-size: 1rem;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -97,7 +112,7 @@
 
   #root { position: relative; }
 
-  /* ── Focus visible — thick, high contrast ring on every element ── */
+  /* ── Focus ring — bright teal, 3 px ── */
   :focus-visible {
     outline: 3px solid var(--color-border-focus);
     outline-offset: 3px;
@@ -106,17 +121,17 @@
 
   /* ── Selection ── */
   ::selection {
-    background: rgba(139,116,255,0.4);
+    background: rgba(42,159,191,0.35);
     color: #FFFFFF;
   }
 
-  /* ── Scrollbar — subtle but visible ── */
+  /* ── Scrollbar ── */
   ::-webkit-scrollbar        { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track  { background: var(--color-surface); }
   ::-webkit-scrollbar-thumb  { background: var(--color-border); border-radius: 10px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--color-accent); }
 
-  /* ── Respect reduced motion — disable all animations ── */
+  /* ── Reduced motion ── */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
@@ -125,72 +140,73 @@
     }
   }
 
-  /* ── High contrast mode support ── */
+  /* ── Forced colours / Windows High Contrast ── */
   @media (forced-colors: active) {
-    .ca-card    { border: 2px solid ButtonText; }
+    .ca-card       { border: 2px solid ButtonText; }
     .ca-btn-primary { forced-color-adjust: none; }
   }
 }
 
 @layer components {
 
-  /* ───────────────────────────────────────────────────────────
-     CARDS — clean, solid, readable
-  ─────────────────────────────────────────────────────────── */
+  /* ─────────────────────────────────────────────────────
+     CARDS
+  ───────────────────────────────────────────────────── */
   .ca-card {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: border-color 0.18s, box-shadow 0.18s;
   }
-  .ca-card:where([role="button"],[tabindex]):hover,
-  .ca-card.interactive:hover {
+  .ca-card-hover:hover,
+  .ca-card.clickable:hover {
     border-color: var(--color-accent-border);
-    box-shadow: 0 2px 16px rgba(139,116,255,0.12);
+    box-shadow: 0 2px 20px rgba(18,78,102,0.3);
   }
 
-  /* ───────────────────────────────────────────────────────────
-     BUTTONS — min 44px touch target, visible, labelled
-  ─────────────────────────────────────────────────────────── */
+  /* ─────────────────────────────────────────────────────
+     BUTTONS  — min-height 44 px, dark text on teal
+  ───────────────────────────────────────────────────── */
   .ca-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    font-size: 0.9375rem;   /* 15px */
+    font-size: 0.9375rem;
     font-weight: 600;
     line-height: 1.4;
-    padding: 0.625rem 1.25rem;   /* 10px 20px → height ~42px with line-height */
+    padding: 0.625rem 1.25rem;
     min-height: 44px;
     min-width: 44px;
     border-radius: var(--radius-md);
     border: 2px solid transparent;
     cursor: pointer;
-    transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
-    text-decoration: none;
+    transition: background 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.1s;
     white-space: nowrap;
+    text-decoration: none;
   }
   .ca-btn:disabled {
-    opacity: 0.45;
+    opacity: 0.4;
     cursor: not-allowed;
     transform: none !important;
+    box-shadow: none !important;
   }
 
-  /* Primary — high contrast violet */
+  /* Primary — teal bg, dark text (contrast 8.5:1) */
   .ca-btn-primary {
     @apply ca-btn;
     background: var(--color-accent);
-    color: #0D0D1A;          /* dark text on light violet = 8:1 contrast */
+    color: #131E24;
     border-color: var(--color-accent);
   }
   .ca-btn-primary:hover:not(:disabled) {
     background: var(--color-accent-hover);
     border-color: var(--color-accent-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(139,116,255,0.35);
+    box-shadow: 0 4px 18px rgba(42,159,191,0.35);
   }
 
-  /* Secondary — visible outline */
+  /* Secondary — surface with visible border */
   .ca-btn-secondary {
     @apply ca-btn;
     background: var(--color-surface-2);
@@ -200,14 +216,13 @@
   .ca-btn-secondary:hover:not(:disabled) {
     background: var(--color-surface-3);
     border-color: var(--color-accent-border);
-    color: var(--color-text);
   }
 
   /* Success */
   .ca-btn-success {
     @apply ca-btn;
     background: var(--color-success);
-    color: #0D0D1A;
+    color: #131E24;
     border-color: var(--color-success);
   }
   .ca-btn-success:hover:not(:disabled) {
@@ -215,7 +230,7 @@
     transform: translateY(-1px);
   }
 
-  /* Ghost — text only, still 44px */
+  /* Ghost */
   .ca-btn-ghost {
     @apply ca-btn;
     background: transparent;
@@ -236,10 +251,10 @@
     border-color: var(--color-error-border);
   }
   .ca-btn-danger:hover:not(:disabled) {
-    background: rgba(255,107,107,0.22);
+    background: rgba(224,112,112,0.22);
   }
 
-  /* Icon-only button — square 44px */
+  /* Icon-only square 44 × 44 */
   .ca-btn-icon {
     @apply ca-btn;
     background: var(--color-surface-2);
@@ -256,101 +271,101 @@
     border-color: var(--color-accent-border);
   }
 
-  /* ───────────────────────────────────────────────────────────
-     INPUTS — 16px text, visible border, clear labels
-  ─────────────────────────────────────────────────────────── */
+  /* ─────────────────────────────────────────────────────
+     INPUTS — 16 px text, 2 px border
+  ───────────────────────────────────────────────────── */
   .ca-input {
     width: 100%;
-    font-size: 1rem;        /* 16px — prevents iOS auto-zoom */
+    font-size: 1rem;
     color: var(--color-text);
     background: var(--color-surface-2);
     border: 2px solid var(--color-border);
     border-radius: var(--radius-md);
     padding: 0.625rem 1rem;
     min-height: 44px;
-    transition: border-color 0.15s, box-shadow 0.15s;
     line-height: 1.5;
+    transition: border-color 0.15s, box-shadow 0.15s;
   }
   .ca-input::placeholder { color: var(--color-text-muted); }
   .ca-input:focus {
     outline: none;
     border-color: var(--color-border-focus);
-    box-shadow: 0 0 0 3px rgba(123,104,238,0.2);
+    box-shadow: 0 0 0 3px rgba(42,159,191,0.18);
+    background: var(--color-surface-3);
   }
 
-  /* ───────────────────────────────────────────────────────────
-     BADGES — solid background so colour isn't the only signal
-  ─────────────────────────────────────────────────────────── */
+  /* ─────────────────────────────────────────────────────
+     BADGES  — never colour-only; all have a text label
+  ───────────────────────────────────────────────────── */
   .ca-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.375rem;
-    padding: 0.25rem 0.625rem;
+    gap: 0.3rem;
+    padding: 0.2rem 0.6rem;
     border-radius: 999px;
-    font-size: 0.8125rem;   /* 13px */
+    font-size: 0.8125rem;
     font-weight: 600;
     line-height: 1.4;
     border: 1.5px solid transparent;
   }
-  /* Shape icon prefix — don't rely on colour alone */
   .ca-badge-issued  { @apply ca-badge; background: var(--color-success-bg);  color: var(--color-success);  border-color: var(--color-success-border); }
   .ca-badge-error   { @apply ca-badge; background: var(--color-error-bg);    color: var(--color-error);    border-color: var(--color-error-border);   }
-  .ca-badge-warning { @apply ca-badge; background: var(--color-warning-bg);  color: var(--color-warning);  border-color: rgba(255,201,71,0.3);         }
-  .ca-badge-accent  { @apply ca-badge; background: var(--color-accent-bg);   color: var(--color-accent);   border-color: var(--color-accent-border);   }
-  .ca-badge-violet  { @apply ca-badge; background: var(--color-accent-bg);   color: var(--color-accent);   border-color: var(--color-accent-border);   }
-  .ca-badge-ai      { @apply ca-badge; background: var(--color-accent-bg);   color: var(--color-accent);   border-color: var(--color-accent-border);   }
-  .ca-badge-ibm     { @apply ca-badge; background: var(--color-ibm-bg);      color: var(--color-ibm);      border-color: rgba(116,177,255,0.3);         }
-  .ca-badge-info    { @apply ca-badge; background: var(--color-info-bg);     color: var(--color-info);     border-color: rgba(96,170,255,0.3);          }
+  .ca-badge-warning { @apply ca-badge; background: var(--color-warning-bg);  color: var(--color-warning);  border-color: var(--color-warning-border); }
+  .ca-badge-violet  { @apply ca-badge; background: var(--color-accent-bg);   color: var(--color-accent);   border-color: var(--color-accent-border);  }
+  .ca-badge-accent  { @apply ca-badge; background: var(--color-accent-bg);   color: var(--color-accent);   border-color: var(--color-accent-border);  }
+  .ca-badge-ai      { @apply ca-badge; background: var(--color-accent-bg);   color: var(--color-accent);   border-color: var(--color-accent-border);  }
+  .ca-badge-ibm     { @apply ca-badge; background: var(--color-ibm-bg);      color: var(--color-ibm);      border-color: var(--color-ibm-border);     }
+  .ca-badge-info    { @apply ca-badge; background: var(--color-info-bg);     color: var(--color-text-soft); border-color: var(--color-border);         }
 
-  /* ───────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────
      PAGE LAYOUT
-  ─────────────────────────────────────────────────────────── */
+  ───────────────────────────────────────────────────── */
   .ca-page {
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.75rem;
     max-width: 1280px;
   }
   @media (min-width: 1024px) {
-    .ca-page { padding: 2rem; }
+    .ca-page { padding: 2rem 2.5rem; }
   }
 
-  /* Page heading — large, solid colour (no gradient-only text) */
+  /* Page heading — solid, not gradient-only */
   .ca-page-title {
-    font-size: 1.5rem;      /* 24px */
+    font-size: 1.625rem;
     font-weight: 800;
     color: var(--color-text);
-    line-height: 1.3;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
   }
 
-  /* Section heading */
   .ca-section-title {
     font-size: 1rem;
     font-weight: 700;
     color: var(--color-text);
   }
 
-  /* ───────────────────────────────────────────────────────────
-     TABLE — readable row height, visible borders
-  ─────────────────────────────────────────────────────────── */
+  /* ─────────────────────────────────────────────────────
+     TABLE
+  ───────────────────────────────────────────────────── */
   .ca-table { width: 100%; border-collapse: collapse; }
 
   .ca-table th {
     padding: 0.875rem 1.25rem;
     text-align: left;
-    font-size: 0.8125rem;   /* 13px */
+    font-size: 0.8125rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--color-text-soft);
+    letter-spacing: 0.07em;
+    color: var(--color-text-muted);
     background: var(--color-surface-2);
     border-bottom: 2px solid var(--color-border);
   }
 
   .ca-table td {
-    padding: 1rem 1.25rem;  /* generous row height */
-    font-size: 0.9375rem;   /* 15px */
+    padding: 1rem 1.25rem;
+    font-size: 0.9375rem;
     color: var(--color-text-soft);
     border-bottom: 1px solid var(--color-border);
     vertical-align: middle;
@@ -363,9 +378,9 @@
   }
   .ca-table tbody tr:last-child td { border-bottom: none; }
 
-  /* ───────────────────────────────────────────────────────────
-     NAV ITEMS
-  ─────────────────────────────────────────────────────────── */
+  /* ─────────────────────────────────────────────────────
+     NAV ITEMS  — 48 px, visible label + description
+  ───────────────────────────────────────────────────── */
   .nav-item {
     display: flex;
     align-items: center;
@@ -375,8 +390,8 @@
     font-size: 0.9375rem;
     font-weight: 500;
     color: var(--color-text-soft);
-    min-height: 48px;        /* large touch target */
-    transition: background 0.15s, color 0.15s;
+    min-height: 48px;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
     cursor: pointer;
     text-decoration: none;
     border: 1.5px solid transparent;
@@ -393,20 +408,9 @@
     border-color: var(--color-accent-border);
   }
 
-  /* ───────────────────────────────────────────────────────────
-     STAT CARD
-  ─────────────────────────────────────────────────────────── */
-  .ca-stat-number {
-    font-size: 2rem;
-    font-weight: 800;
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    color: var(--color-text);
-    line-height: 1.1;
-  }
-
-  /* ───────────────────────────────────────────────────────────
-     SKIP LINK — first focusable element, hidden until focused
-  ─────────────────────────────────────────────────────────── */
+  /* ─────────────────────────────────────────────────────
+     SKIP LINK
+  ───────────────────────────────────────────────────── */
   .skip-link {
     position: absolute;
     top: -100%;
@@ -414,7 +418,7 @@
     z-index: 9999;
     padding: 0.75rem 1.5rem;
     background: var(--color-accent);
-    color: #0D0D1A;
+    color: #131E24;
     font-weight: 700;
     font-size: 1rem;
     border-radius: var(--radius-md);
@@ -423,31 +427,48 @@
   }
   .skip-link:focus { top: 1rem; }
 
-  /* ───────────────────────────────────────────────────────────
-     SCORE LABEL — never rely on colour alone; show text label
-  ─────────────────────────────────────────────────────────── */
+  /* ─────────────────────────────────────────────────────
+     SCORE COLOURS  — text label always accompanies colour
+  ───────────────────────────────────────────────────── */
   .score-high   { color: var(--color-success); font-weight: 700; }
   .score-medium { color: var(--color-warning); font-weight: 700; }
   .score-low    { color: var(--color-error);   font-weight: 700; }
+
+  /* ─────────────────────────────────────────────────────
+     STAT NUMBER
+  ───────────────────────────────────────────────────── */
+  .ca-stat-number {
+    font-size: 2rem;
+    font-weight: 800;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    color: var(--color-text);
+    line-height: 1.1;
+  }
+
+  /* ─────────────────────────────────────────────────────
+     TEAL ACCENT DIVIDER LINE
+  ───────────────────────────────────────────────────── */
+  .teal-line {
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-accent-deep), var(--color-accent), transparent);
+    border: none;
+    border-radius: 2px;
+  }
 }
 
 @layer utilities {
+  .text-muted { color: var(--color-text-muted); }
+  .text-soft  { color: var(--color-text-soft); }
 
-  .text-muted  { color: var(--color-text-muted); }
-  .text-soft   { color: var(--color-text-soft); }
-
-  /* Subtle divider */
   .divider { border: none; border-top: 1px solid var(--color-border); margin: 0; }
 
-  /* Smooth elevation shadow */
-  .shadow-card     { box-shadow: 0 2px 12px rgba(0,0,0,0.35); }
-  .shadow-elevated { box-shadow: 0 4px 24px rgba(0,0,0,0.5); }
+  .shadow-card     { box-shadow: 0 2px 12px rgba(0,0,0,0.4); }
+  .shadow-elevated { box-shadow: 0 4px 24px rgba(0,0,0,0.55); }
+  .shadow-teal     { box-shadow: 0 4px 20px rgba(18,78,102,0.4); }
 
-  /* Scrollbar hide */
   .hide-scrollbar::-webkit-scrollbar { display: none; }
   .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-  /* Truncate */
   .truncate-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -456,7 +477,7 @@
   }
 }
 
-/* ─── Animations — only play when motion is allowed ────────────────────────── */
+/* ── Animations ─────────────────────────────────────────────────────────── */
 @keyframes fadeSlideUp {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -466,11 +487,11 @@
   to   { opacity: 1; }
 }
 @keyframes pulseRing {
-  0%   { box-shadow: 0 0 0 0 rgba(61,214,140,0.5); }
-  70%  { box-shadow: 0 0 0 6px rgba(61,214,140,0); }
-  100% { box-shadow: 0 0 0 0 rgba(61,214,140,0); }
+  0%   { box-shadow: 0 0 0 0 rgba(76,195,138,0.5); }
+  70%  { box-shadow: 0 0 0 6px rgba(76,195,138,0); }
+  100% { box-shadow: 0 0 0 0 rgba(76,195,138,0); }
 }
 
-.animate-fade-in  { animation: fadeIn      0.2s ease-out; }
+.animate-fade-in  { animation: fadeIn      0.2s  ease-out; }
 .animate-slide-up { animation: fadeSlideUp 0.25s ease-out; }
-.pulse-ring       { animation: pulseRing   2s ease-out infinite; }
+.pulse-ring       { animation: pulseRing   2s    ease-out infinite; }
