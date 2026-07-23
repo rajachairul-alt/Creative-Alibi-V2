@@ -1,317 +1,205 @@
 # Creative Alibi: Authenticity Companion
 
-> 📖 **Full setup guide (install → configure → deploy):** see **[SETUP.md](SETUP.md)**
+> **IBM AI Builders Challenge 2025**
+> *Prove your creative process is genuinely yours — powered by IBM Granite via watsonx.ai*
 
-> **The trust layer of the creative process** — powered by IBM Granite
-
-[![IBM Granite](https://img.shields.io/badge/IBM%20Granite-3.3B%20Instruct-0F62FE?style=flat-square&logo=ibm)](https://www.ibm.com/granite)
-[![watsonx.ai](https://img.shields.io/badge/watsonx.ai-Integrated-7C3AED?style=flat-square)](https://www.ibm.com/watsonx)
-[![AI Builders Challenge](https://img.shields.io/badge/AI%20Builders%20Challenge-July%202026-10B981?style=flat-square)](https://developer.ibm.com)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react)](https://react.dev/)
+[![Deploy Dashboard → GitHub Pages](https://github.com/rajachairul-alt/Creative-Alibi-V2/actions/workflows/deploy-dashboard.yml/badge.svg)](https://github.com/rajachairul-alt/Creative-Alibi-V2/actions/workflows/deploy-dashboard.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-7C3AED.svg)](./LICENSE)
+[![IBM Granite](https://img.shields.io/badge/IBM%20Granite-granite--3--8b--instruct-8B5CF6)](https://www.ibm.com/granite)
 
 ---
 
-```
- ██████╗██████╗ ███████╗ █████╗ ████████╗██╗██╗   ██╗███████╗
-██╔════╝██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██║██║   ██║██╔════╝
-██║     ██████╔╝█████╗  ███████║   ██║   ██║██║   ██║█████╗  
-██║     ██╔══██╗██╔══╝  ██╔══██║   ██║   ██║╚██╗ ██╔╝██╔══╝  
-╚██████╗██║  ██║███████╗██║  ██║   ██║   ██║ ╚████╔╝ ███████╗
- ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═══╝  ╚══════╝
- █████╗ ██╗     ██╗██████╗ ██╗
-██╔══██╗██║     ██║██╔══██╗██║
-███████║██║     ██║██████╔╝██║
-██╔══██║██║     ██║██╔══██╗██║
-██║  ██║███████╗██║██████╔╝██║
-╚═╝  ╚═╝╚══════╝╚═╝╚═════╝ ╚═╝
-```
+## 🎯 What is Creative Alibi?
 
-### *"Prove you wrote it. Protect what's yours."*
+In the age of generative AI, **proving you actually wrote your own work** has become a new challenge for students, academics, journalists, and content creators. Creative Alibi solves this — not by gatekeeping AI, but by documenting your authentic human process.
+
+**Creative Alibi records your writing journey** — every keystroke rhythm, every revision, every thinking pause — and produces a cryptographically verifiable **Authenticity Report** that proves the work was genuinely created by you, even if you used AI as a creative partner.
+
+### Core Innovation
+
+> *It's not about blocking AI. It's about proving human authorship through transparent, documented process.*
+
+- 📝 **Process Ledger** — Real-time behavioral fingerprinting of your writing (WPM cadence, pause patterns, revision depth)
+- 🤖 **IBM Granite AI Partner** — AI assistance that's explicitly disclosed and logged, not hidden
+- 🔒 **Authenticity Report** — Verifiable, shareable proof of your creative process
+- 🧠 **Granite Guardian** — Every AI response validated for safety and context relevance
 
 ---
 
-## 🎯 The Problem
+## 🚀 Live Demo
 
-AI content detectors are increasingly used by clients, publishers, universities, and platforms to screen submitted work. They are known to produce **false positives** — wrongly flagging genuine human writing as AI-generated.
-
-This damages the credibility and livelihood of honest creators: **freelance writers, students, and journalists** who have no easy way to prove their work was truly their own.
-
-**What's missing is a trustworthy, verifiable record of how a piece of work was actually made.**
-
----
-
-## ✨ The Solution
-
-Creative Alibi captures the **behavioral fingerprint** of your writing process — typing cadence, natural pauses, revision patterns, and copy-paste ratios — and compiles it into a cryptographically-signed **Authenticity Report** you can attach to any submission.
-
-> *"Not a detector-evasion tool. Not an AI-washing machine. A honest record of real work."*
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    AUTHENTICITY REPORT                       │
-│                      Creative Alibi™                         │
-├─────────────────────────────────────────────────────────────┤
-│  Status:     ✓ ISSUED                                        │
-│  Report ID:  CA-2024-A8F3E2D1                                │
-│  Session:    34 minutes | 1,247 words                        │
-│  Score:      91/100 Composite Authenticity                   │
-├─────────────────────────────────────────────────────────────┤
-│  Cadence Score:    88/100  ✓ Natural rhythm detected         │
-│  Paste Ratio:      4.2%    ✓ Within threshold (max 20%)      │
-│  Revisions:        23      ✓ Iterative authorship            │
-│  AI Assist:        2 IBM Granite suggestions (1 accepted,    │
-│                    1 declined) — fully disclosed             │
-├─────────────────────────────────────────────────────────────┤
-│  AI-Likelihood Signal: HUMAN (12%) — estimate only           │
-│  Session Hash: sha256:8a3f2c1d...  (tamper-evident)          │
-├─────────────────────────────────────────────────────────────┤
-│  Powered by IBM Granite via watsonx.ai                       │
-└─────────────────────────────────────────────────────────────┘
-```
+| Deliverable | URL |
+|---|---|
+| 🌐 **Web Dashboard** | [rajachairul-alt.github.io/Creative-Alibi-V2](https://rajachairul-alt.github.io/Creative-Alibi-V2/) |
+| 📝 **Word Add-in** (manifest) | `\\localhost\CreativeAlibiAddIn\manifest.xml` (local sideload) |
+| ⚙️ **Backend API** | Deploy to Railway via `packages/backend` |
 
 ---
 
-## 🏗️ Architecture
+## 🏗 Architecture
 
 ```
-┌──────────────────────────────────────────────────────────────────┐
-│                         CREATIVE ALIBI v2                        │
-├──────────────┬────────────────────────┬───────────────────────────┤
-│  Word Plugin │    Web Dashboard       │    Backend API            │
-│  (Office.js) │    (React + Tailwind)  │    (Node.js + Express)    │
-│  React 18    │    6 pages + Analytics │    REST API               │
-│  Behavioral  │    Recharts            │    IBM Granite Integration│
-│  Tracker     │    Session Management  │    Report Generator       │
-└──────┬───────┴───────────┬────────────┴──────────┬────────────────┘
-       │                   │                       │
-       └───────────────────┴───────────────────────┘
-                                   │
-              ┌────────────────────▼─────────────────────┐
-              │            BACKEND API                    │
-              │  POST /api/ai/suggest                     │
-              │  POST /api/session/start                  │
-              │  POST /api/report/generate                │
-              └──────────┬──────────────┬────────────────┘
-                         │              │
-              ┌──────────▼──┐  ┌────────▼───────────────┐
-              │  IBM Granite │  │  desklib Detector      │
-              │  watsonx.ai  │  │  (called ONCE only)    │
-              │  + Guardian  │  │  HuggingFace Inference │
-              └─────────────┘  └────────────────────────┘
+Creative-Alibi-V2/                          (npm workspaces monorepo)
+├── packages/
+│   ├── shared/                             Shared types & constants
+│   │   └── src/
+│   │       ├── types.ts                    Branded UUID/ISOTimestamp types
+│   │       ├── constants.ts                IBM model IDs, thresholds
+│   │       └── index.ts
+│   │
+│   ├── backend/                            Express API + IBM Granite
+│   │   └── src/
+│   │       ├── index.ts                    Server entry (dotenv first)
+│   │       ├── types.ts                    Backend domain types
+│   │       ├── constants.ts                Report version, Guardian phrases
+│   │       ├── config/env.ts               Zod-validated env (WATSONX_*)
+│   │       ├── config/watson.ts            IAM token client
+│   │       ├── routes/                     /api/ai, /api/sessions, /api/reports
+│   │       ├── controllers/                ai, session, report
+│   │       └── services/
+│   │           ├── granite.service.ts      IBM Granite REST (granite-3-8b-instruct)
+│   │           ├── guardian.service.ts     Granite Guardian output validation
+│   │           ├── detector.service.ts     HuggingFace AI-likelihood detector
+│   │           ├── ledger.service.ts       Process Ledger eligibility gate
+│   │           ├── report.service.ts       Authenticity Report assembly
+│   │           ├── reportNarrative.service.ts  Granite narrative generation
+│   │           └── crypto.service.ts       SHA-256 ledger hash
+│   │
+│   ├── word-plugin/                        Microsoft Word Add-in (Office.js)
+│   │   ├── manifest.xml                    Office Add-in manifest (GUID: ca2024ab-...)
+│   │   ├── vite.config.ts                  HTTP dev server (HTTPS opt-in via VITE_HTTPS=1)
+│   │   └── src/
+│   │       ├── main.tsx                    Office.onReady + browser fallback
+│   │       ├── App.tsx                     Session init + tab routing
+│   │       ├── types.ts                    Plugin-local types
+│   │       ├── store/session.store.ts      Zustand session state
+│   │       ├── hooks/useTracker.ts         Keystroke behavior tracker
+│   │       ├── hooks/useAIPartner.ts       IBM Granite chat hook
+│   │       ├── services/granite.service.ts Granite API calls
+│   │       └── components/
+│   │           ├── tracker/TrackerStatus.tsx
+│   │           ├── tracker/CreativeTimeline.tsx
+│   │           ├── ai-partner/AIPartnerChat.tsx
+│   │           └── report/ReportPanel.tsx
+│   │
+│   └── web-dashboard/                      React web dashboard
+│       ├── vite.config.ts                  GITHUB_PAGES base path + chunk splitting
+│       └── src/
+│           ├── App.tsx                     BrowserRouter + 6 routes
+│           ├── utils/pdf.ts                jsPDF + html2canvas export
+│           ├── layout/
+│           │   ├── AppShell.tsx
+│           │   ├── Sidebar.tsx             Futuristic nav with IBM status
+│           │   └── Navbar.tsx              Live clock + search
+│           └── pages/
+│               ├── Dashboard/              Live stats, animated counters, charts
+│               ├── Analytics/              WPM timeline, radar, pause distribution
+│               ├── Sessions/               Search/filter/sort table
+│               ├── Reports/                PDF export + QR code generation
+│               ├── AIPartner/              Full IBM Granite chat interface
+│               └── Settings/               Privacy, IBM config, data export
+│
+├── .github/workflows/
+│   ├── deploy-dashboard.yml                GitHub Pages (GITHUB_PAGES=1)
+│   ├── deploy-word-plugin.yml              GitHub Pages (manifest hosting)
+│   └── deploy-backend.yml                  Railway deploy notification
+│
+├── start-dev.bat / start-dev.ps1           1-click dev launcher (3 terminals)
+├── install-addin.bat                       Word Add-in installer (Shared Folder)
+└── trust-addin.reg                         Registry trust entry
 ```
 
 ---
 
-## 🚀 Quick Start (5 Steps)
+## 🤖 IBM Granite Integration
+
+| Capability | Model | Purpose |
+|---|---|---|
+| **AI Creative Partner** | `ibm/granite-3-8b-instruct` | Style suggestions, brainstorming, grammar |
+| **Report Narrative** | `ibm/granite-3-8b-instruct` | Human-readable authenticity summary |
+| **Fallback** | `ibm/granite-4-h-small` | When primary model unavailable |
+| **Safety Layer** | Granite Guardian (inline) | Output validation, harmful content filter |
+
+All IBM Granite calls go through `packages/backend/src/services/granite.service.ts` using the watsonx.ai REST API with IAM token authentication.
+
+---
+
+## 🛠 Quick Start
 
 ### Prerequisites
-- Node.js >= 18
-- npm >= 9
-- IBM Cloud account with watsonx.ai access
-- Hugging Face account (for desklib detector)
-- Microsoft 365 (for Word Add-in testing)
 
-### Setup
+- Node.js ≥ 18 (tested on v24.16.0)
+- Microsoft Word 2016+ or Microsoft 365
+- IBM watsonx.ai credentials (API key + Project ID)
 
-```bash
-# 1. Clone the repository
-git clone https://github.com/your-team/creative-alibi.git
-cd creative-alibi
+### 1. Clone & Install
 
-# 2. Install all workspace dependencies
+```powershell
+git clone https://github.com/rajachairul-alt/Creative-Alibi-V2.git
+cd Creative-Alibi-V2
 npm install
-
-# 3. Configure environment
-cp packages/backend/.env.example packages/backend/.env
-# Edit packages/backend/.env with your IBM API keys
-
-# 4. Start the backend
-npm run dev --workspace=packages/backend
-
-# 5a. Start the web dashboard
-npm run dev --workspace=packages/web-dashboard
-# → Open http://localhost:5173
-
-# 5b. Start the Word plugin (for Word Add-in testing)
-npm run dev --workspace=packages/word-plugin
-# → Sideload manifest.xml in Microsoft Word
 ```
 
-### Sideloading the Word Plugin
-1. Open Word → Insert → Add-ins → My Add-ins → Upload My Add-in
-2. Browse to `packages/word-plugin/manifest.xml`
-3. Click "Creative Alibi" button in the ribbon
-4. The task pane opens with the AI Assistant
+### 2. Configure Environment
 
----
-
-## 📦 Repository Structure
-
-```
-creative-alibi/
-├── package.json                    # Monorepo root (npm workspaces)
-├── README.md
-├── ROADMAP.md                      # 4-week hackathon roadmap
-├── PITCH.md                        # 3-minute demo pitch script
-├── DEMO_SCRIPT.md                  # Video demo script
-├── SUBMISSION.md                   # Hackathon submission checklist
-│
-├── packages/
-│   ├── shared/                     # Shared TypeScript types & constants
-│   │   └── src/
-│   │       ├── types.ts            # All interfaces (ProcessLedger, AuthenticityReport, etc.)
-│   │       └── constants.ts        # Validation thresholds & config
-│   │
-│   ├── word-plugin/                # Microsoft Word Add-in
-│   │   ├── manifest.xml            # Office Add-in manifest
-│   │   └── src/
-│   │       ├── App.tsx             # Root + session init
-│   │       ├── components/
-│   │       │   ├── layout/         # Header, TabNav
-│   │       │   ├── tracker/        # BehavioralTracker, CreativeTimeline
-│   │       │   ├── ai-partner/     # AIPartnerChat, ChatMessage, PromptInput
-│   │       │   └── report/         # ReportPanel
-│   │       ├── hooks/              # useTracker, useAIPartner
-│   │       ├── services/           # granite.service, tracker.service
-│   │       └── store/              # Zustand session store
-│   │
-│   ├── web-dashboard/              # Full React Web Dashboard
-│   │   └── src/
-│   │       ├── layout/             # AppShell, Sidebar, Navbar
-│   │       └── pages/
-│   │           ├── Dashboard/      # Overview stats + charts
-│   │           ├── Analytics/      # Deep-dive visualizations (Recharts)
-│   │           ├── Sessions/       # Session history
-│   │           ├── Reports/        # Report viewer + badge
-│   │           ├── AIPartner/      # Full-screen IBM Granite chat
-│   │           └── Settings/       # Privacy + Granite config
-│   │
-│   └── backend/                    # Node.js + Express API
-│       └── src/
-│           ├── config/             # Env validation (Zod), watsonx.ai client
-│           ├── routes/             # ai, session, report, health
-│           ├── controllers/
-│           ├── services/
-│           │   ├── granite.service.ts      # IBM Granite integration ★
-│           │   ├── guardian.service.ts     # Granite Guardian guardrail ★
-│           │   ├── detector.service.ts     # desklib (one-shot) ★
-│           │   ├── ledger.service.ts       # Process validation
-│           │   └── report.service.ts       # Authenticity Report compiler
-│           └── tests/              # Jest unit tests
+```powershell
+Copy-Item packages/backend/.env.example packages/backend/.env
+# Edit packages/backend/.env with your IBM credentials:
+# WATSONX_API_KEY=your_key
+# WATSONX_PROJECT_ID=your_project_id
+# WATSONX_URL=https://us-south.ml.cloud.ibm.com
 ```
 
----
+### 3. Start Everything
 
-## 🤖 IBM Technology Integration
+```powershell
+.\start-dev.ps1
+# Or: npm run dev
+```
 
-### IBM Granite (Primary AI Layer)
-**Model**: `ibm/granite-3-3b-instruct` (fallback: `ibm/granite-3-8b-instruct`)  
-**Platform**: IBM watsonx.ai  
-**Role**: AI Creative Partner — provides style suggestions, brainstorming, and grammar assistance
+This opens 3 terminals:
+- **Backend** on `http://localhost:3001`
+- **Word Plugin** on `http://localhost:3000`
+- **Web Dashboard** on `http://localhost:5173`
 
-Every suggestion is:
-- ✅ Prompted with role-specific system instructions
-- ✅ Validated by Granite Guardian rules
-- ✅ Logged to the Process Ledger with timestamp
-- ✅ Presented to the writer for explicit accept/decline
-- ✅ Disclosed in the Authenticity Report
+### 4. Install Word Add-in
 
-### Granite Guardian
-Custom output validation layer that ensures IBM Granite's responses:
-- Use hedging language ("you might consider...", "one option could be...")
-- Don't exceed 150 words per suggestion
-- Don't contain full prose paragraphs that could replace the writer's voice
-- Never frame suggestions as directives ("Write:", "Here is:")
+```powershell
+.\install-addin.bat   # Creates SMB share + Registry trust entry
+```
 
-### IBM watsonx.ai
-- IAM token-based authentication with automatic token refresh
-- REST API integration via `/ml/v1/text/generation`
-- Used for both AI Creative Partner suggestions and Authenticity Report narrative generation
+Then in Word: **Insert → Get Add-ins → My Organization** → Creative Alibi
 
 ---
 
-## 🔬 Detection Layer (Informational Only)
+## 📦 Scripts
 
-**Model**: `desklib/ai-text-detector-v1.01` via Hugging Face  
-**Called**: EXACTLY ONCE per session — after writing ends, before report generation  
-**Role**: Informational AI-likelihood estimate printed transparently in the report  
-**Safeguard**: Per-session call counter enforced with hard throw on second call
-
-> ⚠️ **This is NOT a gate.** The detector score does NOT determine eligibility. Only the Process Ledger does. If the detector and the ledger disagree, the report states the discrepancy honestly.
-
----
-
-## 🛡️ Security Design
-
-| Concern | Mitigation |
-|---------|-----------|
-| Privacy | All Process Ledger data stays on-device by default |
-| Tamper-evidence | SHA-256 hash of ledger included in every report |
-| Gaming the tracker | Process metadata — not text content — determines eligibility |
-| AI-washing | Guardian blocks full prose generation; all AI events logged |
-| Evasion loop | desklib called once, hard-limited; no feedback to text |
-| False positives | Discrepancy between signal and ledger noted honestly in report |
+| Command | Description |
+|---|---|
+| `npm run dev` | Start all packages (backend + plugin + dashboard) |
+| `npm run dev:backend` | Backend only (`localhost:3001`) |
+| `npm run dev:plugin` | Word plugin dev server (`localhost:3000`) |
+| `npm run dev:dashboard` | Web dashboard dev server (`localhost:5173`) |
+| `npm run build` | Build all packages |
+| `npm run build --workspace=packages/web-dashboard` | Build dashboard only |
 
 ---
 
-## 📊 Tech Stack
+## 🔒 Security & Privacy
 
-| Layer | Technology |
-|-------|-----------|
-| AI (Generative) | IBM Granite 3.3B Instruct via watsonx.ai |
-| AI (Guardrail) | Custom Granite Guardian validation |
-| AI (Detection) | desklib/ai-text-detector-v1.01 (HuggingFace) |
-| Word Add-in | Office.js, React 18, Vite, Tailwind CSS |
-| Web Dashboard | React 18, React Router v6, Recharts, Tailwind CSS |
-| State Management | Zustand |
-| Backend | Node.js, Express, TypeScript |
-| Validation | Zod |
-| Testing | Jest, ts-jest |
-| Monorepo | npm workspaces |
-
----
-
-## 🎬 Demo Video
-
-> 📹 [Watch the 3-minute demo video](https://youtu.be/PLACEHOLDER)
-
-Screenshots:
-
-| Word Plugin — Tracker | Word Plugin — AI Partner | Web Dashboard |
-|---|---|---|
-| *(tracker screenshot)* | *(AI chat screenshot)* | *(dashboard screenshot)* |
-
----
-
-## 👥 Team
-
-| Role | Responsibility |
-|------|---------------|
-| **Product Lead** | PRD, pitch, narrative, submission |
-| **Full-Stack Engineer** | Word Add-in, behavioral tracker, Creative Timeline |
-| **Backend / AI Engineer** | Granite integration, report generator, validation |
-| **UX/UI Designer** | Design system, web dashboard, report layout |
-| **QA & Growth** | Testing, demo storytelling, submission materials |
-
----
-
-## 🏆 AI Builders Challenge — July 2026
-
-**Theme**: "Reimagine Creative Industries with AI"
-
-Creative Alibi directly answers this theme by:
-- Empowering creators to **work confidently with AI tools** without being penalized unfairly
-- Using **IBM Granite** as a responsible AI assistant that helps without replacing
-- Building **trust infrastructure** for the creator economy
-- Demonstrating that AI can protect human creativity, not just replace it
+- **Local-first**: All Process Ledger data stored locally — nothing sent to server without user action
+- **No document content leaked**: IBM Granite only sees the last 200 characters of context
+- **AES-256 encryption**: Optional ledger encryption at rest
+- **`.env` protected**: IBM credentials never committed (see `.gitignore`)
+- **AUT(*EXCLUDE) principle**: Minimum required permissions throughout
 
 ---
 
 ## 📄 License
 
-MIT License — see [LICENSE](LICENSE) for details.
+MIT — see [LICENSE](./LICENSE)
 
 ---
 
-*Built with ❤️ and IBM Granite for the AI Builders Challenge 2026*
+*Built for the IBM AI Builders Challenge 2025 by Creative Alibi Team*
+*Powered by IBM Granite via watsonx.ai*
