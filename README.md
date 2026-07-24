@@ -1,17 +1,38 @@
 # Creative Alibi: Authenticity Companion
 
-> **IBM AI Builders Challenge 2025**
+> **IBM AI Builders Challenge 2026**
 > *Prove your creative process is genuinely yours — powered by IBM Granite via watsonx.ai*
 
 [![Deploy Dashboard → GitHub Pages](https://github.com/rajachairul-alt/Creative-Alibi-V2/actions/workflows/deploy-dashboard.yml/badge.svg)](https://github.com/rajachairul-alt/Creative-Alibi-V2/actions/workflows/deploy-dashboard.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-7C3AED.svg)](./LICENSE)
 [![IBM Granite](https://img.shields.io/badge/IBM%20Granite-granite--3--8b--instruct-8B5CF6)](https://www.ibm.com/granite)
+[![Built with IBM Bob](https://img.shields.io/badge/Built%20with-IBM%20Bob-054ADA)](https://bit.ly/IBMBob-freetrial)
 
 ---
 
-## 🎯 What is Creative Alibi?
+## 📋 Submission Details
 
-In the age of generative AI, **proving you actually wrote your own work** has become a new challenge for students, academics, journalists, and content creators. Creative Alibi solves this — not by gatekeeping AI, but by documenting your authentic human process.
+| Field | Value |
+|---|---|
+| **Event** | IBM AI Builders Challenge 2026 |
+| **Submission Deadline** | July 31, 2026, 11:59 PM ET |
+| **Challenge Theme** | **Education & Academic Integrity** — Empowering learners and institutions to trust and verify authentic human creative work in the age of generative AI |
+| **Primary Development Tool** | [IBM Bob](https://bit.ly/IBMBob-freetrial) |
+| **Core AI Technology** | IBM Granite (`granite-3-8b-instruct`) via watsonx.ai |
+
+---
+
+## 🎯 Problem Statement
+
+In the age of generative AI, **proving you actually wrote your own work** has become a critical challenge for students, academics, journalists, and content creators. Current solutions either block AI entirely (harming legitimate use) or provide no verification at all.
+
+There is no trusted, transparent mechanism that allows someone to say: *"Yes, I used AI as a partner — but this work is genuinely mine, and here's the proof."*
+
+Academic institutions, publishers, and employers are left with blunt tools — AI detectors that produce false positives, or honor systems that cannot scale. The result: eroded trust in human creativity itself.
+
+---
+
+## 💡 Solution Description
 
 **Creative Alibi records your writing journey** — every keystroke rhythm, every revision, every thinking pause — and produces a cryptographically verifiable **Authenticity Report** that proves the work was genuinely created by you, even if you used AI as a creative partner.
 
@@ -26,17 +47,32 @@ In the age of generative AI, **proving you actually wrote your own work** has be
 
 ---
 
-## 🚀 Live Demo
+## 🤖 AI Approach & Architecture
 
-| Deliverable | URL |
-|---|---|
-| 🌐 **Web Dashboard** | [rajachairul-alt.github.io/Creative-Alibi-V2](https://rajachairul-alt.github.io/Creative-Alibi-V2/) |
-| 📝 **Word Add-in** (manifest) | `\\localhost\CreativeAlibiAddIn\manifest.xml` (local sideload) |
-| ⚙️ **Backend API** | Deploy to Railway via `packages/backend` |
+### How AI is a Core Functional Component
 
----
+AI is not a bolted-on feature — it is the **functional backbone** of three critical capabilities:
 
-## 🏗 Architecture
+1. **IBM Granite as AI Creative Partner** (`granite-3-8b-instruct` via watsonx.ai)
+   - Provides real-time writing assistance (style suggestions, brainstorming, grammar)
+   - All interactions are logged with timestamps in the Process Ledger
+   - AI contribution is transparently attributed and cannot be removed from the authenticity record
+
+2. **Granite Guardian — Safety & Validation Layer**
+   - Every AI output is validated before being shown to the user
+   - Filters harmful content and ensures contextual relevance
+   - Provides an auditable safety log embedded in the Authenticity Report
+
+3. **Authenticity Report Narrative Generation**
+   - IBM Granite reads the full Process Ledger (keystroke patterns, revision depth, session metadata)
+   - Generates a human-readable summary explaining *why* the work is authentic
+   - Output is SHA-256 hashed for tamper detection
+
+4. **HuggingFace AI-Likelihood Detector** (supplementary)
+   - Cross-validates the session against an external AI-content probability model
+   - Adds a second opinion beyond IBM Granite's own assessment
+
+### System Architecture
 
 ```
 Creative-Alibi-V2/                          (npm workspaces monorepo)
@@ -109,9 +145,7 @@ Creative-Alibi-V2/                          (npm workspaces monorepo)
 └── trust-addin.reg                         Registry trust entry
 ```
 
----
-
-## 🤖 IBM Granite Integration
+### IBM Granite Integration Table
 
 | Capability | Model | Purpose |
 |---|---|---|
@@ -124,13 +158,58 @@ All IBM Granite calls go through `packages/backend/src/services/granite.service.
 
 ---
 
+## 🛠 How IBM Bob Was Used
+
+[IBM Bob](https://bit.ly/IBMBob-freetrial) served as the **primary development tool** throughout the entire lifecycle of this project:
+
+### Development & Code Generation
+- **Architecture design**: IBM Bob was used to plan the monorepo structure, identify package boundaries (`shared`, `backend`, `word-plugin`, `web-dashboard`), and define API contracts between services
+- **Backend scaffolding**: Generated the Express.js server structure, Zod-validated environment configuration, and IAM token authentication flow for watsonx.ai
+- **Service layer**: IBM Bob assisted in designing and generating all service modules (`granite.service.ts`, `guardian.service.ts`, `ledger.service.ts`, `report.service.ts`, `crypto.service.ts`)
+- **Frontend components**: Generated React components for the Word Add-in task pane and the web dashboard, including keystroke tracking hooks and AI Partner chat interface
+- **CI/CD workflows**: IBM Bob generated the GitHub Actions workflows for automated deployment to GitHub Pages and Railway
+
+### Testing & Debugging
+- Used IBM Bob to write integration tests for the watsonx.ai REST API calls
+- Debugged Office.js Add-in lifecycle issues (Office.onReady, manifest trust, SMB share setup)
+- Diagnosed CORS, IAM token expiry, and TypeScript compilation errors across the monorepo
+
+### Documentation
+- This README and [SETUP.md](./SETUP.md) were structured and drafted with IBM Bob assistance
+- IBM Bob helped translate technical implementation details into clear, user-facing documentation
+
+---
+
+## 🏆 Challenge Theme: Education & Academic Integrity
+
+Creative Alibi directly addresses the **Education** challenge theme by:
+
+- **Empowering students** to demonstrate authentic authorship without sacrificing AI collaboration
+- **Supporting educators and institutions** with verifiable, tamper-evident process records that go beyond subjective AI detectors
+- **Promoting responsible AI use** — AI assistance is disclosed and logged, not hidden, creating a culture of transparency
+- **Enabling fair assessment** — Instructors receive a Process Ledger showing the full writing journey, not just the final artifact
+- **Scalable trust infrastructure** — The SHA-256 hashed Authenticity Report can be integrated into LMS platforms and institutional repositories
+
+---
+
+## 🚀 Live Demo
+
+| Deliverable | URL |
+|---|---|
+| 🌐 **Web Dashboard** | [rajachairul-alt.github.io/Creative-Alibi-V2](https://rajachairul-alt.github.io/Creative-Alibi-V2/) |
+| 📝 **Word Add-in** (manifest) | `\\localhost\CreativeAlibiAddIn\manifest.xml` (local sideload) |
+| ⚙️ **Backend API** | Deploy to Railway via `packages/backend` |
+
+---
+
 ## 🛠 Quick Start
 
 ### Prerequisites
 
 - Node.js ≥ 18 (tested on v24.16.0)
 - Microsoft Word 2016+ or Microsoft 365
-- IBM watsonx.ai credentials (API key + Project ID)
+- IBM watsonx.ai credentials (API key + Project ID) — [Register here](https://cloud.ibm.com/registration?utm_content=academicsb)
+- IBM Bob account — [Free trial](https://bit.ly/IBMBob-freetrial)
 
 ### 1. Clone & Install
 
@@ -170,6 +249,8 @@ This opens 3 terminals:
 
 Then in Word: **Insert → Get Add-ins → My Organization** → Creative Alibi
 
+> For detailed setup instructions, see [SETUP.md](./SETUP.md)
+
 ---
 
 ## 📦 Scripts
@@ -195,11 +276,22 @@ Then in Word: **Insert → Get Add-ins → My Organization** → Creative Alibi
 
 ---
 
+## 📚 IBM SkillsBuild
+
+All team members have completed IBM Bob-related training on [IBM SkillsBuild](https://skillsbuild.org/). Completion certificates are available upon request as required by the IBM AI Builders Challenge submission requirements.
+
+**Recommended courses for reviewers and contributors:**
+- [IBM Bob Getting Started](https://skillsbuild.org/) — Foundation course
+- watsonx.ai Essentials — Covers IBM Granite model usage and watsonx.ai API integration
+
+---
+
 ## 📄 License
 
 MIT — see [LICENSE](./LICENSE)
 
 ---
 
-*Built for the IBM AI Builders Challenge 2025 by Creative Alibi Team*
-*Powered by IBM Granite via watsonx.ai*
+*Built for the IBM AI Builders Challenge 2026 by Creative Alibi Team*
+*Primary Development Tool: [IBM Bob](https://bit.ly/IBMBob-freetrial)*
+*Powered by IBM Granite via [watsonx.ai](https://cloud.ibm.com/registration?utm_content=academicsb)*
