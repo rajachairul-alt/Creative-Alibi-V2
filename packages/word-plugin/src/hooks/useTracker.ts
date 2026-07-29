@@ -38,6 +38,8 @@ export function useTracker() {
 
   // Snapshot interval ref
   const snapshotIntervalRef = useRef<ReturnType<typeof setInterval>>();
+  // Ref to always hold the latest buildSnapshot (avoids stale closure in setInterval)
+  const buildSnapshotRef = useRef<() => void>(() => {});
 
   // ─── Document Change Handler ───────────────────────────────────────────
   const handleDocumentChange = useCallback(async () => {
@@ -103,8 +105,6 @@ export function useTracker() {
 
   // ─── Snapshot Builder ──────────────────────────────────────────────────
   const buildSnapshot = useCallback(() => {
-    if (!isTracking) return;
-
     const elapsedSeconds = Math.round((Date.now() - sessionStartRef.current) / 1000);
     const cadenceScore = calculateCadenceScore(keystrokesRef.current);
     const pauseProfile = buildPauseDistribution(pauseEventsRef.current);
@@ -129,7 +129,10 @@ export function useTracker() {
       pasteEvents: pasteEventsRef.current,
       pauseEvents: pauseEventsRef.current,
     });
-  }, [isTracking, updateLedger]);
+  }, [updateLedger]);
+
+  // Keep the ref in sync with the latest version of buildSnapshot
+  buildSnapshotRef.current = buildSnapshot;
 
   // ─── Start Tracking ────────────────────────────────────────────────────
   const startTracking = useCallback(async () => {
@@ -147,21 +150,35 @@ export function useTracker() {
     prevWordCountRef.current = 0;
     activeTypingSecondsRef.current = 0;
 
-    // Register Office.js document change handler
+    // Register Word-native paragraph change events on the document.
+    // paragraphAdded / paragraphChanged / paragraphDeleted all fire on content edits.
     try {
-      Office.context.document.addHandlerAsync(
-        Office.EventType.DocumentSelectionChanged,
-        handleDocumentChange
-      );
+      await Word.run(async (context) => {
+        context.document.onParagraphAdded.add(handleDocumentChange);
+        context.document.onParagraphChanged.add(handleDocumentChange);
+        context.document.onParagraphDeleted.add(handleDocumentChange);
+        await context.sync();
+      });
     } catch {
-      console.warn('[Tracker] Could not register Office.js event handler');
+      // Fall back to selection-changed as a polling proxy (older Word builds)
+      try {
+        Office.context.document.addHandlerAsync(
+          Office.EventType.DocumentSelectionChanged,
+          handleDocumentChange
+        );
+      } catch {
+        console.warn('[Tracker] Could not register document change handler');
+      }
     }
 
-    // Start snapshot interval
-    snapshotIntervalRef.current = setInterval(buildSnapshot, TRACKER_SNAPSHOT_INTERVAL_MS);
+    // Start snapshot interval — call via ref so it always uses the latest closure
+    snapshotIntervalRef.current = setInterval(
+      () => buildSnapshotRef.current(),
+      TRACKER_SNAPSHOT_INTERVAL_MS
+    );
 
     setTracking(true);
-  }, [isTracking, handleDocumentChange, buildSnapshot, setTracking]);
+  }, [isTracking, handleDocumentChange, setTracking]);
 
   // ─── Stop Tracking ─────────────────────────────────────────────────────
   const stopTracking = useCallback(async () => {
@@ -171,12 +188,21 @@ export function useTracker() {
     buildSnapshot(); // Final snapshot
 
     try {
-      Office.context.document.removeHandlerAsync(
-        Office.EventType.DocumentSelectionChanged,
-        { handler: handleDocumentChange }
-      );
+      await Word.run(async (context) => {
+        context.document.onParagraphAdded.remove(handleDocumentChange);
+        context.document.onParagraphChanged.remove(handleDocumentChange);
+        context.document.onParagraphDeleted.remove(handleDocumentChange);
+        await context.sync();
+      });
     } catch {
-      // Ignore cleanup errors
+      try {
+        Office.context.document.removeHandlerAsync(
+          Office.EventType.DocumentSelectionChanged,
+          { handler: handleDocumentChange }
+        );
+      } catch {
+        // Ignore cleanup errors
+      }
     }
 
     setTracking(false);
