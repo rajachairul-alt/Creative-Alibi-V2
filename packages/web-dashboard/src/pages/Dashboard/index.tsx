@@ -32,18 +32,18 @@ const MP = {
 // ─── Mock data ────────────────────────────────────────────────────────────────
 
 const MOCK_STATS = {
-  totalSessions:         24,
-  reportsIssued:         21,
-  averageCadenceScore:   83,
-  aiAssistUsagePercent:  18,
-  totalWordsWritten:     48_250,
+  totalSessions:         31,
+  reportsIssued:         28,
+  averageCadenceScore:   85,
+  aiAssistUsagePercent:  16,
+  totalWordsWritten:     62_480,
 };
 
 const CADENCE_HISTORY = [
-  { day: 'Mon', score: 78 }, { day: 'Tue', score: 85 },
-  { day: 'Wed', score: 82 }, { day: 'Thu', score: 91 },
-  { day: 'Fri', score: 88 }, { day: 'Sat', score: 76 },
-  { day: 'Sun', score: 89 },
+  { day: '7 Jul', score: 76 }, { day: '8 Jul', score: 84 },
+  { day: '10 Jul', score: 89 }, { day: '11 Jul', score: 52 },
+  { day: '12 Jul', score: 94 }, { day: '13 Jul', score: 87 },
+  { day: '14 Jul', score: 91 },
 ];
 
 const WORD_TREND = Array.from({ length: 14 }, (_, i) => ({
@@ -52,15 +52,16 @@ const WORD_TREND = Array.from({ length: 14 }, (_, i) => ({
 }));
 
 const PIE_DATA = [
-  { name: 'Reports Issued',  value: 21, color: MP.success },
+  { name: 'Reports Issued',  value: 28, color: MP.success },
   { name: 'Not Eligible',    value: 3,  color: MP.error   },
 ];
 
 const RECENT_SESSIONS = [
-  { id: 's-001', title: 'The Ethics of AI Writing Tools',  date: '2024-07-12', words: 1247, score: 91, status: 'ISSUED'       },
-  { id: 's-002', title: 'Chapter 3 — Research Methods',    date: '2024-07-11', words: 2840, score: 87, status: 'ISSUED'       },
-  { id: 's-003', title: 'Email Newsletter Draft',          date: '2024-07-10', words: 450,  score: 94, status: 'ISSUED'       },
-  { id: 's-004', title: 'Blog Post — AI Creativity',       date: '2024-07-09', words: 820,  score: 52, status: 'NOT_ELIGIBLE' },
+  { id: 's-001', title: 'The Ethics of AI Writing Tools',    date: '2026-07-14', words: 1247, score: 91, status: 'ISSUED',       aiAssists: 2 },
+  { id: 's-002', title: 'Chapter 3 — Research Methods',      date: '2026-07-13', words: 2840, score: 87, status: 'ISSUED',       aiAssists: 0 },
+  { id: 's-003', title: 'Email Newsletter Draft',             date: '2026-07-12', words: 450,  score: 94, status: 'ISSUED',       aiAssists: 1 },
+  { id: 's-004', title: 'Blog Post — AI Creativity',          date: '2026-07-11', words: 820,  score: 52, status: 'NOT_ELIGIBLE', aiAssists: 5 },
+  { id: 's-005', title: 'Academic Abstract — ML Study',       date: '2026-07-10', words: 380,  score: 89, status: 'ISSUED',       aiAssists: 0 },
 ];
 
 // ─── Animated Counter ─────────────────────────────────────────────────────────
@@ -261,7 +262,7 @@ export function DashboardPage() {
           value={<AnimatedCounter target={MOCK_STATS.reportsIssued} />}
           unit={`/ ${MOCK_STATS.totalSessions}`}
           icon={<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>}
-          accent="success" trend="87.5% success"
+          accent="success" trend="90.3% success"
           onClick={() => navigate('/reports')}
         />
         <StatCard
@@ -286,7 +287,7 @@ export function DashboardPage() {
         <div className="lg:col-span-2 ca-card p-6">
           <div className="flex items-center justify-between mb-5">
             <div>
-              <h3 className="font-bold" style={{ color: MP.text }}>Cadence Score — 7 Days</h3>
+              <h3 className="font-bold" style={{ color: MP.text }}>Cadence Score — Jul 7–14, 2026</h3>
               <p className="text-xs mt-0.5" style={{ color: MP.muted }}>Typing rhythm authenticity quality</p>
             </div>
             <button onClick={() => navigate('/analytics')}
@@ -342,7 +343,7 @@ export function DashboardPage() {
               </div>
             ))}
             <div className="pt-2 text-center text-xs font-semibold" style={{ color: MP.success }}>
-              {((21 / 24) * 100).toFixed(0)}% Authenticity Rate
+              {((28 / 31) * 100).toFixed(0)}% Authenticity Rate
             </div>
           </div>
         </div>
@@ -407,7 +408,12 @@ export function DashboardPage() {
                 onClick={() => navigate('/sessions')}
                 onKeyDown={e => e.key === 'Enter' && navigate('/sessions')}
                 tabIndex={0}>
-                <td><span className="font-medium" style={{ color: MP.text }}>{session.title}</span></td>
+                <td>
+                  <span className="font-medium" style={{ color: MP.text }}>{session.title}</span>
+                  {session.aiAssists > 0 && (
+                    <div className="text-[10px] mt-0.5" style={{ color: MP.ibm }}>🤖 {session.aiAssists} AI assist{session.aiAssists !== 1 ? 's' : ''}</div>
+                  )}
+                </td>
                 <td className="text-xs font-mono" style={{ color: MP.muted }}>{session.date}</td>
                 <td className="font-mono" style={{ color: MP.text }}>{session.words.toLocaleString()}</td>
                 <td>

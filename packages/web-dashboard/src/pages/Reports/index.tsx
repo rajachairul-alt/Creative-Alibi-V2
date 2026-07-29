@@ -25,6 +25,13 @@ const MP = {
 
 // ─── Types & Data ─────────────────────────────────────────────────────────────
 
+interface AILogEntry {
+  time:     string;
+  type:     'style_suggestion' | 'brainstorm' | 'grammar_check';
+  prompt:   string;
+  accepted: boolean;
+}
+
 interface Report {
   reportId: string;
   documentTitle: string;
@@ -38,13 +45,14 @@ interface Report {
   aiLikelihoodLabel: 'HUMAN' | 'AI' | 'UNCERTAIN';
   aiLikelihoodScore: number;
   sessionDurationMinutes: number;
+  aiLog: AILogEntry[];
 }
 
 const MOCK_REPORTS: Report[] = [
   {
-    reportId: 'ca-2024-001',
+    reportId: 'ca-2026-001',
     documentTitle: 'The Ethics of AI Writing Tools',
-    issuedAt: '2024-07-12T14:32:00Z',
+    issuedAt: '2026-07-14T14:32:00Z',
     status: 'ISSUED',
     compositeScore: 91,
     wordCount: 1247,
@@ -54,11 +62,15 @@ const MOCK_REPORTS: Report[] = [
     aiLikelihoodLabel: 'HUMAN',
     aiLikelihoodScore: 0.12,
     sessionDurationMinutes: 34,
+    aiLog: [
+      { time: '00:16', type: 'style_suggestion', prompt: 'Make my opening paragraph more compelling', accepted: true  },
+      { time: '00:33', type: 'brainstorm',        prompt: '3 counter-arguments to strengthen my thesis', accepted: true },
+    ],
   },
   {
-    reportId: 'ca-2024-002',
+    reportId: 'ca-2026-002',
     documentTitle: 'Chapter 3 — Research Methods',
-    issuedAt: '2024-07-11T09:15:00Z',
+    issuedAt: '2026-07-13T09:15:00Z',
     status: 'ISSUED',
     compositeScore: 87,
     wordCount: 2840,
@@ -68,11 +80,12 @@ const MOCK_REPORTS: Report[] = [
     aiLikelihoodLabel: 'HUMAN',
     aiLikelihoodScore: 0.08,
     sessionDurationMinutes: 82,
+    aiLog: [],
   },
   {
-    reportId: 'ca-2024-003',
+    reportId: 'ca-2026-003',
     documentTitle: 'Blog Post — AI Creativity',
-    issuedAt: '2024-07-09T16:45:00Z',
+    issuedAt: '2026-07-11T16:45:00Z',
     status: 'NOT_ELIGIBLE',
     compositeScore: 52,
     wordCount: 820,
@@ -82,11 +95,18 @@ const MOCK_REPORTS: Report[] = [
     aiLikelihoodLabel: 'UNCERTAIN',
     aiLikelihoodScore: 0.54,
     sessionDurationMinutes: 12,
+    aiLog: [
+      { time: '00:03', type: 'style_suggestion', prompt: 'Rewrite my intro in a casual tone',               accepted: true  },
+      { time: '00:06', type: 'brainstorm',        prompt: 'More ideas for section 2',                       accepted: true  },
+      { time: '00:08', type: 'style_suggestion',  prompt: 'Make conclusion punchier',                       accepted: true  },
+      { time: '00:10', type: 'grammar_check',     prompt: 'Fix grammar in paragraph 4',                     accepted: false },
+      { time: '00:11', type: 'brainstorm',        prompt: 'Alternative ways to say "artificial intelligence"', accepted: true },
+    ],
   },
   {
-    reportId: 'ca-2024-004',
+    reportId: 'ca-2026-004',
     documentTitle: 'Literature Review Draft',
-    issuedAt: '2024-07-07T11:20:00Z',
+    issuedAt: '2026-07-08T11:20:00Z',
     status: 'ISSUED',
     compositeScore: 84,
     wordCount: 3200,
@@ -96,6 +116,48 @@ const MOCK_REPORTS: Report[] = [
     aiLikelihoodLabel: 'HUMAN',
     aiLikelihoodScore: 0.19,
     sessionDurationMinutes: 95,
+    aiLog: [
+      { time: '00:22', type: 'brainstorm',       prompt: 'Suggest 3 more sources for section on NLP history', accepted: true  },
+      { time: '00:51', type: 'style_suggestion', prompt: 'Is this paragraph too dense? How to split it?',     accepted: false },
+      { time: '01:18', type: 'grammar_check',    prompt: 'Fix passive voice in methodology paragraph',         accepted: true  },
+    ],
+  },
+  {
+    reportId: 'ca-2026-005',
+    documentTitle: 'Email Newsletter Draft',
+    issuedAt: '2026-07-12T10:05:00Z',
+    status: 'ISSUED',
+    compositeScore: 94,
+    wordCount: 450,
+    typingCadenceScore: 92,
+    copyPasteRatio: 0.03,
+    aiAssistCount: 1,
+    aiLikelihoodLabel: 'HUMAN',
+    aiLikelihoodScore: 0.06,
+    sessionDurationMinutes: 18,
+    aiLog: [
+      { time: '00:09', type: 'grammar_check', prompt: 'Check subject-verb agreement in paragraph 2', accepted: true },
+    ],
+  },
+  {
+    reportId: 'ca-2026-006',
+    documentTitle: 'Grant Proposal — Cognitive Science',
+    issuedAt: '2026-07-03T08:50:00Z',
+    status: 'ISSUED',
+    compositeScore: 82,
+    wordCount: 4100,
+    typingCadenceScore: 79,
+    copyPasteRatio: 0.13,
+    aiAssistCount: 4,
+    aiLikelihoodLabel: 'HUMAN',
+    aiLikelihoodScore: 0.22,
+    sessionDurationMinutes: 113,
+    aiLog: [
+      { time: '00:18', type: 'brainstorm',       prompt: 'Structure for specific aims section',             accepted: true  },
+      { time: '00:45', type: 'style_suggestion', prompt: 'Too formal? Suggestions for clearer phrasing',    accepted: true  },
+      { time: '01:10', type: 'grammar_check',    prompt: 'Review methodology paragraph for clarity',         accepted: false },
+      { time: '01:42', type: 'brainstorm',       prompt: 'Stronger closing argument for significance',       accepted: true  },
+    ],
   },
 ];
 
@@ -235,20 +297,51 @@ function ReportDetailModal({
             </p>
           </div>
 
-          {/* AI Assist summary */}
-          {report.aiAssistCount > 0 && (
-            <div className="rounded-2xl p-4 border"
-              style={{ background: `${MP.ibm}08`, borderColor: `${MP.ibm}25` }}>
-              <div className="flex items-center gap-2 mb-1.5">
-                <span>🤖</span>
-                <span className="font-semibold text-sm" style={{ color: MP.ibm }}>IBM Granite AI Partner Usage</span>
-              </div>
-              <p className="text-sm" style={{ color: MP.muted }}>
-                Writer used IBM Granite {report.aiAssistCount} time(s) in this session.
-                All interactions are fully disclosed and logged in this report.
-              </p>
+          {/* AI Assist full disclosure */}
+          <div className="rounded-2xl p-4 border"
+            style={{ background: `${MP.ibm}08`, borderColor: `${MP.ibm}25` }}>
+            <div className="flex items-center gap-2 mb-3">
+              <span>🤖</span>
+              <span className="font-semibold text-sm" style={{ color: MP.ibm }}>IBM Granite AI Partner Disclosure</span>
+              {report.aiLog.length === 0 && (
+                <span className="text-xs px-2 py-0.5 rounded-full"
+                  style={{ background: `${MP.success}18`, color: MP.success }}>None used</span>
+              )}
             </div>
-          )}
+            {report.aiLog.length === 0 ? (
+              <p className="text-sm" style={{ color: MP.muted }}>
+                No AI assistance was used in this session. This document was written entirely without AI suggestions.
+              </p>
+            ) : (
+              <>
+                <div className="flex items-center gap-3 mb-3 flex-wrap text-xs">
+                  <span style={{ color: MP.ibm }}><strong>{report.aiLog.length}</strong> interactions with IBM Granite</span>
+                  <span style={{ color: MP.success }}>✓ {report.aiLog.filter(l => l.accepted).length} accepted</span>
+                  <span style={{ color: MP.error }}>✗ {report.aiLog.filter(l => !l.accepted).length} declined</span>
+                </div>
+                <div className="space-y-2">
+                  {report.aiLog.map((log, i) => (
+                    <div key={i} className="flex items-center gap-3 py-2 px-3 rounded-xl text-xs"
+                      style={{ background: `${MP.surface}`, border: `1px solid ${MP.border}` }}>
+                      <span className="font-mono flex-shrink-0 w-12" style={{ color: MP.muted }}>{log.time}</span>
+                      <span className="px-2 py-0.5 rounded-full font-medium flex-shrink-0"
+                        style={{ background: `${MP.ibm}18`, color: MP.ibm }}>
+                        {log.type === 'style_suggestion' ? '✍️ Style' : log.type === 'brainstorm' ? '💡 Brainstorm' : '📝 Grammar'}
+                      </span>
+                      <span className="flex-1 min-w-0 truncate" style={{ color: MP.textSoft }}>"{log.prompt}"</span>
+                      <span className="font-semibold flex-shrink-0"
+                        style={{ color: log.accepted ? MP.success : MP.error }}>
+                        {log.accepted ? '✓' : '✗'}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs mt-3" style={{ color: MP.muted }}>
+                  All AI interactions transparently disclosed per IBM Granite Guardian protocol.
+                </p>
+              </>
+            )}
+          </div>
 
           {/* Verified Badge */}
           {isIssued && (

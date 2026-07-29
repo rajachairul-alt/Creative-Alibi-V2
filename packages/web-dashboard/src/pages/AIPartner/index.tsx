@@ -40,7 +40,7 @@ const INITIAL_MESSAGES: Message[] = [
   {
     id:               'sys-1',
     role:             'assistant',
-    content:          `Welcome to your Creative Alibi AI Partner — powered by **IBM Granite 3 8B Instruct** via watsonx.ai.\n\nI'm here to help with style suggestions, brainstorming, and grammar checks.\n\n⚠️ **Transparency notice**: Every interaction is logged in your Process Ledger and disclosed in your Authenticity Report. You always explicitly accept or decline — nothing is silently merged.\n\nHow can I help with your writing today?`,
+    content:          'Welcome to your Creative Alibi AI Partner — powered by IBM Granite 3 8B Instruct via watsonx.ai.\n\nI\'m here to help with style suggestions, brainstorming, and grammar checks.\n\n⚠️ Transparency notice: Every interaction is logged in your Process Ledger and disclosed in your Authenticity Report. You always explicitly Accept or Decline each suggestion — nothing is silently merged into your document.\n\nHow can I help with your writing today?',
     timestamp:        new Date().toISOString(),
     guardianApproved: true,
   },
@@ -145,7 +145,10 @@ export function AIPartnerPage() {
   const handleAccept  = (id: string) => setMessages(prev => prev.map(m => m.id === id ? { ...m, accepted: true  } : m));
   const handleDecline = (id: string) => setMessages(prev => prev.map(m => m.id === id ? { ...m, accepted: false } : m));
 
-  const aiInteractions = messages.filter(m => m.role === 'assistant' && m.id !== 'sys-1').length;
+  const aiInteractions = messages.filter(m => m.role === 'assistant' && m.id !== 'sys-1');
+  const acceptedCount  = aiInteractions.filter(m => m.accepted === true).length;
+  const declinedCount  = aiInteractions.filter(m => m.accepted === false).length;
+  const pendingCount   = aiInteractions.filter(m => m.accepted === null).length;
 
   return (
     <div className="flex" style={{ height: 'calc(100vh - 73px)' }}>
@@ -232,28 +235,50 @@ export function AIPartnerPage() {
                   {msg.content}
                 </div>
 
-                {/* Accept / Decline buttons */}
-                {msg.role === 'assistant' && msg.accepted === null && msg.id !== 'sys-1' && (
-                  <div className="flex items-center gap-2 mt-1">
-                    <button onClick={() => handleAccept(msg.id)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium border transition-all"
-                      style={{ background: `${MP.success}12`, borderColor: `${MP.success}30`, color: MP.success }}
-                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = `${MP.success}22`; }}
-                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = `${MP.success}12`; }}>
+                {/* Accept / Decline buttons — only for assistant messages that haven't been decided yet */}
+                {msg.role === 'assistant' && msg.id !== 'sys-1' && msg.accepted === null && (
+                  <div className="flex items-center gap-2 mt-1 flex-wrap">
+                    <button
+                      onClick={() => handleAccept(msg.id)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all"
+                      style={{ background: `${MP.success}15`, borderColor: `${MP.success}40`, color: MP.success }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = `${MP.success}28`; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = `${MP.success}15`; }}
+                      aria-label="Accept this suggestion">
                       ✓ Accept
                     </button>
-                    <button onClick={() => handleDecline(msg.id)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium border transition-all"
-                      style={{ background: `${MP.error}12`, borderColor: `${MP.error}30`, color: MP.error }}
-                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = `${MP.error}22`; }}
-                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = `${MP.error}12`; }}>
+                    <button
+                      onClick={() => handleDecline(msg.id)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all"
+                      style={{ background: `${MP.error}15`, borderColor: `${MP.error}40`, color: MP.error }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = `${MP.error}28`; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = `${MP.error}15`; }}
+                      aria-label="Decline this suggestion">
                       ✗ Decline
                     </button>
+                    <span className="text-[10px]" style={{ color: MP.muted }}>
+                      Decision logged in Process Ledger
+                    </span>
+                  </div>
+                )}
+                {msg.role === 'assistant' && msg.id !== 'sys-1' && msg.accepted === true && (
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-lg"
+                      style={{ background: `${MP.success}15`, color: MP.success }}>
+                      ✓ Accepted
+                    </span>
                     <span className="text-[10px]" style={{ color: MP.muted }}>Logged in Process Ledger</span>
                   </div>
                 )}
-                {msg.accepted === true  && <span className="text-[10px]" style={{ color: MP.success }}>✓ Accepted — logged in Process Ledger</span>}
-                {msg.accepted === false && <span className="text-[10px]" style={{ color: MP.muted }}>✗ Declined — still disclosed in report</span>}
+                {msg.role === 'assistant' && msg.id !== 'sys-1' && msg.accepted === false && (
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded-lg"
+                      style={{ background: `${MP.error}15`, color: MP.error }}>
+                      ✗ Declined
+                    </span>
+                    <span className="text-[10px]" style={{ color: MP.muted }}>Still disclosed in Authenticity Report</span>
+                  </div>
+                )}
 
                 <span className="text-[10px] px-1" style={{ color: MP.muted }}>
                   {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -365,11 +390,24 @@ export function AIPartnerPage() {
           {/* AI counter */}
           <div>
             <div className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: MP.muted }}>AI Assists This Session</div>
-            <div className="rounded-xl p-3 text-xs border"
+            <div className="rounded-xl p-3 text-xs border space-y-2"
               style={{ background: MP.elevated, borderColor: MP.border }}>
-              <div className="text-2xl font-black font-mono mb-0.5" style={{ color: MP.ibm }}>{aiInteractions}</div>
-              <div style={{ color: MP.muted }}>interactions logged</div>
-              <div className="mt-2 text-[10px]" style={{ color: `${MP.muted}` }}>All disclosed in report</div>
+              <div className="flex items-baseline gap-1.5">
+                <div className="text-2xl font-black font-mono" style={{ color: MP.ibm }}>{aiInteractions.length}</div>
+                <div style={{ color: MP.muted }}>interactions</div>
+              </div>
+              <div className="flex items-center justify-between">
+                <span style={{ color: MP.success }}>✓ {acceptedCount} accepted</span>
+                <span style={{ color: MP.error }}>✗ {declinedCount} declined</span>
+              </div>
+              {pendingCount > 0 && (
+                <div className="text-[10px]" style={{ color: MP.warning }}>
+                  ⏳ {pendingCount} awaiting decision
+                </div>
+              )}
+              <div className="text-[10px] border-t pt-1.5" style={{ color: MP.muted, borderColor: MP.border }}>
+                All disclosed in Authenticity Report
+              </div>
             </div>
           </div>
 

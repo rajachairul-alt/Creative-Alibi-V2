@@ -36,13 +36,16 @@ interface Session {
 }
 
 const SESSIONS: Session[] = [
-  { id: 's-001', title: 'The Ethics of AI Writing Tools',  date: '2024-07-12', duration: 34, words: 1247, score: 91, status: 'ISSUED',       platform: 'word-plugin', aiAssists: 2 },
-  { id: 's-002', title: 'Chapter 3 — Research Methods',    date: '2024-07-11', duration: 82, words: 2840, score: 87, status: 'ISSUED',       platform: 'word-plugin', aiAssists: 0 },
-  { id: 's-003', title: 'Email Newsletter Draft',          date: '2024-07-10', duration: 18, words: 450,  score: 94, status: 'ISSUED',       platform: 'web-editor',  aiAssists: 1 },
-  { id: 's-004', title: 'Blog Post — AI Creativity',       date: '2024-07-09', duration: 12, words: 820,  score: 52, status: 'NOT_ELIGIBLE', platform: 'word-plugin', aiAssists: 5 },
-  { id: 's-005', title: 'Academic Abstract — ML Study',    date: '2024-07-08', duration: 25, words: 380,  score: 89, status: 'ISSUED',       platform: 'web-editor',  aiAssists: 0 },
-  { id: 's-006', title: 'Literature Review Draft',         date: '2024-07-07', duration: 95, words: 3200, score: 84, status: 'ISSUED',       platform: 'word-plugin', aiAssists: 3 },
-  { id: 's-007', title: 'Conference Proposal',             date: '2024-07-06', duration: 44, words: 1580, score: 76, status: 'ISSUED',       platform: 'web-editor',  aiAssists: 1 },
+  { id: 's-001', title: 'The Ethics of AI Writing Tools',    date: '2026-07-14', duration: 34, words: 1247, score: 91, status: 'ISSUED',       platform: 'word-plugin', aiAssists: 2 },
+  { id: 's-002', title: 'Chapter 3 — Research Methods',      date: '2026-07-13', duration: 82, words: 2840, score: 87, status: 'ISSUED',       platform: 'word-plugin', aiAssists: 0 },
+  { id: 's-003', title: 'Email Newsletter Draft',             date: '2026-07-12', duration: 18, words: 450,  score: 94, status: 'ISSUED',       platform: 'web-editor',  aiAssists: 1 },
+  { id: 's-004', title: 'Blog Post — AI Creativity',          date: '2026-07-11', duration: 12, words: 820,  score: 52, status: 'NOT_ELIGIBLE', platform: 'word-plugin', aiAssists: 5 },
+  { id: 's-005', title: 'Academic Abstract — ML Study',       date: '2026-07-10', duration: 25, words: 380,  score: 89, status: 'ISSUED',       platform: 'web-editor',  aiAssists: 0 },
+  { id: 's-006', title: 'Literature Review Draft',            date: '2026-07-08', duration: 95, words: 3200, score: 84, status: 'ISSUED',       platform: 'word-plugin', aiAssists: 3 },
+  { id: 's-007', title: 'Conference Proposal',                date: '2026-07-07', duration: 44, words: 1580, score: 76, status: 'ISSUED',       platform: 'web-editor',  aiAssists: 1 },
+  { id: 's-008', title: 'Product Launch Press Release',       date: '2026-07-05', duration: 28, words: 620,  score: 90, status: 'ISSUED',       platform: 'web-editor',  aiAssists: 0 },
+  { id: 's-009', title: 'Grant Proposal — Cognitive Science', date: '2026-07-03', duration: 113, words: 4100, score: 82, status: 'ISSUED',      platform: 'word-plugin', aiAssists: 4 },
+  { id: 's-010', title: 'Short Story — The Last Compiler',    date: '2026-07-01', duration: 67, words: 2150, score: 78, status: 'ISSUED',       platform: 'word-plugin', aiAssists: 2 },
 ];
 
 type SortKey     = 'date' | 'words' | 'score' | 'duration';
