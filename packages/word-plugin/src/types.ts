@@ -125,4 +125,4 @@ export const PAUSE_THINKING_MIN_MS = 2_000;
 export const PAUSE_BREAK_MIN_MS = 30_000;
 
 /** How often (ms) the tracker flushes a snapshot to the Zustand store. */
-export const TRACKER_SNAPSHOT_INTERVAL_MS = 5_000;
+export const TRACKER_SNAPSHOT_INTERVAL_MS = 2_000;

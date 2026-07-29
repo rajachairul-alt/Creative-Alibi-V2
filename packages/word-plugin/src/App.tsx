@@ -17,63 +17,72 @@ import { startBackendSession } from './services/granite.service';
 export default function App() {
   const { activeTab, setSession, session } = useSessionStore();
 
-  // Initialize session on first load
+  // Initialize session on first load — always succeeds (offline-first)
   useEffect(() => {
     const init = async () => {
+      let docTitle = 'Untitled Document';
       try {
-        let docTitle = 'Untitled Document';
-        try {
-          docTitle = await new Promise<string>((resolve) => {
-            Office.context.document.getFilePropertiesAsync({}, (result) => {
-              resolve(result.value?.url?.split('/').pop() ?? 'Untitled Document');
-            });
+        docTitle = await new Promise<string>((resolve) => {
+          Office.context.document.getFilePropertiesAsync({}, (result) => {
+            resolve(result.value?.url?.split('/').pop() ?? 'Untitled Document');
           });
-        } catch {
-          // Use default title
-        }
-
-        const deviceFingerprint = generateDeviceFingerprint();
-        const { sessionId, startedAt } = await startBackendSession(docTitle, deviceFingerprint);
-
-        setSession({
-          sessionId,
-          state: 'ACTIVE',
-          startedAt,
-          endedAt: null,
-          ledger: {
-            sessionId,
-            sessionStartedAt: startedAt,
-            sessionEndedAt: null,
-            typingCadenceScore: 0,
-            pauseProfile: {
-              averageDurationMs: 0,
-              medianDurationMs: 0,
-              microPauses: 0,
-              shortPauses: 0,
-              thinkingPauses: 0,
-              longBreaks: 0,
-              totalPauses: 0,
-            },
-            copyPasteRatio: 0,
-            revisionCount: 0,
-            timeSpentSeconds: 0,
-            activeTypingSeconds: 0,
-            wordCount: 0,
-            averageWPM: 0,
-            pasteEvents: [],
-            pauseEvents: [],
-            aiAssistLog: [],
-            integrityHash: '',
-            deviceFingerprint,
-            platform: 'word-plugin',
-          },
-          report: null,
-          documentTitle: docTitle,
-          wordCountHistory: [],
         });
-      } catch (error) {
-        console.error('[Creative Alibi] Session init failed:', error);
+      } catch {
+        // Use default title — Office context may not be ready yet
       }
+
+      const deviceFingerprint = generateDeviceFingerprint();
+      const now = new Date().toISOString();
+
+      // Build the session locally first — this guarantees the UI always renders.
+      // Backend registration is attempted in the background; failure is non-fatal.
+      let sessionId = `local-${Date.now()}`;
+      let startedAt = now;
+      try {
+        const remote = await startBackendSession(docTitle, deviceFingerprint);
+        sessionId = remote.sessionId;
+        startedAt = remote.startedAt;
+      } catch {
+        // Backend offline — session runs fully locally, no data is lost.
+        console.warn('[Creative Alibi] Backend unreachable — running in offline mode');
+      }
+
+      setSession({
+        sessionId,
+        state: 'ACTIVE',
+        startedAt,
+        endedAt: null,
+        ledger: {
+          sessionId,
+          sessionStartedAt: startedAt,
+          sessionEndedAt: null,
+          typingCadenceScore: 0,
+          pauseProfile: {
+            averageDurationMs: 0,
+            medianDurationMs: 0,
+            microPauses: 0,
+            shortPauses: 0,
+            thinkingPauses: 0,
+            longBreaks: 0,
+            totalPauses: 0,
+          },
+          copyPasteRatio: 0,
+          revisionCount: 0,
+          timeSpentSeconds: 0,
+          activeTypingSeconds: 0,
+          wordCount: 0,
+          averageWPM: 0,
+          pasteEvents: [],
+          pauseEvents: [],
+          aiAssistLog: [],
+          integrityHash: '',
+          deviceFingerprint,
+          platform: 'word-plugin',
+        },
+        report: null,
+        documentTitle: docTitle,
+        wordCountHistory: [],
+      });
     };
 
     if (!session) {

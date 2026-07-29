@@ -89,7 +89,11 @@ export function TrackerStatus() {
   const { startTracking, stopTracking } = useTracker();
   const ledger = session?.ledger;
 
-  const cadenceStatus: MetricStatus = !ledger ? 'neutral'
+  // Show metrics whenever we have a session (tracking or stopped).
+  // isTracking drives the "live" state; ledger values update every 2s via the interval.
+  const showMetrics = isTracking || (ledger && ledger.timeSpentSeconds > 0);
+
+  const cadenceStatus: MetricStatus = !ledger || ledger.typingCadenceScore === 0 ? 'neutral'
     : ledger.typingCadenceScore >= 75 ? 'good'
     : ledger.typingCadenceScore >= 50 ? 'warn' : 'bad';
 
@@ -115,9 +119,17 @@ export function TrackerStatus() {
         style={{ background: MP.elevated, borderColor: isTracking ? `${MP.success}40` : MP.border }}>
         <div>
           <div className="text-xs font-semibold" style={{ color: MP.text }}>Process Ledger</div>
-          <div className="text-[10px] mt-0.5" style={{ color: MP.muted }}>
+          <div className="text-[10px] mt-0.5 flex items-center gap-1" style={{ color: isTracking ? MP.success : MP.muted }}>
+            {isTracking && (
+              <span className="relative flex h-1.5 w-1.5 flex-shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
+                  style={{ background: MP.success }} />
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5"
+                  style={{ background: MP.success }} />
+              </span>
+            )}
             {isTracking
-              ? '● Recording your writing behavior locally'
+              ? 'Recording your writing behavior locally'
               : 'Start tracking to build your Authenticity Report'}
           </div>
         </div>
@@ -146,8 +158,8 @@ export function TrackerStatus() {
         </button>
       </div>
 
-      {/* ── Live Metrics ─────────────────────────────────────────────────── */}
-      {ledger && (
+      {/* ── Live Metrics — shown as soon as tracking starts ──────────────── */}
+      {showMetrics && ledger && (
         <>
           <div className="grid grid-cols-2 gap-2">
             <MetricItem

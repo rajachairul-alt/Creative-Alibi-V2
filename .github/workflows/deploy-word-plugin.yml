@@ -1,4 +1,7 @@
-name: Deploy Word Plugin → GitHub Pages
+name: Build Word Plugin (CI only)
+
+# The word-plugin is NOT deployed to GitHub Pages — only the web-dashboard is.
+# This workflow builds to validate the plugin compiles correctly on every push.
 
 on:
   push:
@@ -7,15 +10,7 @@ on:
       - 'packages/word-plugin/**'
       - 'packages/shared/**'
       - '.github/workflows/deploy-word-plugin.yml'
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
+  workflow_dispatch:
 
 jobs:
   build:
@@ -41,19 +36,9 @@ jobs:
           VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
         run: npm run build --workspace=packages/word-plugin
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload dist as artifact (for download, not Pages)
+        uses: actions/upload-artifact@v4
         with:
+          name: word-plugin-dist
           path: packages/word-plugin/dist
-
-  deploy:
-    name: Deploy to GitHub Pages
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          retention-days: 7
