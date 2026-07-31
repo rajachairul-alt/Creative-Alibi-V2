@@ -340,7 +340,7 @@ MIT — see [LICENSE](./LICENSE)
 
 <div align="center">
 
-**Built for the [IBM AI Builders Challenge 2025](https://aibuilderschallenge-bobhub.bemyapp.com/#/sponsors/1-july-challenge)**
+**Built for the [IBM AI Builders Challenge 2026](https://aibuilderschallenge-bobhub.bemyapp.com/#/sponsors/1-july-challenge)**
 
 *Primary development tool: [IBM Bob](https://bit.ly/IBMBob-freetrial)*
 *Core AI: IBM Granite via watsonx.ai*
