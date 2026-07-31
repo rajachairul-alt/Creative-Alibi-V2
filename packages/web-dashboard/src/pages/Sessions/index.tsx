@@ -1,26 +1,26 @@
 /**
  * @fileoverview Sessions list page — search, filter, sort, and view all writing sessions.
- * Moon Phases design system: #212A31 / #2E3944 / #124E66 / #748D92 / #D3D9D4
+ * Void & Silver design system: #000000 void / #8ECFDF spectral teal / #EAEDF0 silver
  */
 
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// ─── Moon Phases tokens ────────────────────────────────────────────────────────
+// ─── Void & Silver tokens ──────────────────────────────────────────────────────
 const MP = {
-  surface:  '#212A31',
-  elevated: '#2E3944',
-  hover:    '#374654',
-  teal:     '#2A9FBF',
-  tealDark: '#124E66',
-  text:     '#D3D9D4',
-  textSoft: '#A8B2B7',
-  muted:    '#748D92',
-  border:   '#374654',
-  success:  '#4CC38A',
-  error:    '#E07070',
-  warning:  '#E8C547',
-  ibm:      '#7EB8D4',
+  surface:  '#0D1115',
+  elevated: '#131920',
+  hover:    '#1A2430',
+  teal:     '#4AAFCA',
+  tealDark: '#1C3F50',
+  text:     '#EAEDF0',
+  textSoft: '#C8CED2',
+  muted:    '#556068',
+  border:   'rgba(255,255,255,0.06)',
+  success:  '#5DD4A0',
+  error:    '#D97070',
+  warning:  '#D4A94A',
+  ibm:      '#8ECFDF',
 } as const;
 
 interface Session {
@@ -59,44 +59,85 @@ function SessionDetailModal({ session, onClose }: { session: Session; onClose: (
   const c = 2 * Math.PI * 42;
 
   return (
-    <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-      role="dialog" aria-modal="true" aria-label={`Session: ${session.title}`}>
-      <div className="rounded-2xl w-full max-w-lg shadow-2xl border overflow-hidden"
-        style={{ background: MP.surface, borderColor: `${MP.teal}35` }}>
-
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)' }}
+      role="dialog" aria-modal="true" aria-label={`Session: ${session.title}`}
+    >
+      <div
+        className="w-full max-w-lg border overflow-hidden animate-slide-up"
+        style={{
+          background: '#0D1115',
+          borderColor: 'rgba(74,175,202,0.2)',
+          borderRadius: '4px',
+        }}
+      >
         {/* Header */}
-        <div className="px-6 pt-6 pb-4 border-b flex items-start justify-between"
-          style={{ borderColor: MP.border }}>
+        <div
+          className="px-8 pt-7 pb-5 border-b flex items-start justify-between"
+          style={{ borderColor: 'rgba(255,255,255,0.06)' }}
+        >
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
+            <div className="flex items-center gap-2 mb-2">
               {session.status === 'ISSUED'
-                ? <span className="ca-badge-issued">✓ ISSUED</span>
-                : <span className="ca-badge-error">✗ NOT ELIGIBLE</span>}
+                ? <span className="ca-badge-issued">Issued</span>
+                : <span className="ca-badge-error">Not Eligible</span>}
               <span className="text-xs font-mono" style={{ color: MP.muted }}>#{session.id}</span>
             </div>
-            <h2 className="text-lg font-bold leading-tight" style={{ color: MP.text }}>{session.title}</h2>
+            <h2
+              className="leading-tight"
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: '1.6rem',
+                fontWeight: 300,
+                color: MP.text,
+              }}
+            >
+              {session.title}
+            </h2>
           </div>
-          <button onClick={onClose} className="ca-btn-ghost p-2 rounded-xl ml-4 flex-shrink-0"
-            aria-label="Close dialog">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
+          <button
+            onClick={onClose}
+            className="ca-btn-ghost p-2 rounded ml-4 flex-shrink-0"
+            aria-label="Close dialog"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
               <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
             </svg>
           </button>
         </div>
 
-        <div className="p-6 space-y-5">
+        <div className="p-8 space-y-6">
           {/* Score ring + stats */}
           <div className="flex items-center gap-6">
             <div className="relative w-24 h-24 flex-shrink-0">
               <svg viewBox="0 0 100 100" className="w-full h-full">
-                <circle cx="50" cy="50" r="42" fill="none" stroke={MP.elevated} strokeWidth="8" />
-                <circle cx="50" cy="50" r="42" fill="none" stroke={scoreColor} strokeWidth="8"
+                <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" />
+                <circle cx="50" cy="50" r="42" fill="none" stroke={scoreColor} strokeWidth="6"
                   strokeDasharray={`${(session.score / 100) * c} ${c}`}
                   strokeLinecap="round" transform="rotate(-90 50 50)" />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-2xl font-black font-mono" style={{ color: scoreColor }}>{session.score}</span>
-                <span className="text-[10px]" style={{ color: MP.muted }}>/100</span>
+                <span
+                  style={{
+                    fontFamily: "'Cormorant Garamond', Georgia, serif",
+                    fontSize: '1.8rem',
+                    fontWeight: 300,
+                    color: scoreColor,
+                  }}
+                >
+                  {session.score}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontSize: '0.6rem',
+                    color: MP.muted,
+                    letterSpacing: '0.1em',
+                  }}
+                >
+                  /100
+                </span>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3 flex-1">
@@ -106,20 +147,50 @@ function SessionDetailModal({ session, onClose }: { session: Session; onClose: (
                 { label: 'Platform',  value: session.platform === 'word-plugin' ? 'Word' : 'Web',     icon: '💻' },
                 { label: 'AI Assists',value: `${session.aiAssists}×`,                                  icon: '🤖' },
               ].map(item => (
-                <div key={item.label} className="rounded-xl p-3 border"
-                  style={{ background: MP.elevated, borderColor: MP.border }}>
-                  <div className="text-xs" style={{ color: MP.muted }}>{item.icon} {item.label}</div>
-                  <div className="font-mono font-bold text-sm mt-0.5" style={{ color: MP.text }}>{item.value}</div>
+                <div
+                  key={item.label}
+                  className="p-3 border"
+                  style={{
+                    background: MP.elevated,
+                    borderColor: 'rgba(255,255,255,0.06)',
+                    borderRadius: '4px',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: "'Montserrat', sans-serif",
+                      fontSize: '0.6rem',
+                      letterSpacing: '0.1em',
+                      textTransform: 'uppercase',
+                      color: MP.muted,
+                    }}
+                  >
+                    {item.icon} {item.label}
+                  </div>
+                  <div
+                    className="font-mono text-sm mt-1"
+                    style={{ color: MP.text }}
+                  >
+                    {item.value}
+                  </div>
                 </div>
               ))}
             </div>
           </div>
 
           <div className="flex gap-3">
-            <button onClick={() => { onClose(); navigate('/analytics'); }}
-              className="ca-btn-secondary flex-1 text-sm">View Analytics</button>
-            <button onClick={() => { onClose(); navigate('/reports'); }}
-              className="ca-btn-primary flex-1 text-sm">View Report →</button>
+            <button
+              onClick={() => { onClose(); navigate('/analytics'); }}
+              className="ca-btn-secondary flex-1"
+            >
+              Analytics
+            </button>
+            <button
+              onClick={() => { onClose(); navigate('/reports'); }}
+              className="ca-btn-primary flex-1"
+            >
+              View Report →
+            </button>
           </div>
         </div>
       </div>
@@ -163,9 +234,28 @@ export function SessionsPage() {
       {/* ── Header ────────────────────────────────────────────────────────── */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-black" style={{ color: MP.text }}>Writing Sessions</h1>
-          <p className="text-sm mt-1" style={{ color: MP.muted }}>
-            <span className="font-semibold" style={{ color: MP.success }}>
+          <h1
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontSize: '2rem',
+              fontWeight: 300,
+              color: MP.text,
+              letterSpacing: '0.02em',
+            }}
+          >
+            Writing Sessions
+          </h1>
+          <p
+            className="mt-1"
+            style={{
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: '0.75rem',
+              fontWeight: 300,
+              color: MP.muted,
+              letterSpacing: '0.02em',
+            }}
+          >
+            <span style={{ color: MP.success, fontWeight: 600 }}>
               {SESSIONS.filter(s => s.status === 'ISSUED').length}
             </span>
             <span> / {SESSIONS.length} sessions issued reports</span>
@@ -175,7 +265,7 @@ export function SessionsPage() {
         <div className="flex items-center gap-2 flex-wrap">
           {/* Search */}
           <div className="relative">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"
               className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
               style={{ color: MP.muted }}>
               <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -186,27 +276,39 @@ export function SessionsPage() {
           </div>
 
           {/* Status filter */}
-          <div className="flex rounded-xl overflow-hidden border" style={{ borderColor: MP.border }}>
+          <div className="flex overflow-hidden border" style={{ borderColor: 'rgba(255,255,255,0.08)', borderRadius: '4px' }}>
             {(['all', 'ISSUED', 'NOT_ELIGIBLE'] as FilterStatus[]).map(f => (
               <button key={f} onClick={() => setFilterStatus(f)}
-                className="px-3 py-1.5 text-xs font-medium transition-all"
-                style={filterStatus === f
-                  ? { background: `${MP.teal}28`, color: MP.teal }
-                  : { color: MP.muted }}>
-                {f === 'all' ? 'All' : f === 'ISSUED' ? '✓ Issued' : '✗ Failed'}
+                className="px-3 py-1.5 transition-all"
+                style={{
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: '0.65rem',
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  ...(filterStatus === f
+                    ? { background: 'rgba(74,175,202,0.15)', color: MP.teal }
+                    : { color: MP.muted, background: 'transparent' }),
+                }}>
+                {f === 'all' ? 'All' : f === 'ISSUED' ? 'Issued' : 'Failed'}
               </button>
             ))}
           </div>
 
           {/* Platform filter */}
-          <div className="flex rounded-xl overflow-hidden border" style={{ borderColor: MP.border }}>
+          <div className="flex overflow-hidden border" style={{ borderColor: 'rgba(255,255,255,0.08)', borderRadius: '4px' }}>
             {(['all', 'word-plugin', 'web-editor'] as const).map(p => (
               <button key={p} onClick={() => setFilterPlatform(p)}
-                className="px-3 py-1.5 text-xs font-medium transition-all"
-                style={filterPlatform === p
-                  ? { background: `${MP.success}20`, color: MP.success }
-                  : { color: MP.muted }}>
-                {p === 'all' ? 'All' : p === 'word-plugin' ? '📝 Word' : '🌐 Web'}
+                className="px-3 py-1.5 transition-all"
+                style={{
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: '0.65rem',
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  ...(filterPlatform === p
+                    ? { background: 'rgba(93,212,160,0.12)', color: MP.success }
+                    : { color: MP.muted, background: 'transparent' }),
+                }}>
+                {p === 'all' ? 'All' : p === 'word-plugin' ? 'Word' : 'Web'}
               </button>
             ))}
           </div>
@@ -267,11 +369,17 @@ export function SessionsPage() {
                 <td className="font-mono font-medium" style={{ color: MP.text }}>{session.words.toLocaleString()}</td>
                 <td>
                   <div className="flex items-center gap-2">
-                    <span className="font-mono font-bold text-sm"
-                      style={{ color: session.score >= 80 ? MP.success : session.score >= 70 ? MP.warning : MP.error }}>
+                    <span
+                      style={{
+                        fontFamily: "'Cormorant Garamond', Georgia, serif",
+                        fontSize: '1.2rem',
+                        fontWeight: 400,
+                        color: session.score >= 80 ? MP.success : session.score >= 70 ? MP.warning : MP.error,
+                      }}
+                    >
                       {session.score}
                     </span>
-                    <div className="w-14 h-1.5 rounded-full overflow-hidden" style={{ background: MP.elevated }}>
+                    <div className="w-14 h-1 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
                       <div className="h-full rounded-full transition-all"
                         style={{
                           width:      `${session.score}%`,
@@ -281,15 +389,17 @@ export function SessionsPage() {
                   </div>
                 </td>
                 <td>
-                  <span className="text-xs font-medium px-2 py-1 rounded-lg font-mono"
-                    style={{ background: `${MP.teal}12`, color: MP.textSoft }}>
-                    {session.platform === 'word-plugin' ? '📝 Word' : '🌐 Web'}
+                  <span
+                    className="text-xs font-medium px-2 py-0.5 rounded font-mono"
+                    style={{ background: 'rgba(74,175,202,0.1)', color: MP.textSoft }}
+                  >
+                    {session.platform === 'word-plugin' ? 'Word' : 'Web'}
                   </span>
                 </td>
                 <td>
                   {session.status === 'ISSUED'
-                    ? <span className="ca-badge-issued">✓ Issued</span>
-                    : <span className="ca-badge-error">✗ Not Eligible</span>}
+                    ? <span className="ca-badge-issued">Issued</span>
+                    : <span className="ca-badge-error">Not Eligible</span>}
                 </td>
                 <td className="text-right">
                   <button className="ca-btn-ghost text-xs py-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -309,9 +419,31 @@ export function SessionsPage() {
           { label: 'Total Time',  value: `${SESSIONS.reduce((a, s) => a + s.duration, 0)}m`,         color: MP.success },
           { label: 'Avg Score',   value: `${Math.round(SESSIONS.reduce((a, s) => a + s.score, 0) / SESSIONS.length)}/100`, color: MP.ibm },
         ].map(stat => (
-          <div key={stat.label} className="ca-card p-4 text-center">
-            <div className="text-2xl font-black font-mono" style={{ color: stat.color }}>{stat.value}</div>
-            <div className="text-xs mt-1" style={{ color: MP.muted }}>{stat.label}</div>
+          <div key={stat.label} className="ca-card p-5 text-center">
+            <div
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: '2.2rem',
+                fontWeight: 300,
+                color: stat.color,
+                lineHeight: 1,
+              }}
+            >
+              {stat.value}
+            </div>
+            <div
+              className="mt-2"
+              style={{
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: '0.6rem',
+                fontWeight: 600,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                color: MP.muted,
+              }}
+            >
+              {stat.label}
+            </div>
           </div>
         ))}
       </div>

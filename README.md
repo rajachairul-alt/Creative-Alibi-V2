@@ -209,6 +209,7 @@ Word Add-in (keystroke events)
 
 | Deliverable | Status | URL |
 |---|---|---|
+| 🎥 **Video Demo (Max 3 Min)** | ✅ Live | [Watch on YouTube](https://youtu.be/wItiDJtrpuU) |
 | 🌐 **Web Dashboard** | ✅ Live | [rajachairul-alt.github.io/Creative-Alibi-V2](https://rajachairul-alt.github.io/Creative-Alibi-V2/) |
 | 📝 **Word Add-in** | ✅ Sideloadable | See [SETUP.md](./SETUP.md) — 4-step install |
 | ⚙️ **Backend API** | ✅ Runnable locally | `npm run dev:backend` → `localhost:3001` |
@@ -316,6 +317,18 @@ Creative Alibi directly addresses the collision between AI adoption and academic
 | **React + Vite** | Web Dashboard + Word Add-in UI |
 | **Office.js** | Microsoft Word Add-in integration |
 | **GitHub Actions** | CI/CD — automated deploy to GitHub Pages |
+
+---
+
+## 👥 Team Members
+
+1. **Raja Chairul Jannah Wydmann**  
+   *Profession*: Maintenance Planner  
+   *LinkedIn*: [linkedin.com/in/raja-wydmann00](https://www.linkedin.com/in/raja-wydmann00)
+
+2. **Indri Anjar Kartikasari**  
+   *Profession*: AI Engineer & Digital Transformation Leader  
+   *LinkedIn*: [linkedin.com/in/indri-anjar-kartika-sari-](https://www.linkedin.com/in/indri-anjar-kartika-sari-/)
 
 ---
 
